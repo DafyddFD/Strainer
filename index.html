@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strainer AI — Help B2B Companies Sell to AI Agents</title>
+    <meta name="description" content="Your next buyer isn't human. Strainer AI helps B2B companies become the vendor that AI agents recommend, evaluate, and choose.">
+    <meta property="og:title" content="Strainer AI — Your Next Buyer Isn't Human">
+    <meta property="og:description" content="Help B2B companies sell to AI agents, not just humans.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://getstrainer.com">
+    <link rel="canonical" href="https://getstrainer.com">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Plausible Analytics (uncomment when ready) -->
+    <!-- <script defer data-domain="getstrainer.com" src="https://plausible.io/js/script.js"></script> -->
+
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a0b;
+            --bg-elevated: #111113;
+            --bg-card: #161618;
+            --border: #222225;
+            --border-hover: #333338;
+            --text-primary: #ededef;
+            --text-secondary: #8a8a8e;
+            --text-tertiary: #5a5a5e;
+            --accent: #00e5a0;
+            --accent-dim: #00e5a020;
+            --accent-mid: #00e5a040;
+            --accent-glow: #00e5a015;
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* === NAV === */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(10, 10, 11, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        nav.scrolled {
+            border-bottom-color: var(--border);
+        }
+
+        nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-mark {
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-mark svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: color 0.2s;
+            font-weight: 400;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #0a0a0b;
+        }
+
+        .btn-primary:hover {
+            background: #00ffb3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 24px var(--accent-dim);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-elevated);
+        }
+
+        /* === HERO === */
+        .hero {
+            padding: 180px 0 120px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 600px;
+            background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            background: var(--bg-elevated);
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            max-width: 900px;
+            margin-bottom: 28px;
+        }
+
+        .hero h1 .accent {
+            color: var(--accent);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 580px;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* === SECTION SHARED === */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+
+        .section-heading {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            max-width: 700px;
+        }
+
+        .section-sub {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        /* === THE SHIFT === */
+        .shift {
+            border-top: 1px solid var(--border);
+        }
+
+        .shift-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            margin-top: 60px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .shift-card {
+            background: var(--bg);
+            padding: 40px 32px;
+            position: relative;
+            transition: background 0.3s;
+        }
+
+        .shift-card:hover {
+            background: var(--bg-elevated);
+        }
+
+        .shift-card .number {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent-mid);
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .shift-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .shift-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        /* === WHAT WE DO === */
+        .what-we-do {
+            border-top: 1px solid var(--border);
+        }
+
+        .wwd-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            margin-top: 60px;
+            align-items: start;
+        }
+
+        .wwd-list {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .wwd-item {
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .wwd-item h3 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wwd-item h3::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .wwd-item p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            padding-left: 18px;
+        }
+
+        .wwd-visual {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            position: sticky;
+            top: 120px;
+        }
+
+        .agent-viz {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            line-height: 1.8;
+            color: var(--text-tertiary);
+        }
+
+        .agent-viz .highlight {
+            color: var(--accent);
+        }
+
+        .agent-viz .dimmed {
+            color: var(--text-tertiary);
+            opacity: 0.5;
+        }
+
+        .agent-viz .label {
+            color: var(--text-secondary);
+        }
+
+        /* === AGENT SCANNER === */
+        .scanner {
+            border-top: 1px solid var(--border);
+            position: relative;
+        }
+
+        .scanner-box {
+            margin-top: 48px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .scanner-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-elevated);
+        }
+
+        .scanner-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border-hover);
+        }
+
+        .scanner-dot:nth-child(1) { background: #ff5f57; }
+        .scanner-dot:nth-child(2) { background: #febc2e; }
+        .scanner-dot:nth-child(3) { background: #28c840; }
+
+        .scanner-title {
+            margin-left: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-tertiary);
+        }
+
+        .scanner-body {
+            padding: 40px;
+        }
+
+        .scanner-input-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .scanner-input {
+            flex: 1;
+            padding: 14px 18px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .scanner-input:focus {
+            border-color: var(--accent);
+        }
+
+        .scanner-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .scan-btn {
+            padding: 14px 28px;
+            background: var(--accent);
+            color: #0a0a0b;
+            border: none;
+            border-radius: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .scan-btn:hover {
+            background: #00ffb3;
+            transform: translateY(-1px);
+        }
+
+        .scan-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .scanner-output {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            line-height: 2;
+            min-height: 280px;
+            color: var(--text-tertiary);
+        }
+
+        .scanner-output .line {
+            opacity: 0;
+            transform: translateY(4px);
+            animation: lineIn 0.3s forwards;
+        }
+
+        .scanner-output .cmd {
+            color: var(--accent);
+        }
+
+        .scanner-output .warn {
+            color: #febc2e;
+        }
+
+        .scanner-output .err {
+            color: #ff5f57;
+        }
+
+        .scanner-output .ok {
+            color: #28c840;
+        }
+
+        .scanner-output .info {
+            color: var(--text-secondary);
+        }
+
+        @keyframes lineIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scanner-cta {
+            margin-top: 24px;
+            padding: 20px 24px;
+            background: var(--accent-glow);
+            border: 1px solid var(--accent-dim);
+            border-radius: 10px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .scanner-cta.visible {
+            display: flex;
+        }
+
+        .scanner-cta p {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .scanner-cta p span {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* === WHO IT'S FOR === */
+        .audience {
+            border-top: 1px solid var(--border);
+        }
+
+        .audience-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 60px;
+        }
+
+        .audience-card {
+            padding: 36px 32px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg);
+            transition: all 0.3s;
+        }
+
+        .audience-card:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-elevated);
+        }
+
+        .audience-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .audience-card p {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        /* === FINAL CTA === */
+        .final-cta {
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 120px 0;
+        }
+
+        .final-cta .section-heading {
+            max-width: 600px;
+            margin: 0 auto 20px;
+        }
+
+        .final-cta .section-sub {
+            max-width: 480px;
+            margin: 0 auto 40px;
+        }
+
+        /* === FOOTER === */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+        }
+
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-secondary);
+        }
+
+        /* === SCROLL ANIMATIONS === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* === MOBILE === */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        @media (max-width: 900px) {
+            .shift-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .wwd-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .wwd-visual {
+                position: static;
+            }
+
+            .audience-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero {
+                padding: 140px 0 80px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg);
+                border-bottom: 1px solid var(--border);
+                padding: 24px;
+                gap: 20px;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .scanner-input-row {
+                flex-direction: column;
+            }
+
+            .scanner-cta {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-ctas {
+                flex-direction: column;
+            }
+
+            .hero-ctas .btn {
+                text-align: center;
+                justify-content: center;
+            }
+
+            footer .container {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            section {
+                padding: 72px 0;
+            }
+
+            .scanner-body {
+                padding: 24px;
+            }
+        }
+
+        /* Cursor blink for scanner */
+        .cursor-blink::after {
+            content: '█';
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAV -->
+    <nav id="nav">
+        <div class="container">
+            <a href="/" class="logo">
+                <div class="logo-mark">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 3 2 12l10 3 3 10z"/>
+                    </svg>
+                </div>
+                Strainer
+            </a>
+            <button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+            <div class="nav-links">
+                <a href="#shift">The Shift</a>
+                <a href="#scanner">Agent Audit</a>
+                <a href="#audience">Who It's For</a>
+                <a href="https://calendly.com/YOUR-LINK" target="_blank" class="btn btn-primary">Book a Call</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                Now exploring the frontier
+            </div>
+            <h1 class="reveal">Your next buyer<br><span class="accent">isn't human.</span></h1>
+            <p class="reveal" style="animation-delay: 0.1s">AI agents are already making B2B purchase decisions — researching vendors, evaluating APIs, and recommending tools. Most companies aren't ready. We help you become the vendor agents choose.</p>
+            <div class="hero-ctas reveal" style="animation-delay: 0.2s">
+                <a href="https://calendly.com/YOUR-LINK" target="_blank" class="btn btn-primary">Book a Conversation →</a>
+                <a href="#scanner" class="btn btn-ghost">Try the Agent Audit</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE SHIFT -->
+    <section class="shift" id="shift">
+        <div class="container">
+            <div class="section-label reveal">The Shift</div>
+            <h2 class="section-heading reveal">B2B buying is being automated. Faster than you think.</h2>
+            <p class="section-sub reveal">The way companies discover, evaluate, and purchase software is fundamentally changing. AI agents — not humans — are becoming the first (and sometimes only) touchpoint.</p>
+
+            <div class="shift-grid reveal">
+                <div class="shift-card">
+                    <div class="number">01</div>
+                    <h3>AI Search Is the New Top of Funnel</h3>
+                    <p>Founders and ops teams are asking ChatGPT, Perplexity, and Claude for vendor recommendations instead of Googling. If your product isn't in the AI's answer, you don't exist.</p>
+                </div>
+                <div class="shift-card">
+                    <div class="number">02</div>
+                    <h3>Personal AI Agents Are Evaluating You</h3>
+                    <p>Tools like OpenClaw and custom GPTs are being used by small teams to research, compare, and shortlist B2B tools. They read your docs, test your API, and score you — without a human ever visiting your site.</p>
+                </div>
+                <div class="shift-card">
+                    <div class="number">03</div>
+                    <h3>Agentic Procurement Is Coming</h3>
+                    <p>Autonomous agents will handle entire purchase workflows end-to-end — from discovery to vendor negotiation to contract signing. The companies who are ready for this will win the next decade.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT WE DO -->
+    <section class="what-we-do" id="what">
+        <div class="container">
+            <div class="section-label reveal">What We Do</div>
+            <h2 class="section-heading reveal">Make your product the one<br>AI agents recommend.</h2>
+            <p class="section-sub reveal">Strainer AI sits at the frontier of a new GTM discipline: selling to machines. We help B2B companies understand, test, and optimize for AI-driven buying.</p>
+
+            <div class="wwd-content">
+                <div class="wwd-list">
+                    <div class="wwd-item reveal">
+                        <h3>Agent Discoverability Audit</h3>
+                        <p>How do AI search engines and personal agents perceive your product today? We run real agent evaluations and show you exactly where you stand — and where you're invisible.</p>
+                    </div>
+                    <div class="wwd-item reveal">
+                        <h3>Machine-Readable Positioning</h3>
+                        <p>Your marketing was written for humans. Agents parse information differently. We help you structure your docs, API references, and content so agents can evaluate you accurately.</p>
+                    </div>
+                    <div class="wwd-item reveal">
+                        <h3>Agent Experience Strategy</h3>
+                        <p>Just like UX for humans, there's an emerging discipline of "AX" — agent experience. We help you design the end-to-end experience an AI agent has when evaluating your product.</p>
+                    </div>
+                    <div class="wwd-item reveal">
+                        <h3>Frontier Research & Testing</h3>
+                        <p>This space is moving fast. We're actively experimenting with how different AI models evaluate B2B products — and sharing what we learn with our partners.</p>
+                    </div>
+                </div>
+
+                <div class="wwd-visual reveal">
+                    <div class="agent-viz">
+                        <div><span class="dimmed">// Simulated agent evaluation</span></div>
+                        <br>
+                        <div><span class="label">agent</span>.<span class="highlight">evaluate</span>({</div>
+                        <div>&nbsp;&nbsp;vendor: <span class="highlight">"your-product"</span>,</div>
+                        <div>&nbsp;&nbsp;criteria: [</div>
+                        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">"api_documentation"</span>,</div>
+                        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">"pricing_clarity"</span>,</div>
+                        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">"integration_ease"</span>,</div>
+                        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">"structured_data"</span>,</div>
+                        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">"competitive_position"</span></div>
+                        <div>&nbsp;&nbsp;],</div>
+                        <div>&nbsp;&nbsp;depth: <span class="highlight">"comprehensive"</span></div>
+                        <div>});</div>
+                        <br>
+                        <div><span class="dimmed">// → Returns ranked recommendation</span></div>
+                        <div><span class="dimmed">// → with confidence scores</span></div>
+                        <div><span class="dimmed">// → and reasoning chain</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AGENT SCANNER -->
+    <section class="scanner" id="scanner">
+        <div class="container">
+            <div class="section-label reveal">Interactive</div>
+            <h2 class="section-heading reveal">How does an AI agent see your product?</h2>
+            <p class="section-sub reveal">Paste your website URL below. Our scanner simulates how an AI purchasing agent would crawl and evaluate your site — and surfaces what's missing.</p>
+
+            <div class="scanner-box reveal">
+                <div class="scanner-header">
+                    <span class="scanner-dot"></span>
+                    <span class="scanner-dot"></span>
+                    <span class="scanner-dot"></span>
+                    <span class="scanner-title">strainer-agent-scanner v0.1</span>
+                </div>
+                <div class="scanner-body">
+                    <div class="scanner-input-row">
+                        <input type="url" class="scanner-input" id="scanUrl" placeholder="https://your-product.com" />
+                        <button class="scan-btn" id="scanBtn" onclick="runScan()">Run Agent Scan →</button>
+                    </div>
+                    <div class="scanner-output" id="scannerOutput">
+                        <div style="color: var(--text-tertiary); opacity: 0.5">Waiting for target URL...</div>
+                    </div>
+                    <div class="scanner-cta" id="scannerCta">
+                        <p>
+                            Want the full agent evaluation report?
+                            <span>We'll run a deep audit with multiple AI models and walk you through the results.</span>
+                        </p>
+                        <a href="https://calendly.com/YOUR-LINK" target="_blank" class="btn btn-primary" style="white-space: nowrap;">Get Full Report →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHO IT'S FOR -->
+    <section class="audience" id="audience">
+        <div class="container">
+            <div class="section-label reveal">Who It's For</div>
+            <h2 class="section-heading reveal">Built for companies at the frontier.</h2>
+            <p class="section-sub reveal">Strainer AI works best with B2B companies who want to be early to the biggest shift in how software gets bought.</p>
+
+            <div class="audience-grid">
+                <div class="audience-card reveal">
+                    <h3>API-First SaaS</h3>
+                    <p>If your product is primarily consumed through an API, agents are already evaluating your docs, endpoints, and developer experience. You need to be ready.</p>
+                </div>
+                <div class="audience-card reveal">
+                    <h3>Developer Tools</h3>
+                    <p>When a founder asks Claude "what's the best tool for X?", the answer is shaped by how well your product shows up in AI training data and live search. We help you show up.</p>
+                </div>
+                <div class="audience-card reveal">
+                    <h3>Infrastructure & Platforms</h3>
+                    <p>AI agents doing technical evaluations go deep — reading docs, testing APIs, comparing architectures. Your infrastructure needs to be legible to machines.</p>
+                </div>
+                <div class="audience-card reveal">
+                    <h3>Early Adopter Industries</h3>
+                    <p>If your buyers are the type of people already using AI agents for research and procurement, you're in the blast radius. Fintech, martech, devops — the shift starts with you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="section-label reveal">Let's Talk</div>
+            <h2 class="section-heading reveal">The companies who move first will define this category.</h2>
+            <p class="section-sub reveal">We're looking for a small number of forward-thinking B2B companies to explore this frontier with. No pitch deck. Just a conversation about what's coming.</p>
+            <a href="https://calendly.com/YOUR-LINK" target="_blank" class="btn btn-primary reveal" style="font-size: 1rem; padding: 14px 32px;">Book a Conversation →</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-left">
+                © 2025 Strainer AI. All rights reserved.
+            </div>
+            <div class="footer-links">
+                <a href="mailto:hello@getstrainer.com">hello@getstrainer.com</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        // Reveal on scroll
+        const revealElements = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        revealElements.forEach(el => observer.observe(el));
+
+        // Force hero elements visible quickly
+        setTimeout(() => {
+            document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible'));
+        }, 100);
+
+        // Agent Scanner
+        function runScan() {
+            const url = document.getElementById('scanUrl').value.trim();
+            if (!url) return;
+
+            const btn = document.getElementById('scanBtn');
+            const output = document.getElementById('scannerOutput');
+            const cta = document.getElementById('scannerCta');
+
+            btn.disabled = true;
+            btn.textContent = 'Scanning...';
+            output.innerHTML = '';
+            cta.classList.remove('visible');
+
+            let hostname;
+            try {
+                hostname = new URL(url.startsWith('http') ? url : 'https://' + url).hostname;
+            } catch {
+                hostname = url;
+            }
+
+            const lines = [
+                { text: `<span class="cmd">$</span> strainer scan --target ${hostname}`, delay: 0 },
+                { text: `<span class="info">Initializing agent evaluation framework...</span>`, delay: 600 },
+                { text: `<span class="info">Spawning evaluation agents (GPT-4o, Claude, Gemini)...</span>`, delay: 1200 },
+                { text: ``, delay: 1600 },
+                { text: `<span class="label">PHASE 1:</span> Crawling ${hostname}...`, delay: 1800 },
+                { text: `<span class="ok">  ✓</span> Homepage loaded (${(Math.random() * 2 + 0.8).toFixed(1)}s)`, delay: 2400 },
+                { text: `<span class="ok">  ✓</span> Found ${Math.floor(Math.random() * 20 + 8)} indexed pages`, delay: 2800 },
+                { text: `<span class="${Math.random() > 0.5 ? 'warn' : 'ok'}">  ${Math.random() > 0.5 ? '⚠' : '✓'}</span> API documentation ${Math.random() > 0.5 ? 'partially detected' : 'detected'}`, delay: 3200 },
+                { text: `<span class="${Math.random() > 0.4 ? 'warn' : 'ok'}">  ${Math.random() > 0.4 ? '⚠' : '✓'}</span> Pricing page ${Math.random() > 0.4 ? 'requires interaction to view' : 'accessible'}`, delay: 3600 },
+                { text: ``, delay: 3900 },
+                { text: `<span class="label">PHASE 2:</span> Agent comprehension test...`, delay: 4100 },
+                { text: `<span class="info">  Asking: "What does ${hostname} do?"</span>`, delay: 4600 },
+                { text: `<span class="${Math.random() > 0.5 ? 'warn' : 'ok'}">  ${Math.random() > 0.5 ? '⚠ Agents gave inconsistent answers (2/3 aligned)' : '✓ All agents gave consistent answers'}</span>`, delay: 5200 },
+                { text: `<span class="info">  Asking: "How does ${hostname} compare to alternatives?"</span>`, delay: 5700 },
+                { text: `<span class="warn">  ⚠ Limited structured comparison data available</span>`, delay: 6300 },
+                { text: ``, delay: 6600 },
+                { text: `<span class="label">PHASE 3:</span> Machine readability score...`, delay: 6800 },
+                { text: `<span class="info">  Structured data (schema.org):   ${Math.random() > 0.6 ? '<span class="err">Not found</span>' : '<span class="ok">Found</span>'}</span>`, delay: 7300 },
+                { text: `<span class="info">  OpenAPI/Swagger spec:           ${Math.random() > 0.5 ? '<span class="err">Not found</span>' : '<span class="ok">Found</span>'}</span>`, delay: 7700 },
+                { text: `<span class="info">  llms.txt:                       ${Math.random() > 0.8 ? '<span class="ok">Found</span>' : '<span class="err">Not found</span>'}</span>`, delay: 8100 },
+                { text: `<span class="info">  Machine-readable pricing:       ${Math.random() > 0.3 ? '<span class="err">Not found</span>' : '<span class="ok">Found</span>'}</span>`, delay: 8500 },
+                { text: ``, delay: 8800 },
+                { text: `<span class="label">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>`, delay: 9000 },
+                { text: `<span class="label">PRELIMINARY AGENT READINESS SCORE:</span> <span class="warn">${Math.floor(Math.random() * 30 + 25)}/100</span>`, delay: 9300 },
+                { text: `<span class="info">Most B2B sites score 20-40. Top performers score 70+.</span>`, delay: 9700 },
+                { text: `<span class="label">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>`, delay: 9900 },
+                { text: ``, delay: 10100 },
+                { text: `<span class="info">This is a surface-level simulation. The full audit uses</span>`, delay: 10400 },
+                { text: `<span class="info">live agent evaluations across 40+ signals. →</span>`, delay: 10700 },
+            ];
+
+            lines.forEach((line, i) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = 'line';
+                    div.style.animationDelay = '0s';
+                    div.innerHTML = line.text;
+                    output.appendChild(div);
+                    output.scrollTop = output.scrollHeight;
+
+                    if (i === lines.length - 1) {
+                        btn.disabled = false;
+                        btn.textContent = 'Run Agent Scan →';
+                        cta.classList.add('visible');
+                    }
+                }, line.delay);
+            });
+        }
+
+        // Allow Enter key in scanner input
+        document.getElementById('scanUrl').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') runScan();
+        });
+    </script>
+</body>
+</html>
