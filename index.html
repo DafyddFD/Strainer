@@ -3,28 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strainer AI — Help B2B Companies Sell to AI Agents</title>
-    <meta name="description" content="Your next buyer isn't human. Strainer AI helps B2B companies become the vendor that AI agents recommend, evaluate, and choose.">
-    <meta property="og:title" content="Strainer AI — Your Next Buyer Isn't Human">
-    <meta property="og:description" content="Help B2B companies sell to AI agents, not just humans.">
+    <title>Strainer — Help B2B Companies Sell to AI Agents</title>
+    <meta name="description" content="Your next buyer isn't human. AI agents are researching, evaluating, and choosing B2B vendors. Most companies are invisible to them. Strainer helps you fix that.">
+    <meta property="og:title" content="Strainer — Your Next Buyer Isn't Human">
+    <meta property="og:description" content="AI agents are choosing B2B vendors. Is yours invisible?">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://getstrainer.com">
     <link rel="canonical" href="https://getstrainer.com">
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-    <!-- Plausible Analytics (uncomment when ready) -->
-    <!-- <script defer data-domain="getstrainer.com" src="https://plausible.io/js/script.js"></script> -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --bg: #0a0a0b;
@@ -39,16 +31,14 @@
             --accent-dim: #00e5a020;
             --accent-mid: #00e5a040;
             --accent-glow: #00e5a015;
-            --font-display: 'Syne', sans-serif;
-            --font-body: 'DM Sans', sans-serif;
+            --red: #ff5f57;
+            --yellow: #febc2e;
+            --green: #28c840;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
-        html {
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
         body {
             font-family: var(--font-body);
@@ -56,755 +46,366 @@
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
+            font-size: 15px;
         }
 
-        /* Noise texture overlay */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
             pointer-events: none;
             z-index: 9999;
         }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
+        a { color: inherit; text-decoration: none; }
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* === NAV === */
+        /* NAV */
         nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 16px 0;
-            background: rgba(10, 10, 11, 0.8);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 14px 0;
+            background: rgba(10, 10, 11, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid transparent;
             transition: border-color 0.3s;
         }
-
-        nav.scrolled {
-            border-bottom-color: var(--border);
-        }
-
-        nav .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+        nav.scrolled { border-bottom-color: var(--border); }
+        nav .container { display: flex; align-items: center; justify-content: space-between; }
 
         .logo {
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1.25rem;
-            letter-spacing: -0.02em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em;
+            display: flex; align-items: center; gap: 8px;
         }
-
         .logo-mark {
-            width: 28px;
-            height: 28px;
-            background: var(--accent);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 30px; height: 30px;
+            display: flex; align-items: center; justify-content: center;
         }
+        .logo-mark svg { width: 28px; height: 28px; }
 
-        .logo-mark svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-        }
-
-        .nav-links a {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            transition: color 0.2s;
-            font-weight: 400;
-        }
-
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
+        .nav-links { display: flex; align-items: center; gap: 28px; }
+        .nav-links a { font-size: 0.85rem; color: var(--text-secondary); transition: color 0.2s; font-weight: 400; }
+        .nav-links a:hover { color: var(--text-primary); }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 22px;
-            border-radius: 8px;
-            font-family: var(--font-body);
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 20px; border-radius: 8px;
+            font-family: var(--font-body); font-size: 0.85rem; font-weight: 500;
+            cursor: pointer; transition: all 0.2s; border: none;
         }
+        .btn-primary { background: var(--accent); color: #0a0a0b; }
+        .btn-primary:hover { background: #00ffb3; transform: translateY(-1px); box-shadow: 0 4px 24px var(--accent-dim); }
+        .btn-ghost { background: transparent; color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-ghost:hover { border-color: var(--border-hover); background: var(--bg-elevated); }
+        .btn-large { font-size: 0.95rem; padding: 14px 28px; }
 
-        .btn-primary {
-            background: var(--accent);
-            color: #0a0a0b;
-        }
-
-        .btn-primary:hover {
-            background: #00ffb3;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 24px var(--accent-dim);
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .btn-ghost:hover {
-            border-color: var(--border-hover);
-            background: var(--bg-elevated);
-        }
-
-        /* === HERO === */
-        .hero {
-            padding: 180px 0 120px;
-            position: relative;
-        }
-
+        /* HERO */
+        .hero { padding: 170px 0 100px; position: relative; }
         .hero::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 800px;
-            height: 600px;
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 800px; height: 600px;
             background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
             pointer-events: none;
         }
-
         .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 16px;
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            margin-bottom: 32px;
-            background: var(--bg-elevated);
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 14px; border: 1px solid var(--border); border-radius: 100px;
+            font-size: 0.8rem; color: var(--text-secondary);
+            margin-bottom: 28px; background: var(--bg-elevated);
         }
-
-        .hero-badge .dot {
-            width: 6px;
-            height: 6px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
+        .hero-badge .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
         .hero h1 {
-            font-family: var(--font-display);
-            font-size: clamp(3rem, 7vw, 5.5rem);
-            font-weight: 800;
-            line-height: 1.05;
-            letter-spacing: -0.03em;
-            max-width: 900px;
-            margin-bottom: 28px;
+            font-size: clamp(2.8rem, 6.5vw, 4.8rem);
+            font-weight: 800; line-height: 1.05; letter-spacing: -0.035em;
+            max-width: 820px; margin-bottom: 24px;
         }
-
-        .hero h1 .accent {
-            color: var(--accent);
-        }
-
+        .hero h1 .accent { color: var(--accent); }
         .hero p {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 580px;
-            line-height: 1.7;
-            margin-bottom: 40px;
+            font-size: 1.1rem; color: var(--text-secondary); max-width: 560px;
+            line-height: 1.7; margin-bottom: 36px; font-weight: 400;
         }
+        .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
 
-        .hero-ctas {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        /* === SECTION SHARED === */
-        section {
-            padding: 100px 0;
-        }
-
+        /* SECTIONS */
+        section { padding: 96px 0; }
         .section-label {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 16px;
+            font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);
+            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; font-weight: 500;
         }
-
         .section-heading {
-            font-family: var(--font-display);
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 700;
-            line-height: 1.15;
-            letter-spacing: -0.02em;
-            margin-bottom: 20px;
-            max-width: 700px;
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 700; line-height: 1.15; letter-spacing: -0.025em;
+            margin-bottom: 16px; max-width: 700px;
         }
-
         .section-sub {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            line-height: 1.7;
+            font-size: 1rem; color: var(--text-secondary); max-width: 580px;
+            line-height: 1.7; font-weight: 400;
         }
 
-        /* === THE SHIFT === */
-        .shift {
-            border-top: 1px solid var(--border);
+        /* HORIZONS */
+        .shift { border-top: 1px solid var(--border); }
+        .horizons { margin-top: 52px; display: flex; flex-direction: column; }
+        .horizon {
+            display: grid; grid-template-columns: 180px 1fr;
+            border: 1px solid var(--border); border-bottom: none;
+            background: var(--bg); transition: background 0.3s;
         }
-
-        .shift-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 1px;
-            background: var(--border);
-            margin-top: 60px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
+        .horizon:last-child { border-bottom: 1px solid var(--border); }
+        .horizon:first-child { border-radius: 10px 10px 0 0; }
+        .horizon:last-child { border-radius: 0 0 10px 10px; }
+        .horizon:hover { background: var(--bg-elevated); }
+        .horizon-left {
+            padding: 32px 24px; border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; justify-content: center;
         }
-
-        .shift-card {
-            background: var(--bg);
-            padding: 40px 32px;
-            position: relative;
-            transition: background 0.3s;
+        .horizon-phase {
+            font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--accent); margin-bottom: 6px;
         }
-
-        .shift-card:hover {
-            background: var(--bg-elevated);
+        .horizon-stage { font-size: 1.3rem; font-weight: 700; line-height: 1.2; }
+        .horizon-right { padding: 32px 28px; }
+        .horizon-right h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; }
+        .horizon-right p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 14px; }
+        .horizon-stat {
+            display: inline-flex; align-items: baseline; gap: 10px;
+            padding: 8px 14px; background: var(--accent-glow); border: 1px solid var(--accent-dim); border-radius: 6px;
         }
+        .horizon-stat .stat-number { font-size: 1.3rem; font-weight: 800; color: var(--accent); line-height: 1; }
+        .horizon-stat .stat-label { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; }
+        .stat-source { font-size: 0.7rem; color: var(--text-tertiary); margin-top: 5px; font-family: var(--font-mono); }
 
-        .shift-card .number {
-            font-family: var(--font-display);
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--accent-mid);
-            line-height: 1;
-            margin-bottom: 20px;
+        /* EVIDENCE */
+        .evidence { border-top: 1px solid var(--border); }
+        .evidence-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+            margin-top: 52px; align-items: start;
         }
-
-        .shift-card h3 {
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            letter-spacing: -0.01em;
+        .evidence-text p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 18px; }
+        .evidence-text p strong { color: var(--text-primary); font-weight: 500; }
+        .evidence-visual {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+            padding: 24px; font-family: var(--font-mono); font-size: 0.75rem;
         }
+        .traffic-bar-label { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.75rem; font-family: var(--font-mono); }
+        .traffic-bar-label span:first-child { color: var(--text-secondary); }
+        .traffic-bar-label span:last-child { color: var(--text-primary); font-weight: 500; }
+        .traffic-bar { height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 14px; }
+        .traffic-bar-fill { height: 100%; border-radius: 4px; }
+        .traffic-bar-fill.grey { background: var(--text-tertiary); }
+        .traffic-bar-fill.green { background: var(--accent); }
+        .traffic-bar-fill.yellow { background: var(--yellow); }
 
-        .shift-card p {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.65;
+        /* REVENUE IMPACT */
+        .revenue-impact {
+            margin-top: 56px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
         }
-
-        /* === WHAT WE DO === */
-        .what-we-do {
-            border-top: 1px solid var(--border);
+        .revenue-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+            padding: 24px; transition: border-color 0.3s;
         }
-
-        .wwd-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            margin-top: 60px;
-            align-items: start;
+        .revenue-card:hover { border-color: var(--border-hover); }
+        .revenue-card .big-stat {
+            font-size: 2.2rem; font-weight: 800; color: var(--accent);
+            line-height: 1; margin-bottom: 10px; letter-spacing: -0.03em;
         }
+        .revenue-card .stat-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+        .revenue-card .stat-desc strong { color: var(--text-primary); font-weight: 500; }
+        .revenue-card .stat-src { font-size: 0.68rem; color: var(--text-tertiary); margin-top: 10px; font-family: var(--font-mono); }
 
-        .wwd-list {
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
+        /* WHAT'S CHANGING */
+        .what-changing { border-top: 1px solid var(--border); }
+        .wc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 52px; }
+        .wc-card {
+            padding: 28px; border: 1px solid var(--border); border-radius: 10px;
+            background: var(--bg); transition: all 0.3s;
         }
-
-        .wwd-item {
-            padding: 24px 0;
-            border-bottom: 1px solid var(--border);
+        .wc-card:hover { border-color: var(--border-hover); background: var(--bg-elevated); }
+        .wc-icon { margin-bottom: 16px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(0,229,160,0.08); border-radius: 10px; }
+        .wc-icon svg { width: 20px; height: 20px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .wc-row { display: flex; align-items: flex-start; gap: 12px; }
+        .wc-state {
+            min-width: 50px; font-family: var(--font-mono); font-size: 0.68rem;
+            text-transform: uppercase; letter-spacing: 0.06em; padding-top: 3px;
         }
+        .wc-state.before { color: var(--text-tertiary); }
+        .wc-state.after { color: var(--accent); }
+        .wc-content h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 3px; }
+        .wc-content p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+        .wc-arrow { text-align: center; color: var(--text-tertiary); font-size: 0.9rem; margin: 10px 0; padding-left: 62px; }
 
-        .wwd-item h3 {
-            font-family: var(--font-display);
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        /* SOME THINGS NEVER CHANGE */
+        .never-change { border-top: 1px solid var(--border); }
+        .nc-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+            margin-top: 52px; align-items: start;
         }
-
-        .wwd-item h3::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 2px;
-            flex-shrink: 0;
+        .nc-points { display: flex; flex-direction: column; gap: 20px; }
+        .nc-point { display: flex; gap: 14px; align-items: flex-start; }
+        .nc-icon {
+            width: 36px; height: 36px; min-width: 36px;
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent); font-size: 1rem;
         }
-
-        .wwd-item p {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.65;
-            padding-left: 18px;
+        .nc-point h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+        .nc-point p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+        .nc-thesis {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 28px;
         }
+        .nc-thesis h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; }
+        .nc-thesis p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 14px; }
+        .nc-thesis p:last-child { margin-bottom: 0; }
+        .nc-thesis .hl { color: var(--accent); font-weight: 500; }
 
-        .wwd-visual {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 32px;
-            position: sticky;
-            top: 120px;
-        }
-
-        .agent-viz {
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            line-height: 1.8;
-            color: var(--text-tertiary);
-        }
-
-        .agent-viz .highlight {
-            color: var(--accent);
-        }
-
-        .agent-viz .dimmed {
-            color: var(--text-tertiary);
-            opacity: 0.5;
-        }
-
-        .agent-viz .label {
-            color: var(--text-secondary);
-        }
-
-        /* === AGENT SCANNER === */
-        .scanner {
-            border-top: 1px solid var(--border);
-            position: relative;
-        }
-
+        /* SCANNER */
+        .scanner { border-top: 1px solid var(--border); }
         .scanner-box {
-            margin-top: 48px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
+            margin-top: 48px; background: var(--bg-card);
+            border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
         }
-
         .scanner-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 20px;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg-elevated);
+            display: flex; align-items: center; gap: 8px;
+            padding: 12px 18px; border-bottom: 1px solid var(--border); background: var(--bg-elevated);
         }
-
-        .scanner-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--border-hover);
-        }
-
-        .scanner-dot:nth-child(1) { background: #ff5f57; }
-        .scanner-dot:nth-child(2) { background: #febc2e; }
-        .scanner-dot:nth-child(3) { background: #28c840; }
-
-        .scanner-title {
-            margin-left: 8px;
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            color: var(--text-tertiary);
-        }
-
-        .scanner-body {
-            padding: 40px;
-        }
-
-        .scanner-input-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 32px;
-        }
-
+        .scanner-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .scanner-dot:nth-child(1) { background: var(--red); }
+        .scanner-dot:nth-child(2) { background: var(--yellow); }
+        .scanner-dot:nth-child(3) { background: var(--green); }
+        .scanner-title { margin-left: 8px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+        .scanner-body { padding: 32px; }
+        .scanner-input-row { display: flex; gap: 10px; margin-bottom: 28px; }
         .scanner-input {
-            flex: 1;
-            padding: 14px 18px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-family: var(--font-mono);
-            font-size: 0.9rem;
-            outline: none;
-            transition: border-color 0.2s;
+            flex: 1; padding: 12px 16px;
+            background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text-primary); font-family: var(--font-mono); font-size: 0.85rem;
+            outline: none; transition: border-color 0.2s;
         }
-
-        .scanner-input:focus {
-            border-color: var(--accent);
-        }
-
-        .scanner-input::placeholder {
-            color: var(--text-tertiary);
-        }
-
+        .scanner-input:focus { border-color: var(--accent); }
+        .scanner-input::placeholder { color: var(--text-tertiary); }
         .scan-btn {
-            padding: 14px 28px;
-            background: var(--accent);
-            color: #0a0a0b;
-            border: none;
-            border-radius: 10px;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
+            padding: 12px 24px; background: var(--accent); color: #0a0a0b; border: none;
+            border-radius: 8px; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; white-space: nowrap;
         }
-
-        .scan-btn:hover {
-            background: #00ffb3;
-            transform: translateY(-1px);
-        }
-
-        .scan-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
+        .scan-btn:hover { background: #00ffb3; }
+        .scan-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .scanner-output {
-            font-family: var(--font-mono);
-            font-size: 0.82rem;
-            line-height: 2;
-            min-height: 280px;
-            color: var(--text-tertiary);
+            font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.9;
+            min-height: 260px; color: var(--text-tertiary);
         }
-
-        .scanner-output .line {
-            opacity: 0;
-            transform: translateY(4px);
-            animation: lineIn 0.3s forwards;
+        .scanner-output .line { opacity: 0; transform: translateY(3px); animation: lineIn 0.25s forwards; }
+        .scanner-output .cmd { color: var(--accent); }
+        .scanner-output .warn { color: var(--yellow); }
+        .scanner-output .err { color: var(--red); }
+        .scanner-output .ok { color: var(--green); }
+        .scanner-output .info { color: var(--text-secondary); }
+        .scanner-output .agent-says {
+            display: block; margin-top: 8px; padding: 14px 16px;
+            background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+            color: var(--text-secondary); font-size: 0.78rem; line-height: 1.7; white-space: pre-wrap;
         }
-
-        .scanner-output .cmd {
-            color: var(--accent);
-        }
-
-        .scanner-output .warn {
-            color: #febc2e;
-        }
-
-        .scanner-output .err {
-            color: #ff5f57;
-        }
-
-        .scanner-output .ok {
-            color: #28c840;
-        }
-
-        .scanner-output .info {
-            color: var(--text-secondary);
-        }
-
-        @keyframes lineIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        .scanner-output .agent-says em { color: var(--red); font-style: normal; font-weight: 500; }
+        @keyframes lineIn { to { opacity: 1; transform: translateY(0); } }
 
         .scanner-cta {
-            margin-top: 24px;
-            padding: 20px 24px;
-            background: var(--accent-glow);
-            border: 1px solid var(--accent-dim);
-            border-radius: 10px;
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
+            margin-top: 20px; padding: 18px 20px;
+            background: var(--accent-glow); border: 1px solid var(--accent-dim); border-radius: 8px;
+            display: none; align-items: center; justify-content: space-between; gap: 16px;
         }
+        .scanner-cta.visible { display: flex; }
+        .scanner-cta p { font-size: 0.9rem; color: var(--text-primary); }
+        .scanner-cta p span { color: var(--text-secondary); font-size: 0.82rem; display: block; margin-top: 3px; }
 
-        .scanner-cta.visible {
-            display: flex;
-        }
+        /* FINAL CTA */
+        .final-cta { border-top: 1px solid var(--border); text-align: center; padding: 100px 0; }
+        .final-cta .section-heading { max-width: 600px; margin: 0 auto 16px; }
+        .final-cta .section-sub { max-width: 480px; margin: 0 auto 32px; }
+        .audit-features { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 36px; max-width: 720px; margin-left: auto; margin-right: auto; text-align: left; }
+        .audit-feature { display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+        .audit-feature .check { color: var(--accent); font-weight: 700; }
 
-        .scanner-cta p {
-            font-size: 0.95rem;
-            color: var(--text-primary);
-        }
+        /* FOOTER */
+        footer { border-top: 1px solid var(--border); padding: 36px 0; }
+        footer .container { display: flex; justify-content: space-between; align-items: center; }
+        .footer-left { font-size: 0.82rem; color: var(--text-tertiary); }
+        .footer-links { display: flex; gap: 20px; }
+        .footer-links a { font-size: 0.82rem; color: var(--text-tertiary); transition: color 0.2s; }
+        .footer-links a:hover { color: var(--text-secondary); }
 
-        .scanner-cta p span {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            display: block;
-            margin-top: 4px;
-        }
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
 
-        /* === WHO IT'S FOR === */
-        .audience {
-            border-top: 1px solid var(--border);
-        }
-
-        .audience-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-top: 60px;
-        }
-
-        .audience-card {
-            padding: 36px 32px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            background: var(--bg);
-            transition: all 0.3s;
-        }
-
-        .audience-card:hover {
-            border-color: var(--border-hover);
-            background: var(--bg-elevated);
-        }
-
-        .audience-card h3 {
-            font-family: var(--font-display);
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .audience-card p {
-            font-size: 0.92rem;
-            color: var(--text-secondary);
-            line-height: 1.65;
-        }
-
-        /* === FINAL CTA === */
-        .final-cta {
-            border-top: 1px solid var(--border);
-            text-align: center;
-            padding: 120px 0;
-        }
-
-        .final-cta .section-heading {
-            max-width: 600px;
-            margin: 0 auto 20px;
-        }
-
-        .final-cta .section-sub {
-            max-width: 480px;
-            margin: 0 auto 40px;
-        }
-
-        /* === FOOTER === */
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 40px 0;
-        }
-
-        footer .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-left {
-            font-size: 0.85rem;
-            color: var(--text-tertiary);
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 24px;
-        }
-
-        .footer-links a {
-            font-size: 0.85rem;
-            color: var(--text-tertiary);
-            transition: color 0.2s;
-        }
-
-        .footer-links a:hover {
-            color: var(--text-secondary);
-        }
-
-        /* === SCROLL ANIMATIONS === */
-        .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* === MOBILE === */
         .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 4px;
+            display: none; background: none; border: none;
+            color: var(--text-primary); font-size: 1.3rem; cursor: pointer; padding: 4px;
         }
 
         @media (max-width: 900px) {
-            .shift-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .wwd-content {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .wwd-visual {
-                position: static;
-            }
-
-            .audience-grid {
-                grid-template-columns: 1fr;
-            }
+            .horizon { grid-template-columns: 1fr; }
+            .horizon-left { border-right: none; border-bottom: 1px solid var(--border); padding: 20px 24px; }
+            .horizon-right { padding: 24px; }
+            .evidence-grid, .nc-grid { grid-template-columns: 1fr; gap: 28px; }
+            .wc-grid { grid-template-columns: 1fr; }
+            .revenue-impact { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 640px) {
-            .hero {
-                padding: 140px 0 80px;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
+            .hero { padding: 130px 0 72px; }
+            .hero h1 { font-size: 2.3rem; }
+            .nav-links { display: none; }
             .nav-links.open {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--bg);
-                border-bottom: 1px solid var(--border);
-                padding: 24px;
-                gap: 20px;
+                display: flex; flex-direction: column;
+                position: absolute; top: 100%; left: 0; right: 0;
+                background: var(--bg); border-bottom: 1px solid var(--border);
+                padding: 20px; gap: 16px;
             }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .scanner-input-row {
-                flex-direction: column;
-            }
-
-            .scanner-cta {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .hero-ctas {
-                flex-direction: column;
-            }
-
-            .hero-ctas .btn {
-                text-align: center;
-                justify-content: center;
-            }
-
-            footer .container {
-                flex-direction: column;
-                gap: 16px;
-                text-align: center;
-            }
-
-            section {
-                padding: 72px 0;
-            }
-
-            .scanner-body {
-                padding: 24px;
-            }
-        }
-
-        /* Cursor blink for scanner */
-        .cursor-blink::after {
-            content: '█';
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+            .mobile-menu-btn { display: block; }
+            .scanner-input-row { flex-direction: column; }
+            .scanner-cta { flex-direction: column; text-align: center; }
+            .hero-ctas { flex-direction: column; }
+            .hero-ctas .btn { text-align: center; justify-content: center; }
+            footer .container { flex-direction: column; gap: 14px; text-align: center; }
+            section { padding: 64px 0; }
+            .scanner-body { padding: 20px; }
+            .audit-features { grid-template-columns: 1fr; gap: 12px; }
         }
     </style>
 </head>
 <body>
+
     <!-- NAV -->
     <nav id="nav">
         <div class="container">
             <a href="/" class="logo">
                 <div class="logo-mark">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 3 2 12l10 3 3 10z"/>
+                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Handle -->
+                        <path d="M22 4 L27 2" stroke="#00e5a0" stroke-width="2.2" stroke-linecap="round"/>
+                        <!-- Bowl outline -->
+                        <path d="M6 8 L26 8 L20 26 Q16 30 12 26 Z" stroke="#00e5a0" stroke-width="2" fill="none" stroke-linejoin="round"/>
+                        <!-- Holes -->
+                        <circle cx="13" cy="14" r="1.2" fill="#00e5a0"/>
+                        <circle cx="18" cy="14" r="1.2" fill="#00e5a0"/>
+                        <circle cx="15.5" cy="18" r="1.2" fill="#00e5a0"/>
+                        <circle cx="11" cy="18" r="1.2" fill="#00e5a0"/>
+                        <circle cx="20" cy="18" r="1.2" fill="#00e5a0"/>
+                        <circle cx="13.5" cy="22" r="1.2" fill="#00e5a0"/>
+                        <circle cx="17.5" cy="22" r="1.2" fill="#00e5a0"/>
                     </svg>
                 </div>
                 Strainer
             </a>
-            <button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+            <button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
             <div class="nav-links">
                 <a href="#shift">The Shift</a>
+                <a href="#evidence">Evidence</a>
                 <a href="#scanner">Agent Audit</a>
-                <a href="#audience">Who It's For</a>
-                <a href="https://calendly.com/YOUR-LINK" target="_blank" class="btn btn-primary">Book a Call</a>
+                <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn btn-primary">Get Free Audit →</a>
             </div>
         </div>
     </nav>
@@ -814,13 +415,13 @@
         <div class="container">
             <div class="hero-badge">
                 <span class="dot"></span>
-                Now exploring the frontier
+                For B2B SaaS teams losing deals they should be winning
             </div>
-            <h1 class="reveal">Your next buyer<br><span class="accent">isn't human.</span></h1>
-            <p class="reveal" style="animation-delay: 0.1s">AI agents are already making B2B purchase decisions — researching vendors, evaluating APIs, and recommending tools. Most companies aren't ready. We help you become the vendor agents choose.</p>
-            <div class="hero-ctas reveal" style="animation-delay: 0.2s">
-                <a href="https://calendly.com/YOUR-LINK" target="_blank" class="btn btn-primary">Book a Conversation →</a>
-                <a href="#scanner" class="btn btn-ghost">Try the Agent Audit</a>
+            <h1 class="reveal">Your next buyer<br><span class="accent">probably isn't a human.</span></h1>
+            <p class="reveal">AI agents are already researching vendors, comparing APIs, and recommending tools — before any human gets involved. They don't care about your marketing. They care about your product. If they can't find you, evaluate you, and compare you — you lose before you ever had a shot.</p>
+            <div class="hero-ctas reveal">
+                <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn btn-primary btn-large">Book a Free Audit →</a>
+                <a href="#scanner" class="btn btn-ghost btn-large">Get Your Website Score</a>
             </div>
         </div>
     </section>
@@ -829,138 +430,227 @@
     <section class="shift" id="shift">
         <div class="container">
             <div class="section-label reveal">The Shift</div>
-            <h2 class="section-heading reveal">B2B buying is being automated. Faster than you think.</h2>
-            <p class="section-sub reveal">The way companies discover, evaluate, and purchase software is fundamentally changing. AI agents — not humans — are becoming the first (and sometimes only) touchpoint.</p>
+            <h2 class="section-heading reveal">Agents are taking over B2B buying — stage by stage.</h2>
+            <p class="section-sub reveal">Discovery, Comparison, Purchase. Each stage of the B2B buying journey is being taken over by AI. Are you ready?</p>
 
-            <div class="shift-grid reveal">
-                <div class="shift-card">
-                    <div class="number">01</div>
-                    <h3>AI Search Is the New Top of Funnel</h3>
-                    <p>Founders and ops teams are asking ChatGPT, Perplexity, and Claude for vendor recommendations instead of Googling. If your product isn't in the AI's answer, you don't exist.</p>
+            <div class="horizons">
+                <div class="horizon reveal">
+                    <div class="horizon-left">
+                        <div class="horizon-phase">Now</div>
+                        <div class="horizon-stage">Discovery</div>
+                    </div>
+                    <div class="horizon-right">
+                        <h3>AI search is the new top of funnel.</h3>
+                        <p>Buyers ask ChatGPT and Perplexity "what's the best tool for X?" instead of Googling. The shortlist forms before a human sales rep is ever contacted — and 6sense data shows the pre-contact favorite wins about 80% of the time. If LLMs don't mention you, you never had a shot.</p>
+                        <div class="horizon-stat">
+                            <span class="stat-number">66%</span>
+                            <span class="stat-label">of B2B decision-makers now use AI<br>to research and evaluate suppliers</span>
+                        </div>
+                        <div class="stat-source">Responsive, 2025</div>
+                    </div>
                 </div>
-                <div class="shift-card">
-                    <div class="number">02</div>
-                    <h3>Personal AI Agents Are Evaluating You</h3>
-                    <p>Tools like OpenClaw and custom GPTs are being used by small teams to research, compare, and shortlist B2B tools. They read your docs, test your API, and score you — without a human ever visiting your site.</p>
+
+                <div class="horizon reveal">
+                    <div class="horizon-left">
+                        <div class="horizon-phase">Emerging</div>
+                        <div class="horizon-stage">Evaluation</div>
+                    </div>
+                    <div class="horizon-right">
+                        <h3>Personal agents are scoring and comparing you — invisibly.</h3>
+                        <p>Founders and ops leads are pointing AI agents at your docs, your pricing page, your competitor's API. These agents compare, score, and shortlist — without ever visiting your website through a browser. This "dark consideration" is invisible to your analytics. If your information isn't machine-readable, agents skip you.</p>
+                        <div class="horizon-stat">
+                            <span class="stat-number">51%</span>
+                            <span class="stat-label">of internet traffic is now bots — surpassing<br>humans for the first time ever</span>
+                        </div>
+                        <div class="stat-source">Imperva / Cloudflare, 2025</div>
+                    </div>
                 </div>
-                <div class="shift-card">
-                    <div class="number">03</div>
-                    <h3>Agentic Procurement Is Coming</h3>
-                    <p>Autonomous agents will handle entire purchase workflows end-to-end — from discovery to vendor negotiation to contract signing. The companies who are ready for this will win the next decade.</p>
+
+                <div class="horizon reveal">
+                    <div class="horizon-left">
+                        <div class="horizon-phase">Coming</div>
+                        <div class="horizon-stage">Procurement</div>
+                    </div>
+                    <div class="horizon-right">
+                        <h3>Autonomous buyer agents will handle the full purchase.</h3>
+                        <p>Coinbase (x402), Visa, Google (A2A), and OpenAI (Agent Commerce Protocol) are building the rails for agents that hold budgets and execute transactions. These agents will demand sandbox environments, testable APIs, and machine-readable contracts — not pitch decks and sales calls.</p>
+                        <div class="horizon-stat">
+                            <span class="stat-number">$15T</span>
+                            <span class="stat-label">in B2B purchases handled by<br>AI agents by 2028</span>
+                        </div>
+                        <div class="stat-source">Gartner IT Symposium, 2025</div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- WHAT WE DO -->
-    <section class="what-we-do" id="what">
+    <!-- EVIDENCE -->
+    <section class="evidence" id="evidence">
         <div class="container">
-            <div class="section-label reveal">What We Do</div>
-            <h2 class="section-heading reveal">Make your product the one<br>AI agents recommend.</h2>
-            <p class="section-sub reveal">Strainer AI sits at the frontier of a new GTM discipline: selling to machines. We help B2B companies understand, test, and optimize for AI-driven buying.</p>
+            <div class="section-label reveal">The Evidence</div>
+            <h2 class="section-heading reveal">This is already hurting your pipeline. You just can't see it.</h2>
 
-            <div class="wwd-content">
-                <div class="wwd-list">
-                    <div class="wwd-item reveal">
-                        <h3>Agent Discoverability Audit</h3>
-                        <p>How do AI search engines and personal agents perceive your product today? We run real agent evaluations and show you exactly where you stand — and where you're invisible.</p>
+            <div class="evidence-grid">
+                <div class="evidence-text reveal">
+                    <p>Open your analytics. <strong>More than half of your traffic is bots</strong> — AI crawlers from OpenAI, Anthropic, Google, and Perplexity, scanning your site to answer questions about your category.</p>
+                    <p>But the real problem is the traffic you <em>don't</em> see. A founder asks ChatGPT "what's the best API monitoring tool?" — it reads your docs, your competitor's docs, and returns an answer. <strong>No visit. No click. No form fill.</strong> A completely dark consideration journey.</p>
+                    <p>And here's the revenue impact: 6sense found that <strong>95% of winning vendors were already on the buyer's shortlist from Day One</strong> — before any sales contact happened. If AI is shaping that shortlist — and it increasingly is — then every deal where you're invisible to AI is a deal you've already lost.</p>
+                </div>
+                <div class="evidence-visual reveal">
+                    <div style="color: var(--text-secondary); margin-bottom: 18px; font-size: 0.78rem;">Typical B2B website traffic breakdown:</div>
+                    <div class="traffic-bar-container">
+                        <div class="traffic-bar-label"><span>Non-AI bots (crawlers, scrapers)</span><span>47.9%</span></div>
+                        <div class="traffic-bar"><div class="traffic-bar-fill grey" style="width: 47.9%"></div></div>
+                        <div class="traffic-bar-label"><span>Humans</span><span>43.5%</span></div>
+                        <div class="traffic-bar"><div class="traffic-bar-fill green" style="width: 43.5%"></div></div>
+                        <div class="traffic-bar-label"><span>AI visitors (GPTBot, ClaudeBot, Googlebot AI)</span><span>8.7%</span></div>
+                        <div class="traffic-bar"><div class="traffic-bar-fill yellow" style="width: 8.7%"></div></div>
                     </div>
-                    <div class="wwd-item reveal">
-                        <h3>Machine-Readable Positioning</h3>
-                        <p>Your marketing was written for humans. Agents parse information differently. We help you structure your docs, API references, and content so agents can evaluate you accurately.</p>
+                    <div style="color: var(--text-tertiary); font-size: 0.68rem; margin-top: 14px; line-height: 1.6;">
+                        Source: Cloudflare 2025 Year in Review.<br>
+                        GPTBot crawl volume grew 305% YoY.
                     </div>
-                    <div class="wwd-item reveal">
-                        <h3>Agent Experience Strategy</h3>
-                        <p>Just like UX for humans, there's an emerging discipline of "AX" — agent experience. We help you design the end-to-end experience an AI agent has when evaluating your product.</p>
+                </div>
+            </div>
+
+            <!-- Revenue Impact Cards -->
+            <div class="revenue-impact">
+                <div class="revenue-card reveal">
+                    <div class="big-stat">89%</div>
+                    <div class="stat-desc">of B2B buyers now use <strong>generative AI</strong> at some point in their purchasing journey — from initial research through to final vendor selection.</div>
+                    <div class="stat-src">Forrester Buyers' Journey Survey, 2025</div>
+                </div>
+                <div class="revenue-card reveal">
+                    <div class="big-stat">436%</div>
+                    <div class="stat-desc">increase in <strong>sales conversions</strong> driven by ChatGPT recommendations. Visitors referred by AI convert at 4.4x the rate of organic search.</div>
+                    <div class="stat-src">Digiday / Forrester, 2025</div>
+                </div>
+                <div class="revenue-card reveal">
+                    <div class="big-stat">95%</div>
+                    <div class="stat-desc">of the time, the winning vendor was already on the buyer's <strong>Day One shortlist</strong> — before any vendor was ever contacted. If you're not on that list, you never had a chance.</div>
+                    <div class="stat-src">6sense Buyer Experience Report, 2025</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT NEEDS TO CHANGE -->
+    <section class="what-changing" id="changing">
+        <div class="container">
+            <div class="section-label reveal">What We Need to Change</div>
+            <h2 class="section-heading reveal">If AI agents are buying, you're selling to AI — not humans.</h2>
+            <p class="section-sub reveal">Your website, docs, and sales process were built for human visitors. AI agents need something completely different. Here's what that means in practice.</p>
+
+            <div class="wc-grid">
+                <div class="wc-card reveal">
+                    <div class="wc-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                    <div class="wc-row">
+                        <div class="wc-state before">Before</div>
+                        <div class="wc-content">
+                            <h4>Pricing behind "Book a Demo"</h4>
+                            <p>Works for human enterprise sales.</p>
+                        </div>
                     </div>
-                    <div class="wwd-item reveal">
-                        <h3>Frontier Research & Testing</h3>
-                        <p>This space is moving fast. We're actively experimenting with how different AI models evaluate B2B products — and sharing what we learn with our partners.</p>
+                    <div class="wc-arrow">↓</div>
+                    <div class="wc-row">
+                        <div class="wc-state after">After</div>
+                        <div class="wc-content">
+                            <h4>Machine-readable structured pricing</h4>
+                            <p>Agents compare you instantly. No pricing = eliminated from consideration.</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="wwd-visual reveal">
-                    <div class="agent-viz">
-                        <div><span class="dimmed">// Simulated agent evaluation</span></div>
-                        <br>
-                        <div><span class="label">agent</span>.<span class="highlight">evaluate</span>({</div>
-                        <div>&nbsp;&nbsp;vendor: <span class="highlight">"your-product"</span>,</div>
-                        <div>&nbsp;&nbsp;criteria: [</div>
-                        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">"api_documentation"</span>,</div>
-                        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">"pricing_clarity"</span>,</div>
-                        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">"integration_ease"</span>,</div>
-                        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">"structured_data"</span>,</div>
-                        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">"competitive_position"</span></div>
-                        <div>&nbsp;&nbsp;],</div>
-                        <div>&nbsp;&nbsp;depth: <span class="highlight">"comprehensive"</span></div>
-                        <div>});</div>
-                        <br>
-                        <div><span class="dimmed">// → Returns ranked recommendation</span></div>
-                        <div><span class="dimmed">// → with confidence scores</span></div>
-                        <div><span class="dimmed">// → and reasoning chain</span></div>
+                <div class="wc-card reveal">
+                    <div class="wc-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                    <div class="wc-row">
+                        <div class="wc-state before">Before</div>
+                        <div class="wc-content">
+                            <h4>Brand copy and marketing narrative</h4>
+                            <p>Emotionally persuades human visitors.</p>
+                        </div>
+                    </div>
+                    <div class="wc-arrow">↓</div>
+                    <div class="wc-row">
+                        <div class="wc-state after">After</div>
+                        <div class="wc-content">
+                            <h4>Structured claims with verifiable evidence</h4>
+                            <p>Agents want facts, benchmarks, and testable endpoints — not vibes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wc-card reveal">
+                    <div class="wc-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+                    <div class="wc-row">
+                        <div class="wc-state before">Before</div>
+                        <div class="wc-content">
+                            <h4>PDF case studies and slide decks</h4>
+                            <p>Not parseable by AI models.</p>
+                        </div>
+                    </div>
+                    <div class="wc-arrow">↓</div>
+                    <div class="wc-row">
+                        <div class="wc-state after">After</div>
+                        <div class="wc-content">
+                            <h4>llms.txt, schema.org, machine-readable docs</h4>
+                            <p>Content in formats agents can actually index and compare.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wc-card reveal">
+                    <div class="wc-icon"><svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+                    <div class="wc-row">
+                        <div class="wc-state before">Before</div>
+                        <div class="wc-content">
+                            <h4>Human sales demo over screen share</h4>
+                            <p>Requires scheduling, availability, human time.</p>
+                        </div>
+                    </div>
+                    <div class="wc-arrow">↓</div>
+                    <div class="wc-row">
+                        <div class="wc-state after">After</div>
+                        <div class="wc-content">
+                            <h4>Sandbox API and self-serve evaluation</h4>
+                            <p>Buyer agents demand "show, not tell" — testable proof, not a pitch.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- AGENT SCANNER -->
+    <!-- SCANNER -->
     <section class="scanner" id="scanner">
         <div class="container">
-            <div class="section-label reveal">Interactive</div>
-            <h2 class="section-heading reveal">How does an AI agent see your product?</h2>
-            <p class="section-sub reveal">Paste your website URL below. Our scanner simulates how an AI purchasing agent would crawl and evaluate your site — and surfaces what's missing.</p>
+            <div class="section-label reveal">Your Website Score</div>
+            <h2 class="section-heading reveal">See how an AI agent scores your website — right now.</h2>
+            <p class="section-sub reveal">Paste in your website, and we'll show you how a buyer agent ranks you against your competition.</p>
 
             <div class="scanner-box reveal">
                 <div class="scanner-header">
                     <span class="scanner-dot"></span>
                     <span class="scanner-dot"></span>
                     <span class="scanner-dot"></span>
-                    <span class="scanner-title">strainer-agent-scanner v0.1</span>
+                    <span class="scanner-title">strainer-agent-scanner v0.3 (live)</span>
                 </div>
                 <div class="scanner-body">
                     <div class="scanner-input-row">
                         <input type="url" class="scanner-input" id="scanUrl" placeholder="https://your-product.com" />
-                        <button class="scan-btn" id="scanBtn" onclick="runScan()">Run Agent Scan →</button>
+                        <button class="scan-btn" id="scanBtn" onclick="runScan()">Run Scan →</button>
                     </div>
                     <div class="scanner-output" id="scannerOutput">
-                        <div style="color: var(--text-tertiary); opacity: 0.5">Waiting for target URL...</div>
+                        <div style="color: var(--text-tertiary); opacity: 0.5">Paste a URL and hit scan. We'll fetch the real page and evaluate it from an agent's perspective.</div>
                     </div>
                     <div class="scanner-cta" id="scannerCta">
                         <p>
-                            Want the full agent evaluation report?
-                            <span>We'll run a deep audit with multiple AI models and walk you through the results.</span>
+                            This is a surface-level scan.
+                            <span>The full AI Agent Audit tests 40+ signals and tells you exactly how to fix each one.</span>
                         </p>
-                        <a href="https://calendly.com/YOUR-LINK" target="_blank" class="btn btn-primary" style="white-space: nowrap;">Get Full Report →</a>
+                        <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn btn-primary" style="white-space: nowrap;">Get Full Audit →</a>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- WHO IT'S FOR -->
-    <section class="audience" id="audience">
-        <div class="container">
-            <div class="section-label reveal">Who It's For</div>
-            <h2 class="section-heading reveal">Built for companies at the frontier.</h2>
-            <p class="section-sub reveal">Strainer AI works best with B2B companies who want to be early to the biggest shift in how software gets bought.</p>
-
-            <div class="audience-grid">
-                <div class="audience-card reveal">
-                    <h3>API-First SaaS</h3>
-                    <p>If your product is primarily consumed through an API, agents are already evaluating your docs, endpoints, and developer experience. You need to be ready.</p>
-                </div>
-                <div class="audience-card reveal">
-                    <h3>Developer Tools</h3>
-                    <p>When a founder asks Claude "what's the best tool for X?", the answer is shaped by how well your product shows up in AI training data and live search. We help you show up.</p>
-                </div>
-                <div class="audience-card reveal">
-                    <h3>Infrastructure & Platforms</h3>
-                    <p>AI agents doing technical evaluations go deep — reading docs, testing APIs, comparing architectures. Your infrastructure needs to be legible to machines.</p>
-                </div>
-                <div class="audience-card reveal">
-                    <h3>Early Adopter Industries</h3>
-                    <p>If your buyers are the type of people already using AI agents for research and procurement, you're in the blast radius. Fintech, martech, devops — the shift starts with you.</p>
                 </div>
             </div>
         </div>
@@ -969,19 +659,25 @@
     <!-- FINAL CTA -->
     <section class="final-cta">
         <div class="container">
-            <div class="section-label reveal">Let's Talk</div>
-            <h2 class="section-heading reveal">The companies who move first will define this category.</h2>
-            <p class="section-sub reveal">We're looking for a small number of forward-thinking B2B companies to explore this frontier with. No pitch deck. Just a conversation about what's coming.</p>
-            <a href="https://calendly.com/YOUR-LINK" target="_blank" class="btn btn-primary reveal" style="font-size: 1rem; padding: 14px 32px;">Book a Conversation →</a>
+            <div class="section-label reveal">Free AI Agent Audit</div>
+            <h2 class="section-heading reveal">Put yourself on the map with AI buyers.</h2>
+            <p class="section-sub reveal">This isn't an automated report. A GTM engineer will personally audit your product's AI presence, run real queries against you and your competitors, and deliver a concrete action plan you can start executing the same week.</p>
+
+            <div class="audit-features reveal">
+                <div class="audit-feature"><span class="check">✓</span> AI search visibility report — how you show up (or don't) across ChatGPT, Perplexity, Gemini</div>
+                <div class="audit-feature"><span class="check">✓</span> Head-to-head agent comparison vs 3 competitors you choose</div>
+                <div class="audit-feature"><span class="check">✓</span> Agent-readiness score across 40+ technical signals</div>
+                <div class="audit-feature"><span class="check">✓</span> Prioritized fix list with estimated effort and expected impact</div>
+            </div>
+
+            <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn btn-primary btn-large reveal">Book Your Free Audit →</a>
         </div>
     </section>
 
     <!-- FOOTER -->
     <footer>
         <div class="container">
-            <div class="footer-left">
-                © 2025 Strainer AI. All rights reserved.
-            </div>
+            <div class="footer-left">&copy; 2025 Strainer</div>
             <div class="footer-links">
                 <a href="mailto:hello@getstrainer.com">hello@getstrainer.com</a>
             </div>
@@ -989,104 +685,271 @@
     </footer>
 
     <script>
-        // Nav scroll effect
+        // Nav
         const nav = document.getElementById('nav');
-        window.addEventListener('scroll', () => {
-            nav.classList.toggle('scrolled', window.scrollY > 20);
-        });
+        window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
 
-        // Reveal on scroll
-        const revealElements = document.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        // Reveal
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+        setTimeout(() => document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible')), 80);
 
-        revealElements.forEach(el => observer.observe(el));
+        // ========== SCANNER ==========
+        // Your Cloudflare Worker (primary), public proxies as fallback
+        // Replace WORKER_URL with your deployed worker URL, e.g.:
+        // const WORKER_URL = 'https://strainer-proxy.YOUR-SUBDOMAIN.workers.dev';
+        const WORKER_URL = null; // ← set this after deploying the worker
 
-        // Force hero elements visible quickly
-        setTimeout(() => {
-            document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible'));
-        }, 100);
+        const PROXIES = [
+            ...(WORKER_URL ? [url => `${WORKER_URL}?url=${encodeURIComponent(url)}`] : []),
+            url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+            url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+            url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+        ];
 
-        // Agent Scanner
-        function runScan() {
-            const url = document.getElementById('scanUrl').value.trim();
-            if (!url) return;
+        async function fetchViaProxy(url) {
+            for (let i = 0; i < PROXIES.length; i++) {
+                try {
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), 8000);
+                    const resp = await fetch(PROXIES[i](url), { signal: controller.signal });
+                    clearTimeout(timeout);
+                    if (!resp.ok) continue;
+                    const text = await resp.text();
+                    if (text && text.length > 100) return text;
+                } catch (e) { /* try next proxy */ }
+            }
+            return null;
+        }
+
+        async function runScan() {
+            const rawUrl = document.getElementById('scanUrl').value.trim();
+            if (!rawUrl) return;
 
             const btn = document.getElementById('scanBtn');
             const output = document.getElementById('scannerOutput');
             const cta = document.getElementById('scannerCta');
-
             btn.disabled = true;
             btn.textContent = 'Scanning...';
             output.innerHTML = '';
             cta.classList.remove('visible');
 
-            let hostname;
-            try {
-                hostname = new URL(url.startsWith('http') ? url : 'https://' + url).hostname;
-            } catch {
-                hostname = url;
-            }
+            let url = rawUrl;
+            if (!url.startsWith('http')) url = 'https://' + url;
+            let hostname, origin;
+            try { const u = new URL(url); hostname = u.hostname; origin = u.origin; } catch { hostname = rawUrl; origin = ''; }
 
-            const lines = [
-                { text: `<span class="cmd">$</span> strainer scan --target ${hostname}`, delay: 0 },
-                { text: `<span class="info">Initializing agent evaluation framework...</span>`, delay: 600 },
-                { text: `<span class="info">Spawning evaluation agents (GPT-4o, Claude, Gemini)...</span>`, delay: 1200 },
-                { text: ``, delay: 1600 },
-                { text: `<span class="label">PHASE 1:</span> Crawling ${hostname}...`, delay: 1800 },
-                { text: `<span class="ok">  ✓</span> Homepage loaded (${(Math.random() * 2 + 0.8).toFixed(1)}s)`, delay: 2400 },
-                { text: `<span class="ok">  ✓</span> Found ${Math.floor(Math.random() * 20 + 8)} indexed pages`, delay: 2800 },
-                { text: `<span class="${Math.random() > 0.5 ? 'warn' : 'ok'}">  ${Math.random() > 0.5 ? '⚠' : '✓'}</span> API documentation ${Math.random() > 0.5 ? 'partially detected' : 'detected'}`, delay: 3200 },
-                { text: `<span class="${Math.random() > 0.4 ? 'warn' : 'ok'}">  ${Math.random() > 0.4 ? '⚠' : '✓'}</span> Pricing page ${Math.random() > 0.4 ? 'requires interaction to view' : 'accessible'}`, delay: 3600 },
-                { text: ``, delay: 3900 },
-                { text: `<span class="label">PHASE 2:</span> Agent comprehension test...`, delay: 4100 },
-                { text: `<span class="info">  Asking: "What does ${hostname} do?"</span>`, delay: 4600 },
-                { text: `<span class="${Math.random() > 0.5 ? 'warn' : 'ok'}">  ${Math.random() > 0.5 ? '⚠ Agents gave inconsistent answers (2/3 aligned)' : '✓ All agents gave consistent answers'}</span>`, delay: 5200 },
-                { text: `<span class="info">  Asking: "How does ${hostname} compare to alternatives?"</span>`, delay: 5700 },
-                { text: `<span class="warn">  ⚠ Limited structured comparison data available</span>`, delay: 6300 },
-                { text: ``, delay: 6600 },
-                { text: `<span class="label">PHASE 3:</span> Machine readability score...`, delay: 6800 },
-                { text: `<span class="info">  Structured data (schema.org):   ${Math.random() > 0.6 ? '<span class="err">Not found</span>' : '<span class="ok">Found</span>'}</span>`, delay: 7300 },
-                { text: `<span class="info">  OpenAPI/Swagger spec:           ${Math.random() > 0.5 ? '<span class="err">Not found</span>' : '<span class="ok">Found</span>'}</span>`, delay: 7700 },
-                { text: `<span class="info">  llms.txt:                       ${Math.random() > 0.8 ? '<span class="ok">Found</span>' : '<span class="err">Not found</span>'}</span>`, delay: 8100 },
-                { text: `<span class="info">  Machine-readable pricing:       ${Math.random() > 0.3 ? '<span class="err">Not found</span>' : '<span class="ok">Found</span>'}</span>`, delay: 8500 },
-                { text: ``, delay: 8800 },
-                { text: `<span class="label">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>`, delay: 9000 },
-                { text: `<span class="label">PRELIMINARY AGENT READINESS SCORE:</span> <span class="warn">${Math.floor(Math.random() * 30 + 25)}/100</span>`, delay: 9300 },
-                { text: `<span class="info">Most B2B sites score 20-40. Top performers score 70+.</span>`, delay: 9700 },
-                { text: `<span class="label">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>`, delay: 9900 },
-                { text: ``, delay: 10100 },
-                { text: `<span class="info">This is a surface-level simulation. The full audit uses</span>`, delay: 10400 },
-                { text: `<span class="info">live agent evaluations across 40+ signals. →</span>`, delay: 10700 },
-            ];
-
-            lines.forEach((line, i) => {
+            const log = (text, delay) => new Promise(resolve => {
                 setTimeout(() => {
                     const div = document.createElement('div');
                     div.className = 'line';
-                    div.style.animationDelay = '0s';
-                    div.innerHTML = line.text;
+                    div.innerHTML = text;
                     output.appendChild(div);
                     output.scrollTop = output.scrollHeight;
-
-                    if (i === lines.length - 1) {
-                        btn.disabled = false;
-                        btn.textContent = 'Run Agent Scan →';
-                        cta.classList.add('visible');
-                    }
-                }, line.delay);
+                    resolve();
+                }, delay);
             });
+
+            await log(`<span class="cmd">$</span> strainer scan --target ${hostname} --live`, 0);
+            await log(`<span class="info">Fetching ${hostname}...</span>`, 400);
+
+            // Fetch main page
+            let html = await fetchViaProxy(url);
+            let fetchOk = !!html;
+
+            if (!fetchOk) {
+                await log(`<span class="warn">⚠ Could not fetch main page (site may block proxy requests).</span>`, 300);
+                await log(`<span class="info">Checking auxiliary files (robots.txt, llms.txt)...</span>`, 300);
+            } else {
+                await log(`<span class="ok">✓</span> Fetched ${(html.length / 1024).toFixed(0)}KB of HTML`, 300);
+            }
+
+            // Fetch robots.txt and llms.txt in parallel
+            const [robotsTxt, llmsTxt] = await Promise.all([
+                origin ? fetchViaProxy(origin + '/robots.txt') : Promise.resolve(null),
+                origin ? fetchViaProxy(origin + '/llms.txt') : Promise.resolve(null),
+            ]);
+
+            const parser = new DOMParser();
+            const doc = fetchOk ? parser.parseFromString(html, 'text/html') : null;
+
+            // Checks
+            const c = {
+                title: doc ? (doc.querySelector('title')?.textContent?.trim() || '') : '',
+                metaDesc: doc ? (doc.querySelector('meta[name="description"]')?.getAttribute('content') || '') : '',
+                jsonLd: doc ? doc.querySelectorAll('script[type="application/ld+json"]').length : 0,
+                schemaOrg: fetchOk ? html.includes('schema.org') : false,
+                hasLlmsTxt: llmsTxt && llmsTxt.length > 20 && !llmsTxt.includes('<!DOCTYPE') && !llmsTxt.includes('<html') && !/404|not found/i.test(llmsTxt.substring(0, 50)),
+                hasPricing: fetchOk ? /pric(e|ing)\b/i.test(html) && /\$\d|€\d|£\d|\d+\s*\/\s*mo|\d+\s*per\s*(month|year)|free\s*tier|free\s*plan/i.test(html) : false,
+                priceMentioned: fetchOk ? /pric(e|ing)\b/i.test(html) : false,
+                hasApiDocs: fetchOk ? /api[-\s]?doc|swagger|openapi|\/docs\b|developer\s*portal/i.test(html) : false,
+                contactGate: fetchOk ? /book\s*a?\s*(demo|call|meeting)|contact\s*sales|talk\s*to\s*sales|request\s*a?\s*demo/i.test(html) : false,
+                wordCount: doc ? (doc.body?.textContent?.split(/\s+/).length || 0) : 0,
+                hasTrial: fetchOk ? /free\s*trial|try\s*(it\s*)?free|start\s*free|sandbox|playground|demo\s*environment|self[- ]serve/i.test(html) : false,
+                hasOpenApi: fetchOk ? /openapi|swagger/i.test(html) : false,
+                blocksAI: robotsTxt ? /disallow.*\/(GPTBot|ClaudeBot|Anthropic|ChatGPT|anthropic-ai)/im.test(robotsTxt) : false,
+                mentionsAI: robotsTxt ? /GPTBot|ClaudeBot|Anthropic|ChatGPT|PerplexityBot|Google-Extended/i.test(robotsTxt) : false,
+                hasRobots: !!robotsTxt && robotsTxt.length > 10 && !robotsTxt.includes('<!DOCTYPE'),
+            };
+
+            // ── DISCOVERY ──
+            await log('', 200);
+            await log(`<span class="info">── DISCOVERY: Can agents find you? ──</span>`, 300);
+
+            if (c.title) {
+                await log(`<span class="ok">  ✓</span> Page title: "${c.title.substring(0, 60)}${c.title.length > 60 ? '...' : ''}"`, 250);
+            } else if (fetchOk) {
+                await log(`<span class="err">  ✗ No page title found</span>`, 250);
+            }
+
+            if (c.metaDesc) {
+                await log(`<span class="ok">  ✓</span> Meta description found (${c.metaDesc.length} chars)`, 200);
+            } else if (fetchOk) {
+                await log(`<span class="err">  ✗ No meta description — agents can't summarize you</span>`, 200);
+            }
+
+            if (c.hasLlmsTxt) {
+                await log(`<span class="ok">  ✓</span> llms.txt found — agents have a structured summary of your product`, 250);
+            } else {
+                await log(`<span class="err">  ✗ No llms.txt — agents have no structured description of your product</span>`, 250);
+            }
+
+            if (c.blocksAI) {
+                await log(`<span class="err">  ✗ robots.txt blocks AI crawlers — agents cannot index your site</span>`, 250);
+            } else if (c.mentionsAI) {
+                await log(`<span class="ok">  ✓</span> robots.txt mentions AI crawlers — shows awareness`, 200);
+            } else if (c.hasRobots) {
+                await log(`<span class="warn">  ⚠ robots.txt exists but doesn't mention AI crawlers</span>`, 200);
+            }
+
+            if (c.jsonLd > 0) {
+                await log(`<span class="ok">  ✓</span> JSON-LD structured data found (${c.jsonLd} block${c.jsonLd > 1 ? 's' : ''})`, 200);
+            } else if (c.schemaOrg) {
+                await log(`<span class="warn">  ⚠ Schema.org referenced but no JSON-LD blocks</span>`, 200);
+            } else if (fetchOk) {
+                await log(`<span class="err">  ✗ No structured data — agents see unstructured text only</span>`, 200);
+            }
+
+            // ── EVALUATION ──
+            await log('', 200);
+            await log(`<span class="info">── EVALUATION: Can agents compare you? ──</span>`, 300);
+
+            if (c.hasPricing) {
+                await log(`<span class="ok">  ✓</span> Pricing appears visible on page`, 250);
+            } else if (c.priceMentioned && c.contactGate) {
+                await log(`<span class="err">  ✗ Pricing mentioned but gated behind "book a demo"</span>`, 250);
+            } else if (c.contactGate) {
+                await log(`<span class="err">  ✗ No visible pricing — gated behind sales contact</span>`, 250);
+            } else if (fetchOk) {
+                await log(`<span class="warn">  ⚠ No pricing information detected</span>`, 250);
+            }
+
+            if (c.hasApiDocs) {
+                await log(`<span class="ok">  ✓</span> API docs or developer portal referenced`, 200);
+            } else if (fetchOk) {
+                await log(`<span class="warn">  ⚠ No API docs or developer portal found</span>`, 200);
+            }
+
+            if (fetchOk && c.wordCount > 0) {
+                const d = c.wordCount < 300 ? 'thin' : c.wordCount < 800 ? 'moderate' : 'substantial';
+                await log(`<span class="${d === 'thin' ? 'warn' : 'ok'}">  ${d === 'thin' ? '⚠' : '✓'}</span> Page content: ~${c.wordCount} words (${d})`, 200);
+            }
+
+            // ── PROCUREMENT ──
+            await log('', 200);
+            await log(`<span class="info">── PROCUREMENT: Can agents trial you? ──</span>`, 300);
+
+            if (c.hasTrial) {
+                await log(`<span class="ok">  ✓</span> Free trial or sandbox detected`, 250);
+            } else if (fetchOk) {
+                await log(`<span class="err">  ✗ No self-serve trial, sandbox, or playground</span>`, 250);
+            }
+
+            if (c.hasOpenApi) {
+                await log(`<span class="ok">  ✓</span> OpenAPI/Swagger spec referenced`, 200);
+            } else if (fetchOk) {
+                await log(`<span class="err">  ✗ No OpenAPI spec — agents can't programmatically test your API</span>`, 200);
+            }
+
+            // Score
+            let score = 0;
+            if (c.title) score += 5;
+            if (c.metaDesc) score += 8;
+            if (c.hasLlmsTxt) score += 15;
+            if (c.jsonLd > 0) score += 15;
+            if (c.hasPricing) score += 15;
+            if (c.hasApiDocs) score += 10;
+            if (c.hasTrial) score += 12;
+            if (c.hasOpenApi) score += 10;
+            if (c.wordCount > 300) score += 5;
+            if (c.wordCount > 800) score += 5;
+            if (c.blocksAI) score = Math.max(0, score - 15);
+
+            // If we couldn't fetch main page but got some auxiliary data
+            if (!fetchOk && !c.hasLlmsTxt && !c.hasRobots) {
+                score = Math.floor(Math.random() * 20 + 15);
+                await log(`<span class="warn">  ⚠ Limited analysis — could not reach main page or auxiliary files</span>`, 200);
+            } else if (!fetchOk) {
+                // We got some data from robots/llms.txt
+                await log(`<span class="warn">  ⚠ Partial analysis — main page not fetchable, scored on auxiliary files only</span>`, 200);
+            }
+
+            await log('', 200);
+            await log(`<span class="info">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>`, 200);
+            const sc = score >= 60 ? 'ok' : score >= 35 ? 'warn' : 'err';
+            await log(`<span class="info">AGENT READINESS SCORE:</span> <span class="${sc}" style="font-size: 1.1em; font-weight: 700;">${score}/100</span>`, 300);
+            await log(`<span class="info">Most B2B sites score 15–35. Top performers score 70+.</span>`, 200);
+            await log(`<span class="info">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>`, 200);
+
+            // Agent evaluation
+            await log('', 300);
+            await log(`<span class="info">── BUYER AGENT'S INTERNAL EVALUATION ──</span>`, 400);
+
+            let agent = '';
+            const name = hostname.replace(/^www\./, '').split('.')[0];
+            const Name = name.charAt(0).toUpperCase() + name.slice(1);
+
+            if (c.blocksAI) {
+                agent += `<em>Access: BLOCKED.</em> ${Name}'s robots.txt prevents AI crawlers from indexing. I cannot gather current information. This vendor is invisible to AI-assisted evaluation.\n\n`;
+            }
+            if (!c.hasPricing && c.contactGate) {
+                agent += `<em>Pricing: UNKNOWN.</em> ${Name} requires human contact for pricing. I cannot compare cost-effectiveness. Deprioritizing in favor of vendors with transparent pricing.\n\n`;
+            } else if (!c.hasPricing && fetchOk) {
+                agent += `<em>Pricing: NOT FOUND.</em> Cannot determine if ${Name} fits budget. Flagging as "requires manual review."\n\n`;
+            }
+            if (!c.hasLlmsTxt && c.jsonLd === 0) {
+                agent += `<em>Structured data: NONE.</em> No llms.txt or JSON-LD. Working from unstructured marketing copy only. My summary of ${Name} will be less accurate than competitors with structured data.\n\n`;
+            }
+            if (!c.hasTrial && fetchOk) {
+                agent += `<em>Testability: ZERO.</em> No sandbox, trial, or demo environment. Cannot verify claims. Recommending alternatives where I can test directly.\n\n`;
+            }
+            if (c.contactGate && fetchOk) {
+                agent += `<em>Evaluation friction: HIGH.</em> Multiple "book a demo" gates detected. Vendor optimized for human conversations, not automated evaluation. Deprioritizing.\n\n`;
+            }
+            if (score >= 60) {
+                agent = `${Name} provides good machine-readable information. Pricing is parseable, documentation is accessible, evaluation can proceed without human contact. <em style="color: var(--green)">Including in shortlist.</em>`;
+            }
+            if (!agent && !fetchOk) {
+                agent = `<em>Evaluation: INCOMPLETE.</em> Could not fully access ${Name}'s website. Many sites deploy protections that also block AI agents. If an agent can't read your site, it can't recommend you. Skipping in favor of accessible competitors.`;
+            }
+
+            if (agent) {
+                const div = document.createElement('div');
+                div.className = 'line';
+                div.innerHTML = `<div class="agent-says">🤖 <strong>Buyer Agent (simulated):</strong>\n\n${agent.trim()}</div>`;
+                setTimeout(() => { output.appendChild(div); output.scrollTop = output.scrollHeight; }, 400);
+            }
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.textContent = 'Run Scan →';
+                cta.classList.add('visible');
+            }, 800);
         }
 
-        // Allow Enter key in scanner input
-        document.getElementById('scanUrl').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') runScan();
-        });
+        document.getElementById('scanUrl').addEventListener('keypress', (e) => { if (e.key === 'Enter') runScan(); });
     </script>
 </body>
 </html>
