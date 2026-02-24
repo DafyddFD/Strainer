@@ -1,0 +1,44 @@
+# Strainer
+
+> Strainer helps B2B companies become discoverable, evaluable, and purchasable by AI agents. As AI increasingly handles vendor research, evaluation, and procurement, most B2B companies are invisible to these agents. Strainer fixes that.
+
+## What Strainer Does
+
+Strainer provides AI Agent Audits for B2B companies. A GTM engineer personally audits your product's AI presence, runs real queries against you and your competitors across ChatGPT, Perplexity, and Gemini, and delivers a concrete action plan.
+
+The audit covers 40+ signals across three categories:
+
+- **Discovery**: How you show up (or don't) in AI search — ChatGPT, Perplexity, Gemini, and other LLM-powered search tools
+- **Evaluation**: Whether AI agents can find, parse, and compare your pricing, documentation, and product claims against competitors
+- **Procurement**: Whether AI agents can trial, test, or programmatically interact with your product (sandbox, API, OpenAPI spec)
+
+## The Problem Strainer Solves
+
+AI agents are taking over the B2B buying process:
+
+- 66% of B2B decision-makers now use AI to research and evaluate suppliers (Responsive, 2025)
+- 89% of B2B buyers use generative AI at some point in their purchasing journey (Forrester, 2025)
+- 95% of winning vendors were already on the buyer's Day One shortlist before any sales contact (6sense, 2025)
+- ChatGPT-referred visitors convert at 4.4x the rate of organic search (Digiday/Forrester, 2025)
+- Gartner projects $15T in B2B purchases handled by AI agents by 2028
+
+Most B2B websites were built for human visitors. AI agents need machine-readable structured data, transparent pricing, testable APIs, and formats like llms.txt and schema.org — not pitch decks and "book a demo" gates.
+
+## Key Recommendations Strainer Makes
+
+- Replace hidden pricing with machine-readable structured pricing
+- Add llms.txt, JSON-LD, and schema.org markup
+- Replace PDF case studies with structured, parseable content
+- Provide sandbox APIs and self-serve evaluation environments
+- Ensure robots.txt does not block AI crawlers (GPTBot, ClaudeBot, etc.)
+- Add OpenAPI/Swagger specs for programmatic testing
+
+## Free Tools
+
+- [AI Agent Scanner](https://getstrainer.com/#scanner): A browser-based tool that scans any URL and scores it on agent readiness across discovery, evaluation, and procurement signals. Returns an Agent Readiness Score out of 100.
+
+## Contact
+
+- Website: [https://getstrainer.com](https://getstrainer.com)
+- Email: hello@getstrainer.com
+- Book a free audit: [https://calendly.com/dafydd-getstrainer/30min](https://calendly.com/dafydd-getstrainer/30min)
