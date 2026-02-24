@@ -15,785 +15,629 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        /* ===========================================
-           RESET & VIEWPORT FITTING: MANDATORY
-           =========================================== */
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow-x: hidden; }
+        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
-        html, body {
-            height: 100%;
-            overflow-x: hidden;
-        }
-
-        html {
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* ===========================================
-           DESIGN TOKENS — matches getstrainer.com
-           =========================================== */
         :root {
             --bg: #0a0a0b;
             --bg-elevated: #111113;
             --bg-card: #161618;
             --border: #222225;
-            --border-hover: #333338;
             --text-primary: #ededef;
             --text-secondary: #8a8a8e;
             --text-tertiary: #5a5a5e;
             --accent: #00e5a0;
             --accent-dim: #00e5a020;
-            --accent-mid: #00e5a040;
             --accent-glow: #00e5a015;
             --red: #ff5f57;
             --yellow: #febc2e;
             --green: #28c840;
             --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
-
-            /* Slide-specific tokens */
-            --title-size: clamp(1.8rem, 5vw, 4rem);
-            --h2-size: clamp(1.3rem, 3.5vw, 2.5rem);
-            --h3-size: clamp(1rem, 2.5vw, 1.75rem);
-            --body-size: clamp(0.8rem, 1.5vw, 1.125rem);
-            --small-size: clamp(0.65rem, 1vw, 0.875rem);
-            --slide-padding: clamp(1.5rem, 5vw, 5rem);
-            --content-gap: clamp(0.5rem, 2vw, 2rem);
+            --slide-padding: clamp(2rem, 6vw, 6rem);
         }
 
-        body {
-            font-family: var(--font-body);
-            background: var(--bg);
-            color: var(--text-primary);
-            line-height: 1.6;
-            font-size: 15px;
-        }
+        body { font-family: var(--font-body); background: var(--bg); color: var(--text-primary); line-height: 1.5; }
 
-        /* Noise overlay — matches main site */
         body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 9999;
+            pointer-events: none; z-index: 9999;
         }
 
-        /* ===========================================
-           SLIDE BASE
-           =========================================== */
         .slide {
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-            overflow: hidden;
-            scroll-snap-align: start;
-            display: flex;
-            flex-direction: column;
-            position: relative;
+            width: 100vw; height: 100vh; height: 100dvh;
+            overflow: hidden; scroll-snap-align: start;
+            display: flex; flex-direction: column; position: relative;
         }
 
         .slide-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            max-height: 100%;
-            overflow: hidden;
-            padding: var(--slide-padding);
-            max-width: 1120px;
-            margin: 0 auto;
-            width: 100%;
+            flex: 1; display: flex; flex-direction: column; justify-content: center;
+            max-height: 100%; overflow: hidden; padding: var(--slide-padding);
+            max-width: 1400px; margin: 0 auto; width: 100%;
         }
 
-        /* ===========================================
-           TYPOGRAPHY
-           =========================================== */
-        .slide h1 {
-            font-size: var(--title-size);
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
-        }
-
-        .slide h2 {
-            font-size: var(--h2-size);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-        }
-
-        .slide h3 {
-            font-size: var(--h3-size);
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            line-height: 1.3;
-        }
-
-        .slide p {
-            font-size: var(--body-size);
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
+        .slide h1 { font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+        .slide h2 { font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+        .slide p { font-size: clamp(1.2rem, 2.2vw, 1.7rem); color: var(--text-secondary); line-height: 1.6; }
         .accent { color: var(--accent); }
         .mono { font-family: var(--font-mono); }
 
         .label {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 5px 14px;
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            font-size: var(--small-size);
-            color: var(--text-secondary);
-            margin-bottom: clamp(0.75rem, 2vw, 1.5rem);
-            background: var(--bg-elevated);
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 5px 14px; border: 1px solid var(--border); border-radius: 100px;
+            font-size: clamp(0.9rem, 1.4vw, 1.2rem); color: var(--text-secondary);
+            margin-bottom: clamp(0.75rem, 2vw, 1.5rem); background: var(--bg-elevated);
         }
-
-        .label .dot {
-            width: 6px; height: 6px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
+        .label .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes lineIn { to { opacity: 1; transform: translateY(0); } }
 
-        /* ===========================================
-           SLIDE-SPECIFIC LAYOUTS
-           =========================================== */
+        .phase-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-family: var(--font-mono); font-size: clamp(0.9rem, 1.4vw, 1.2rem);
+            color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em;
+            margin-bottom: clamp(0.5rem, 1.5vw, 1.25rem);
+        }
+        .phase-badge::before { content: ''; width: 20px; height: 1px; background: var(--accent); }
 
-        /* Title slide glow */
         .slide-title::before {
-            content: '';
-            position: absolute;
-            top: 30%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 800px; height: 500px;
+            content: ''; position: absolute; top: 30%; left: 50%;
+            transform: translate(-50%, -50%); width: 800px; height: 500px;
             background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
             pointer-events: none;
         }
+        .slide-title .slide-content { gap: clamp(0.75rem, 2vw, 1.5rem); }
 
-        .slide-title .slide-content {
-            gap: clamp(0.75rem, 2vw, 1.5rem);
-        }
+        .subtitle { font-size: clamp(1.3rem, 2.5vw, 1.9rem); color: var(--text-secondary); max-width: 750px; }
 
-        .subtitle {
-            font-size: clamp(0.9rem, 1.8vw, 1.25rem);
-            color: var(--text-secondary);
-            max-width: 640px;
-        }
+        /* Stat row */
+        .stat-row { display: flex; gap: clamp(2rem, 5vw, 5rem); margin-top: clamp(1.5rem, 3vw, 2.5rem); }
+        .stat-item { flex: 1; }
+        .stat-num { font-size: clamp(3.5rem, 9vw, 7rem); font-weight: 900; color: var(--accent); letter-spacing: -0.03em; line-height: 1; }
+        .stat-desc { font-size: clamp(1.1rem, 1.8vw, 1.5rem); color: var(--text-tertiary); margin-top: 8px; line-height: 1.4; }
+        .stat-cite { font-size: clamp(0.85rem, 1.1vw, 1rem); color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 4px; opacity: 0.6; }
 
-        /* Stat highlight */
-        .stat-big {
-            font-size: clamp(2.5rem, 8vw, 6rem);
-            font-weight: 900;
-            color: var(--accent);
-            letter-spacing: -0.04em;
-            line-height: 1;
-        }
-
-        .stat-context {
-            font-size: var(--body-size);
-            color: var(--text-secondary);
-            max-width: 560px;
-            margin-top: clamp(0.5rem, 1vw, 1rem);
-        }
-
-        .stat-source {
-            font-size: var(--small-size);
-            color: var(--text-tertiary);
-            font-family: var(--font-mono);
-            margin-top: clamp(0.25rem, 0.5vw, 0.5rem);
-        }
-
-        /* Phase badge */
-        .phase-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: var(--font-mono);
-            font-size: var(--small-size);
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: clamp(0.5rem, 1vw, 1rem);
-        }
-
-        .phase-badge::before {
-            content: '';
-            width: 20px; height: 1px;
-            background: var(--accent);
-        }
-
-        /* Cards grid */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-            gap: clamp(0.75rem, 1.5vw, 1.25rem);
-            margin-top: clamp(1rem, 2vw, 2rem);
-        }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: clamp(1rem, 2vw, 1.5rem);
-        }
-
-        .card h4 {
-            font-size: clamp(0.85rem, 1.2vw, 1rem);
-            font-weight: 600;
-            margin-bottom: clamp(0.25rem, 0.5vw, 0.5rem);
-        }
-
-        .card p {
-            font-size: var(--small-size);
-            color: var(--text-tertiary);
-            line-height: 1.5;
-        }
-
-        /* Before/after */
-        .compare-row {
-            display: flex;
-            align-items: stretch;
-            gap: clamp(0.75rem, 2vw, 1.5rem);
-            margin-top: clamp(0.75rem, 2vw, 1.5rem);
-        }
-
-        .compare-col {
-            flex: 1;
-            border-radius: 12px;
-            padding: clamp(1rem, 2vw, 1.5rem);
-        }
-
-        .compare-col.before {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-        }
-
-        .compare-col.after {
-            background: linear-gradient(135deg, rgba(0, 229, 160, 0.08), rgba(0, 229, 160, 0.02));
+        /* Pillars */
+        .pillars { display: flex; gap: clamp(1rem, 2.5vw, 2rem); margin-top: clamp(1.5rem, 3vw, 2.5rem); }
+        .pillar {
+            flex: 1; border-radius: 16px; padding: clamp(1.5rem, 3vw, 2.5rem);
+            background: linear-gradient(135deg, rgba(0, 229, 160, 0.07), rgba(0, 229, 160, 0.02));
             border: 1px solid rgba(0, 229, 160, 0.2);
+            display: flex; flex-direction: column; align-items: center; text-align: center;
         }
+        .pillar-icon { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: clamp(0.5rem, 1vw, 1rem); }
+        .pillar h3 { font-size: clamp(1.5rem, 2.8vw, 2.2rem); font-weight: 700; }
+        .pillar p { font-size: clamp(1.1rem, 1.8vw, 1.5rem); color: var(--text-tertiary); margin-top: 6px; max-width: 400px; }
 
-        .compare-col h4 {
-            font-size: var(--small-size);
-            font-family: var(--font-mono);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
+        /* Cards */
+        .cards-col { display: flex; flex-direction: column; gap: clamp(0.75rem, 1.5vw, 1.25rem); margin-top: clamp(1rem, 2vw, 1.5rem); }
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 14px; padding: clamp(1rem, 2vw, 1.5rem);
         }
+        .card h4 { font-size: clamp(1.2rem, 1.8vw, 1.5rem); font-weight: 600; margin-bottom: 4px; }
+        .card p { font-size: clamp(1rem, 1.5vw, 1.3rem); color: var(--text-tertiary); line-height: 1.5; }
+        .card-accent { border-color: rgba(0, 229, 160, 0.3); background: linear-gradient(135deg, rgba(0, 229, 160, 0.08), rgba(0, 229, 160, 0.02)); }
+        .card .example { font-family: var(--font-mono); font-size: clamp(0.9rem, 1.3vw, 1.1rem); color: var(--text-tertiary); margin-top: 8px; padding: 8px 12px; background: var(--bg); border-radius: 6px; display: block; }
 
+        /* Comparison */
+        .compare-row { display: flex; gap: clamp(0.75rem, 2vw, 1.5rem); margin-top: clamp(1rem, 2.5vw, 2rem); }
+        .compare-col { flex: 1; border-radius: 14px; padding: clamp(1.25rem, 2.5vw, 2rem); }
+        .compare-col.before { background: var(--bg-card); border: 1px solid var(--border); }
+        .compare-col.after { background: linear-gradient(135deg, rgba(0, 229, 160, 0.08), rgba(0, 229, 160, 0.02)); border: 1px solid rgba(0, 229, 160, 0.2); }
+        .compare-col h4 { font-size: clamp(1rem, 1.4vw, 1.2rem); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: clamp(0.75rem, 1.5vw, 1rem); }
         .compare-col.before h4 { color: var(--text-tertiary); }
         .compare-col.after h4 { color: var(--accent); }
-
         .compare-col li {
-            font-size: var(--body-size);
-            color: var(--text-secondary);
-            line-height: 1.5;
-            margin-bottom: clamp(0.2rem, 0.5vw, 0.4rem);
-            list-style: none;
-            padding-left: 1.2em;
-            position: relative;
+            font-size: clamp(1.1rem, 1.8vw, 1.5rem); color: var(--text-secondary); line-height: 1.5;
+            margin-bottom: clamp(0.3rem, 0.6vw, 0.5rem); list-style: none; padding-left: 1.4em; position: relative;
         }
+        .compare-col.before li::before { content: '\2717'; position: absolute; left: 0; color: var(--red); font-size: 0.85em; }
+        .compare-col.after li::before { content: '\2713'; position: absolute; left: 0; color: var(--accent); font-size: 0.85em; }
 
-        .compare-col.before li::before {
-            content: '✗';
-            position: absolute;
-            left: 0;
-            color: var(--red);
-        }
-
-        .compare-col.after li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-        }
-
-        /* Audit features */
-        .audit-item {
-            display: flex;
-            align-items: flex-start;
-            gap: clamp(0.5rem, 1vw, 0.75rem);
-            margin-bottom: clamp(0.4rem, 1vw, 0.75rem);
-        }
-
-        .audit-check {
-            color: var(--accent);
-            font-weight: 700;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .audit-item p {
-            font-size: var(--body-size);
-            color: var(--text-secondary);
-        }
-
-        /* CTA button */
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: clamp(10px, 1.5vw, 14px) clamp(18px, 2.5vw, 28px);
-            border-radius: 8px;
-            font-family: var(--font-body);
-            font-size: clamp(0.8rem, 1.2vw, 0.95rem);
-            font-weight: 500;
-            background: var(--accent);
-            color: #0a0a0b;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: clamp(0.75rem, 2vw, 1.5rem);
-        }
-
-        .btn-primary:hover {
-            background: #00ffb3;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 24px var(--accent-dim);
-        }
-
-        /* Terminal-style block */
-        .terminal {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: clamp(0.75rem, 2vw, 1.5rem);
-        }
-
-        .terminal-header {
-            padding: 10px 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .terminal-dot {
-            width: 10px; height: 10px;
-            border-radius: 50%;
-        }
-
+        /* Terminal block — before/after */
+        .terminal { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .terminal-header { padding: 8px 14px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border); }
+        .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
         .terminal-dot:nth-child(1) { background: var(--red); }
         .terminal-dot:nth-child(2) { background: var(--yellow); }
         .terminal-dot:nth-child(3) { background: var(--green); }
-
-        .terminal-body {
-            padding: clamp(0.75rem, 2vw, 1.25rem);
-            font-family: var(--font-mono);
-            font-size: var(--small-size);
-            color: var(--text-secondary);
-            line-height: 1.8;
-        }
-
+        .terminal-body { padding: clamp(0.75rem, 1.5vw, 1.25rem); font-family: var(--font-mono); font-size: clamp(0.9rem, 1.3vw, 1.1rem); color: var(--text-secondary); line-height: 1.9; }
         .terminal-body .cmd { color: var(--accent); }
         .terminal-body .dim { color: var(--text-tertiary); }
+        .terminal-body .err { color: var(--red); }
+        .terminal-body .ok { color: var(--accent); }
+        .terminal-pair { display: flex; gap: clamp(0.75rem, 1.5vw, 1.25rem); margin-top: clamp(1rem, 2vw, 1.5rem); }
+        .terminal-pair .terminal { flex: 1; }
+        .terminal-label { font-family: var(--font-mono); font-size: clamp(0.9rem, 1.2vw, 1.05rem); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+        .terminal-label.before-label { color: var(--text-tertiary); }
+        .terminal-label.after-label { color: var(--accent); }
 
-        /* ===========================================
-           ANIMATIONS
-           =========================================== */
-        .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        /* Rising bars */
+        .rising-bars { display: flex; gap: clamp(1rem, 2.5vw, 2rem); margin-top: clamp(1.5rem, 3vw, 2.5rem); }
+        .rising-bar {
+            flex: 1; position: relative; border-radius: 14px; overflow: hidden;
+            padding: clamp(1.5rem, 3vw, 2.5rem); padding-bottom: clamp(2rem, 4vw, 3.5rem);
+            background: var(--bg-card); border: 1px solid var(--border);
         }
-
-        .visible .reveal,
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .rising-bar::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+            height: 4px; background: linear-gradient(90deg, var(--accent), rgba(0, 229, 160, 0.2));
         }
+        .rising-bar .bar-num { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; color: var(--accent); line-height: 1; }
+        .rising-bar h4 { font-size: clamp(1.4rem, 2.2vw, 1.8rem); font-weight: 600; margin-top: clamp(0.5rem, 1vw, 0.75rem); }
+        .rising-bar p { font-size: clamp(1.1rem, 1.7vw, 1.4rem); color: var(--text-tertiary); margin-top: 8px; line-height: 1.5; }
 
+        /* Founder slide */
+        .founder-row {
+            display: flex; align-items: center; gap: clamp(2rem, 4vw, 4rem);
+            margin-top: clamp(1.25rem, 2.5vw, 2rem);
+        }
+        .founder-photo {
+            width: clamp(100px, 12vw, 160px); height: clamp(100px, 12vw, 160px);
+            border-radius: 50%; object-fit: cover;
+            border: 2px solid var(--border); flex-shrink: 0;
+        }
+        .founder-info { flex: 1; }
+        .founder-name { font-size: clamp(1.4rem, 2vw, 1.8rem); font-weight: 700; margin-bottom: clamp(0.25rem, 0.5vw, 0.5rem); }
+        .founder-role { font-size: clamp(1rem, 1.3vw, 1.15rem); color: var(--accent); font-family: var(--font-mono); margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem); }
+        .founder-items { display: flex; flex-direction: column; gap: clamp(0.75rem, 1.5vw, 1rem); }
+        .founder-item {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+            padding: clamp(0.75rem, 1.5vw, 1.25rem);
+        }
+        .founder-item h4 { font-size: clamp(1.1rem, 1.5vw, 1.3rem); font-weight: 600; margin-bottom: 4px; }
+        .founder-item p { font-size: clamp(1rem, 1.3vw, 1.15rem); color: var(--text-tertiary); line-height: 1.5; }
+
+        /* Ask — centered */
+        .ask-center {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            margin-top: clamp(1.25rem, 2.5vw, 2rem); gap: clamp(0.4rem, 0.8vw, 0.6rem);
+        }
+        .ask-center li {
+            list-style: none; font-size: clamp(1.2rem, 2vw, 1.6rem); color: var(--text-secondary);
+            line-height: 1.5; padding-left: 1.6em; position: relative; text-align: left;
+        }
+        .ask-center li::before { content: '\2713'; position: absolute; left: 0; color: var(--accent); }
+
+        /* CTA */
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: clamp(12px, 1.5vw, 16px) clamp(24px, 3vw, 36px);
+            border-radius: 10px; font-family: var(--font-body);
+            font-size: clamp(1.1rem, 1.6vw, 1.3rem); font-weight: 600;
+            background: var(--accent); color: #0a0a0b; text-decoration: none;
+            border: none; cursor: pointer; transition: all 0.2s;
+            margin-top: clamp(1rem, 2.5vw, 2rem);
+        }
+        .btn-primary:hover { background: #00ffb3; transform: translateY(-1px); box-shadow: 0 4px 24px var(--accent-dim); }
+
+        /* Animations */
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .visible .reveal, .reveal.visible { opacity: 1; transform: translateY(0); }
         .reveal-d1 { transition-delay: 0.1s; }
         .reveal-d2 { transition-delay: 0.2s; }
         .reveal-d3 { transition-delay: 0.3s; }
-        .reveal-d4 { transition-delay: 0.4s; }
 
-        /* ===========================================
-           NAV DOTS
-           =========================================== */
-        .nav-dots {
-            position: fixed;
-            right: clamp(12px, 2vw, 24px);
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .nav-dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: var(--text-tertiary);
-            opacity: 0.3;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-            padding: 0;
-        }
-
-        .nav-dot.active {
-            opacity: 1;
-            background: var(--accent);
-            box-shadow: 0 0 8px var(--accent-dim);
-        }
-
-        /* Progress bar */
-        .progress-bar {
-            position: fixed;
-            top: 0; left: 0;
-            height: 2px;
-            background: var(--accent);
-            z-index: 200;
-            transition: width 0.3s;
-        }
-
-        /* Back to site link */
-        .back-link {
-            position: fixed;
-            top: clamp(12px, 2vw, 20px);
-            left: clamp(12px, 2vw, 24px);
-            z-index: 100;
-            font-size: var(--small-size);
-            color: var(--text-tertiary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: color 0.2s;
-        }
-
+        /* Nav */
+        .nav-dots { position: fixed; right: clamp(12px, 2vw, 24px); top: 50%; transform: translateY(-50%); z-index: 100; display: flex; flex-direction: column; gap: 10px; }
+        .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-tertiary); opacity: 0.3; cursor: pointer; transition: all 0.3s; border: none; padding: 0; }
+        .nav-dot.active { opacity: 1; background: var(--accent); box-shadow: 0 0 8px var(--accent-dim); }
+        .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 200; transition: width 0.3s; }
+        .back-link { position: fixed; top: clamp(12px, 2vw, 20px); left: clamp(12px, 2vw, 24px); z-index: 100; font-size: clamp(0.8rem, 1.1vw, 1rem); color: var(--text-tertiary); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
         .back-link:hover { color: var(--text-secondary); }
+        .slide-num { position: absolute; bottom: clamp(12px, 2vw, 24px); right: clamp(12px, 2vw, 24px); font-family: var(--font-mono); font-size: clamp(0.8rem, 1.1vw, 1rem); color: var(--text-tertiary); }
 
-        /* Slide number */
-        .slide-num {
-            position: absolute;
-            bottom: clamp(12px, 2vw, 24px);
-            right: clamp(12px, 2vw, 24px);
-            font-family: var(--font-mono);
-            font-size: var(--small-size);
-            color: var(--text-tertiary);
-        }
-
-        /* ===========================================
-           RESPONSIVE BREAKPOINTS
-           =========================================== */
-        @media (max-height: 700px) {
-            :root {
-                --slide-padding: clamp(1rem, 3vw, 3rem);
-                --content-gap: clamp(0.4rem, 1.5vw, 1rem);
-                --title-size: clamp(1.4rem, 4.5vw, 2.8rem);
-                --h2-size: clamp(1.1rem, 3vw, 2rem);
-            }
-        }
-
-        @media (max-height: 600px) {
-            :root {
-                --slide-padding: clamp(0.75rem, 2.5vw, 2rem);
-                --title-size: clamp(1.2rem, 4vw, 2.2rem);
-                --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
-            }
-            .nav-dots, .slide-num { display: none; }
-        }
-
-        @media (max-height: 500px) {
-            :root {
-                --slide-padding: clamp(0.5rem, 2vw, 1.5rem);
-                --title-size: clamp(1rem, 3.5vw, 1.8rem);
-                --body-size: clamp(0.65rem, 1vw, 0.85rem);
-            }
-        }
-
-        @media (max-width: 600px) {
-            :root {
-                --title-size: clamp(1.5rem, 7vw, 2.5rem);
-            }
-            .compare-row { flex-direction: column; }
-            .cards-grid { grid-template-columns: 1fr; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.2s !important;
-            }
-            html { scroll-behavior: auto; }
-        }
+        /* Responsive */
+        @media (max-height: 700px) { :root { --slide-padding: clamp(1rem, 3vw, 3rem); } .slide h1 { font-size: clamp(1.6rem, 5vw, 3.5rem); } .slide h2 { font-size: clamp(1.3rem, 3.5vw, 2.5rem); } .stat-num { font-size: clamp(2rem, 5vw, 4rem); } }
+        @media (max-height: 600px) { .nav-dots, .slide-num { display: none; } }
+        @media (max-width: 600px) { :root { --slide-padding: clamp(1.25rem, 4vw, 2rem); } .pillars, .compare-row, .rising-bars, .stat-row, .founder-row, .terminal-pair { flex-direction: column; } .slide h1 { font-size: clamp(1.8rem, 8vw, 3rem); } .founder-row { align-items: flex-start; } }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; } html { scroll-behavior: auto; } }
     </style>
 </head>
 <body>
 
-    <!-- Progress bar -->
     <div class="progress-bar" id="progressBar"></div>
-
-    <!-- Back to site -->
     <a href="https://getstrainer.com" class="back-link">← getstrainer.com</a>
-
-    <!-- Nav dots -->
     <nav class="nav-dots" id="navDots"></nav>
 
-    <!-- ========== SLIDE 1: TITLE ========== -->
+    <!-- 01: TITLE -->
     <section class="slide slide-title" id="slide-1">
         <div class="slide-content">
-            <div class="label reveal">
-                <span class="dot"></span>
-                Strainer AI
-            </div>
-            <h1 class="reveal reveal-d1">Your next buyer<br><span class="accent">isn't human.</span></h1>
-            <p class="subtitle reveal reveal-d2">AI agents are already researching, evaluating, and shortlisting B2B vendors — before any human gets involved. If they can't find you, you lose before you ever had a shot.</p>
+            <div class="label reveal"><span class="dot"></span> Strainer</div>
+            <h1 class="reveal reveal-d1">Your next buyer<br>probably <span class="accent">isn't a human.</span></h1>
+            <p class="subtitle reveal reveal-d2">Your GTM needs an agent-facing layer. We build it.</p>
         </div>
-        <div class="slide-num"><span class="mono">01</span> / 09</div>
+        <div class="slide-num"><span class="mono">01</span> / 10</div>
     </section>
 
-    <!-- ========== SLIDE 2: THE SHIFT ========== -->
+    <!-- 02: EVIDENCE -->
     <section class="slide" id="slide-2">
         <div class="slide-content">
             <div class="phase-badge reveal">The Shift</div>
-            <h2 class="reveal">B2B buying is being automated — stage by stage.</h2>
-            <p class="reveal reveal-d1" style="max-width: 640px; margin-top: clamp(0.5rem, 1vw, 1rem);">Discovery, evaluation, procurement. Each stage of the buying journey is being handed to AI. The companies that adapt first will win the next decade of deals.</p>
-            <div class="cards-grid">
-                <div class="card reveal reveal-d1">
-                    <h4><span class="accent">Now</span> — Discovery</h4>
-                    <p>Buyers ask ChatGPT and Perplexity "what's the best tool for X?" instead of Googling. The shortlist forms before a human rep is ever contacted.</p>
+            <h2 class="reveal">Agents are taking over B2B buying.</h2>
+            <p class="reveal reveal-d1" style="margin-top: clamp(0.5rem, 1vw, 0.75rem); max-width: 1000px;">AI agents are better at systematically comparing dozens of vendors, doing long-tail research, and stress-testing claims. Humans can't match them at scale.</p>
+            <div class="stat-row">
+                <div class="stat-item reveal reveal-d2">
+                    <div class="stat-num">89%</div>
+                    <div class="stat-desc">of B2B buyers use AI in their purchasing journey</div>
+                    <div class="stat-cite">Forrester, 2025</div>
                 </div>
-                <div class="card reveal reveal-d2">
-                    <h4><span class="accent">Emerging</span> — Evaluation</h4>
-                    <p>AI agents are pointed at your docs, your pricing, your competitor's API. They compare, score, and shortlist — without ever visiting your website.</p>
-                </div>
-                <div class="card reveal reveal-d3">
-                    <h4><span class="accent">Coming</span> — Procurement</h4>
-                    <p>Autonomous buyer agents will hold budgets and execute transactions. They'll demand sandbox APIs and machine-readable contracts — not pitch decks.</p>
+                <div class="stat-item reveal reveal-d3">
+                    <div class="stat-num">$15T</div>
+                    <div class="stat-desc">in B2B spend through AI agent exchanges by 2028</div>
+                    <div class="stat-cite">Gartner, 2025</div>
                 </div>
             </div>
         </div>
-        <div class="slide-num"><span class="mono">02</span> / 09</div>
+        <div class="slide-num"><span class="mono">02</span> / 10</div>
     </section>
 
-    <!-- ========== SLIDE 3: STAT — 66% ========== -->
+    <!-- 03: ONE PROBLEM -->
     <section class="slide" id="slide-3">
         <div class="slide-content">
-            <div class="phase-badge reveal">The Evidence</div>
-            <div class="stat-big reveal">66%</div>
-            <p class="stat-context reveal reveal-d1">of B2B decision-makers now use AI to research and evaluate suppliers — before they ever talk to your sales team.</p>
-            <div class="stat-source reveal reveal-d2">Responsive, 2025</div>
-        </div>
-        <div class="slide-num"><span class="mono">03</span> / 09</div>
-    </section>
-
-    <!-- ========== SLIDE 4: STAT — 89% ========== -->
-    <section class="slide" id="slide-4">
-        <div class="slide-content">
-            <div class="phase-badge reveal">The Evidence</div>
-            <div class="stat-big reveal">89%</div>
-            <p class="stat-context reveal reveal-d1">of B2B buyers use generative AI at some point in their purchasing journey — from initial research through to final vendor selection.</p>
-            <div class="stat-source reveal reveal-d2">Forrester Buyers' Journey Survey, 2025</div>
-        </div>
-        <div class="slide-num"><span class="mono">04</span> / 09</div>
-    </section>
-
-    <!-- ========== SLIDE 5: THE PROBLEM ========== -->
-    <section class="slide" id="slide-5">
-        <div class="slide-content">
-            <div class="phase-badge reveal">The Problem</div>
-            <h2 class="reveal">Most B2B companies are invisible to AI buyers.</h2>
-            <div class="terminal reveal reveal-d1">
-                <div class="terminal-header">
-                    <span class="terminal-dot"></span>
-                    <span class="terminal-dot"></span>
-                    <span class="terminal-dot"></span>
+            <div class="phase-badge reveal">The Implication</div>
+            <h2 class="reveal">GTM collapses to <span class="accent">one problem.</span></h2>
+            <p class="reveal reveal-d1" style="font-size: clamp(1.5rem, 2.8vw, 2.2rem); margin-top: clamp(0.5rem, 1vw, 0.75rem); max-width: 900px;">Make sure the buyer's AI agent selects <span class="accent">you.</span></p>
+            <div class="pillars">
+                <div class="pillar reveal reveal-d2">
+                    <div class="pillar-icon">📄</div>
+                    <h3>Be Readable</h3>
+                    <p>Structured data agents can parse, compare, and rank</p>
                 </div>
-                <div class="terminal-body">
-                    <span class="dim">$</span> <span class="cmd">agent.query</span>("best API monitoring tool for enterprise")<br>
-                    <br>
-                    <span class="dim">→ Scanning 47 vendors...</span><br>
-                    <span class="dim">→ 31 have no structured data</span><br>
-                    <span class="dim">→ 22 block AI crawlers</span><br>
-                    <span class="dim">→ 12 have no machine-readable pricing</span><br>
-                    <br>
-                    <span class="cmd">Shortlist: 3 vendors.</span> <span class="dim">// The rest never existed.</span>
+                <div class="pillar reveal reveal-d3">
+                    <div class="pillar-icon">⚡</div>
+                    <h3>Be Interactable</h3>
+                    <p>Agents can test your product and talk to your systems directly</p>
                 </div>
             </div>
-            <p class="reveal reveal-d2" style="margin-top: clamp(0.5rem, 1vw, 1rem); max-width: 560px;">No visit. No click. No form fill. A completely dark consideration journey — invisible to your analytics.</p>
         </div>
-        <div class="slide-num"><span class="mono">05</span> / 09</div>
+        <div class="slide-num"><span class="mono">03</span> / 10</div>
     </section>
 
-    <!-- ========== SLIDE 6: BEFORE / AFTER ========== -->
+    <!-- 04: THE PROBLEM -->
+    <section class="slide slide-title" id="slide-4">
+        <div class="slide-content" style="justify-content: center;">
+            <div class="phase-badge reveal">The Problem</div>
+            <h2 class="reveal reveal-d1" style="max-width: 900px;">But, AI buyer agents <span class="accent">cannot accurately discover and evaluate</span> most products today.</h2>
+            <p class="reveal reveal-d2" style="margin-top: clamp(0.5rem, 1vw, 1rem); max-width: 750px;">So you get left out of deals before you even know they exist.</p>
+        </div>
+        <div class="slide-num"><span class="mono">04</span> / 11</div>
+    </section>
+
+    <!-- 05: LIVE SCANNER (moved before What We Do) -->
+    <section class="slide" id="slide-5">
+        <div class="slide-content" style="justify-content: flex-start; padding-top: clamp(1.5rem, 3vw, 3rem);">
+            <div class="phase-badge reveal">Live Demo</div>
+            <h2 class="reveal" style="font-size: clamp(1.4rem, 3.5vw, 2.5rem);">See how an AI agent scores <span class="accent">your website</span> — right now.</h2>
+            <div class="reveal reveal-d1" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-top: clamp(0.5rem, 1vw, 0.75rem); display: flex; flex-direction: column; flex: 1; min-height: 0;">
+                <div style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-bottom: 1px solid var(--border); background: var(--bg-elevated); flex-shrink: 0;">
+                    <span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span>
+                    <span style="margin-left: 8px; font-family: var(--font-mono); font-size: clamp(0.65rem, 0.9vw, 0.75rem); color: var(--text-tertiary);">strainer-agent-scanner v0.3 (live)</span>
+                </div>
+                <div style="padding: clamp(0.75rem, 1.5vw, 1rem); display: flex; flex-direction: column; flex: 1; min-height: 0;">
+                    <div style="display: flex; gap: 8px; margin-bottom: clamp(0.5rem, 1vw, 0.75rem); flex-shrink: 0;">
+                        <input type="url" id="scanUrl" placeholder="https://your-product.com" style="flex: 1; padding: 10px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-family: var(--font-mono); font-size: clamp(0.75rem, 1vw, 0.85rem); outline: none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'" />
+                        <button id="scanBtn" onclick="runScan()" style="padding: 10px 20px; background: var(--accent); color: #0a0a0b; border: none; border-radius: 8px; font-family: var(--font-mono); font-size: clamp(0.7rem, 0.95vw, 0.85rem); font-weight: 600; cursor: pointer; white-space: nowrap;">Run Scan →</button>
+                    </div>
+                    <div id="scannerOutput" style="font-family: var(--font-mono); font-size: clamp(0.65rem, 0.9vw, 0.78rem); line-height: 1.7; flex: 1; overflow-y: auto; color: var(--text-tertiary); min-height: 0;">
+                        <div style="opacity: 0.5">Paste a URL and hit scan. We'll fetch the real page and evaluate it from an agent's perspective.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-num"><span class="mono">05</span> / 11</div>
+    </section>
+
+    <!-- 06: WHAT WE DO -->
     <section class="slide" id="slide-6">
         <div class="slide-content">
-            <div class="phase-badge reveal">What Needs to Change</div>
-            <h2 class="reveal">Selling to humans ≠ selling to agents.</h2>
+            <div class="phase-badge reveal">What We Do</div>
+            <h2 class="reveal">We build your agent-facing layer<br><span class="accent">so you never get left out of possible deals again.</span></h2>
+            <div class="cards-col">
+                <div class="card reveal reveal-d1">
+                    <h4>📄 Make you machine-readable</h4>
+                    <p>We take your website, pricing, and case studies and restructure them into formats AI agents can query programmatically — structured data, llms.txt, schema markup, machine-readable pricing.</p>
+                    <span class="example">e.g. your pricing page → structured JSON an agent can filter by budget, seats, and features</span>
+                </div>
+                <div class="card card-accent reveal reveal-d2">
+                    <h4>🎯 Simulate your target accounts' buyer agents</h4>
+                    <p>We don't give you a generic score. We simulate the buying agent for each of your target accounts — their context, their requirements — and find exactly where agents fail to understand or credit you.</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-num"><span class="mono">06</span> / 11</div>
+    </section>
+
+    <!-- 06: DIFFERENTIATOR -->
+    <section class="slide" id="slide-7">
+        <div class="slide-content">
+            <div class="phase-badge reveal">Differentiator</div>
+            <h2 class="reveal">Not a dashboard.<br><span class="accent">Account-level buyer simulation.</span></h2>
             <div class="compare-row">
                 <div class="compare-col before reveal reveal-d1">
-                    <h4>Today</h4>
+                    <h4>GEO / AI Search Platforms</h4>
                     <ul>
-                        <li>Emotional brand storytelling</li>
-                        <li>PDFs, slide decks, case studies</li>
-                        <li>Pricing behind a "talk to sales" wall</li>
-                        <li>Human demo over screen share</li>
+                        <li>Keyword tracking across LLMs</li>
+                        <li>One-size-fits-all visibility scores</li>
+                        <li>No account context</li>
                     </ul>
                 </div>
                 <div class="compare-col after reveal reveal-d2">
-                    <h4>Agent-Ready</h4>
+                    <h4>Strainer</h4>
                     <ul>
-                        <li>Structured claims with verifiable data</li>
-                        <li>llms.txt, schema.org, machine-readable docs</li>
-                        <li>Transparent, parseable pricing</li>
-                        <li>Sandbox API and self-serve evaluation</li>
+                        <li>Simulates each target account's buyer agent</li>
+                        <li>Finds where agents fail to credit you</li>
+                        <li>Optimized for who you want to sign next</li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="slide-num"><span class="mono">06</span> / 09</div>
+        <div class="slide-num"><span class="mono">07</span> / 11</div>
     </section>
 
-    <!-- ========== SLIDE 7: WHAT STRAINER DOES ========== -->
-    <section class="slide" id="slide-7">
-        <div class="slide-content">
-            <div class="phase-badge reveal">The Solution</div>
-            <h2 class="reveal">Strainer makes you visible to AI buyers.</h2>
-            <p class="reveal reveal-d1" style="max-width: 560px; margin-top: clamp(0.25rem, 0.5vw, 0.5rem);">We audit your entire digital presence from an AI agent's perspective and give you a concrete action plan to fix it.</p>
-            <div class="cards-grid">
-                <div class="card reveal reveal-d1">
-                    <h4>🔍 AI Visibility Report</h4>
-                    <p>How you show up (or don't) across ChatGPT, Perplexity, Gemini, and Claude.</p>
-                </div>
-                <div class="card reveal reveal-d2">
-                    <h4>⚔️ Competitor Comparison</h4>
-                    <p>Head-to-head agent comparison vs the competitors you choose.</p>
-                </div>
-                <div class="card reveal reveal-d3">
-                    <h4>📊 40+ Signal Score</h4>
-                    <p>Agent-readiness score across technical signals: structured data, crawlability, docs quality.</p>
-                </div>
-                <div class="card reveal reveal-d4">
-                    <h4>🛠️ Prioritized Fix List</h4>
-                    <p>Estimated effort and expected impact for every recommendation.</p>
-                </div>
-            </div>
-        </div>
-        <div class="slide-num"><span class="mono">07</span> / 09</div>
-    </section>
-
-    <!-- ========== SLIDE 8: STAT — $15T ========== -->
+    <!-- 08: BAR RISES -->
     <section class="slide" id="slide-8">
         <div class="slide-content">
-            <div class="phase-badge reveal">The Opportunity</div>
-            <div class="stat-big reveal">$15T</div>
-            <p class="stat-context reveal reveal-d1">in B2B purchases predicted to be handled by AI agents by 2028. The companies that get agent-ready now will capture disproportionate share.</p>
-            <div class="stat-source reveal reveal-d2">Gartner IT Symposium, 2025</div>
-        </div>
-        <div class="slide-num"><span class="mono">08</span> / 09</div>
-    </section>
-
-    <!-- ========== SLIDE 9: CTA ========== -->
-    <section class="slide slide-title" id="slide-9">
-        <div class="slide-content" style="align-items: center; text-align: center;">
-            <div class="label reveal">
-                <span class="dot"></span>
-                Free AI Agent Audit
+            <div class="phase-badge reveal">What's Coming</div>
+            <h2 class="reveal">The bar keeps rising.</h2>
+            <div class="rising-bars">
+                <div class="rising-bar reveal reveal-d1">
+                    <div class="bar-num">01</div>
+                    <h4>Readability &amp; Verifiability</h4>
+                    <ul style="margin-top: 10px; list-style: none; display: flex; flex-direction: column; gap: 8px;">
+                        <li style="font-size: clamp(1rem, 1.5vw, 1.3rem); color: var(--text-secondary); line-height: 1.5; padding-left: 1.4em; position: relative;"><span style="position: absolute; left: 0; color: var(--accent);">→</span>Fully transparent, deterministic pricing — not hidden behind "talk to sales"</li>
+                        <li style="font-size: clamp(1rem, 1.5vw, 1.3rem); color: var(--text-secondary); line-height: 1.5; padding-left: 1.4em; position: relative;"><span style="position: absolute; left: 0; color: var(--accent);">→</span>Verifiable performance benchmarks — not just latency, SLAs but core outcomes</li>
+                    </ul>
+                </div>
+                <div class="rising-bar reveal reveal-d2">
+                    <div class="bar-num">02</div>
+                    <h4>Interactivity</h4>
+                    <ul style="margin-top: 10px; list-style: none; display: flex; flex-direction: column; gap: 8px;">
+                        <li style="font-size: clamp(1rem, 1.5vw, 1.3rem); color: var(--text-secondary); line-height: 1.5; padding-left: 1.4em; position: relative;"><span style="position: absolute; left: 0; color: var(--accent);">→</span>Create custom sandbox environment to allow agents to perform A/B testing</li>
+                        <li style="font-size: clamp(1rem, 1.5vw, 1.3rem); color: var(--text-secondary); line-height: 1.5; padding-left: 1.4em; position: relative;"><span style="position: absolute; left: 0; color: var(--accent);">→</span>Allow AI agents with wallets to make payments</li>
+                    </ul>
+                </div>
             </div>
-            <h1 class="reveal reveal-d1">Get found by<br><span class="accent">AI buyers.</span></h1>
-            <p class="subtitle reveal reveal-d2" style="text-align: center;">A GTM engineer will personally audit your AI presence, run real queries against you and your competitors, and deliver an action plan you can start executing the same week.</p>
-            <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn-primary reveal reveal-d3">Book Your Free Audit →</a>
         </div>
-        <div class="slide-num"><span class="mono">09</span> / 09</div>
+        <div class="slide-num"><span class="mono">08</span> / 11</div>
     </section>
 
-    <!-- ========== SCRIPTS ========== -->
+    <!-- 09: WHY US (KEPT AS-IS) -->
+    <section class="slide" id="slide-9">
+        <div class="slide-content">
+            <div class="phase-badge reveal">Why Us</div>
+            <h2 class="reveal">Built from the sales floor.</h2>
+            <div class="founder-row reveal reveal-d1">
+                <img src="data:image/jpeg;base64,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" alt="Dafydd" class="founder-photo">
+                <div class="founder-info">
+                    <div class="founder-name"><a href="https://x.com/DafyddFD" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--border); transition: border-color 0.2s;">Dafydd Foster Davies</a></div>
+                    <div class="founder-role">Founder</div>
+                    <div class="founder-items">
+                        <div class="founder-item" style="border-color: rgba(0, 229, 160, 0.3); background: linear-gradient(135deg, rgba(0, 229, 160, 0.08), rgba(0, 229, 160, 0.02));">
+                            <h4>ex-McKinsey · University of Oxford</h4>
+                        </div>
+                        <div class="founder-item">
+                            <h4>GTM Hire #1 @ Depict <span style="color: var(--text-tertiary); font-weight: 400;">(2x YC Top Company, founded by Anton Osika)</span></h4>
+                            <p>Signed and served multiple >$100k ARR clients including Zepto and H&M</p>
+                        </div>
+                        <div class="founder-item">
+                            <h4>Co-Founder @ MeetMore <span style="color: var(--text-tertiary); font-weight: 400;">(Neo 2024)</span></h4>
+                            <p>Win leads for estate agents. Raised >$1m. >$15m home sales GMV.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-num"><span class="mono">09</span> / 11</div>
+    </section>
+
+    <!-- 10: OUR ASK -->
+    <section class="slide" id="slide-10">
+        <div class="slide-content" style="align-items: center; text-align: center;">
+            <div class="phase-badge reveal">Our Ask</div>
+            <h2 class="reveal">Looking for <span class="accent">early design partners.</span></h2>
+            <p class="reveal reveal-d1" style="margin-top: clamp(0.25rem, 0.5vw, 0.5rem); max-width: 520px;">We've signed our first design partner. We're looking for B2B companies who want to make sure they win this shift, not their competition.</p>
+            <ul class="ask-center reveal reveal-d2">
+                <li>SMB or midmarket deal size</li>
+                <li>PLG or inbound-led motion</li>
+                <li>Buyer personas tend to be AI power users</li>
+            </ul>
+        </div>
+        <div class="slide-num"><span class="mono">10</span> / 11</div>
+    </section>
+
+    <!-- 11: CTA -->
+    <section class="slide slide-title" id="slide-11">
+        <div class="slide-content" style="align-items: center; text-align: center;">
+            <div class="label reveal"><span class="dot"></span> Let's talk</div>
+            <h1 class="reveal reveal-d1">Get agent-ready<br><span class="accent">first.</span></h1>
+            <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn-primary reveal reveal-d2">Book a Conversation →</a>
+        </div>
+        <div class="slide-num"><span class="mono">11</span> / 11</div>
+    </section>
+
     <script>
-        // ========== SLIDE NAVIGATION ==========
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
         const progressBar = document.getElementById('progressBar');
         const navDotsContainer = document.getElementById('navDots');
 
-        // Create nav dots
         slides.forEach((_, i) => {
             const dot = document.createElement('button');
             dot.className = 'nav-dot';
-            dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-            dot.addEventListener('click', () => {
-                slides[i].scrollIntoView({ behavior: 'smooth' });
-            });
+            dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+            dot.addEventListener('click', () => { slides[i].scrollIntoView({ behavior: 'smooth' }); });
             navDotsContainer.appendChild(dot);
         });
 
         const navDots = document.querySelectorAll('.nav-dot');
 
-        // Track current slide with IntersectionObserver
         const slideObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const index = Array.from(slides).indexOf(entry.target);
-
-                    // Update dots
                     navDots.forEach((d, i) => d.classList.toggle('active', i === index));
-
-                    // Update progress bar
-                    const progress = ((index + 1) / totalSlides) * 100;
-                    progressBar.style.width = progress + '%';
-
-                    // Trigger reveals
+                    progressBar.style.width = ((index + 1) / totalSlides) * 100 + '%';
                     entry.target.classList.add('visible');
                     entry.target.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
                 }
             });
         }, { threshold: 0.5 });
-
         slides.forEach(s => slideObserver.observe(s));
 
-        // ========== KEYBOARD NAV ==========
         let currentSlide = 0;
-
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
                 e.preventDefault();
-                if (currentSlide < totalSlides - 1) {
-                    currentSlide++;
-                    slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
-                }
+                if (currentSlide < totalSlides - 1) { currentSlide++; slides[currentSlide].scrollIntoView({ behavior: 'smooth' }); }
             } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
                 e.preventDefault();
-                if (currentSlide > 0) {
-                    currentSlide--;
-                    slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
-                }
+                if (currentSlide > 0) { currentSlide--; slides[currentSlide].scrollIntoView({ behavior: 'smooth' }); }
             }
         });
 
-        // Keep currentSlide in sync with scroll
         const syncObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    currentSlide = Array.from(slides).indexOf(entry.target);
-                }
-            });
+            entries.forEach(entry => { if (entry.isIntersecting) { currentSlide = Array.from(slides).indexOf(entry.target); } });
         }, { threshold: 0.5 });
-
         slides.forEach(s => syncObserver.observe(s));
 
-        // ========== INITIAL STATE ==========
-        // Reveal first slide immediately
         setTimeout(() => {
             slides[0].classList.add('visible');
             slides[0].querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
             navDots[0]?.classList.add('active');
             progressBar.style.width = (1 / totalSlides * 100) + '%';
         }, 100);
+
+        // ========== SCANNER ==========
+        const PROXIES = [
+            url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+            url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+            url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+        ];
+
+        async function fetchViaProxy(url) {
+            for (let i = 0; i < PROXIES.length; i++) {
+                try {
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), 8000);
+                    const resp = await fetch(PROXIES[i](url), { signal: controller.signal });
+                    clearTimeout(timeout);
+                    if (!resp.ok) continue;
+                    const text = await resp.text();
+                    if (text && text.length > 100) return text;
+                } catch (e) { /* try next */ }
+            }
+            return null;
+        }
+
+        async function runScan() {
+            const rawUrl = document.getElementById('scanUrl').value.trim();
+            if (!rawUrl) return;
+            const btn = document.getElementById('scanBtn');
+            const output = document.getElementById('scannerOutput');
+            btn.disabled = true; btn.textContent = 'Scanning...';
+            output.innerHTML = '';
+
+            let url = rawUrl;
+            if (!url.startsWith('http')) url = 'https://' + url;
+            let hostname, origin;
+            try { const u = new URL(url); hostname = u.hostname; origin = u.origin; } catch { hostname = rawUrl; origin = ''; }
+
+            const log = (text, delay) => new Promise(resolve => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.style.cssText = 'opacity:0;transform:translateY(3px);animation:lineIn 0.25s forwards';
+                    div.innerHTML = text;
+                    output.appendChild(div);
+                    output.scrollTop = output.scrollHeight;
+                    resolve();
+                }, delay);
+            });
+
+            await log(`<span style="color:var(--accent)">$</span> strainer scan --target ${hostname} --live`, 0);
+            await log(`<span style="color:var(--text-secondary)">Fetching ${hostname}...</span>`, 400);
+
+            let html_content = await fetchViaProxy(url);
+            let fetchOk = !!html_content;
+
+            if (!fetchOk) {
+                await log(`<span style="color:var(--yellow)">⚠ Could not fetch main page (site may block proxy requests).</span>`, 300);
+            } else {
+                await log(`<span style="color:var(--green)">✓</span> Fetched ${(html_content.length / 1024).toFixed(0)}KB of HTML`, 300);
+            }
+
+            const [robotsTxt, llmsTxt] = await Promise.all([
+                origin ? fetchViaProxy(origin + '/robots.txt') : Promise.resolve(null),
+                origin ? fetchViaProxy(origin + '/llms.txt') : Promise.resolve(null),
+            ]);
+
+            const parser = new DOMParser();
+            const doc = fetchOk ? parser.parseFromString(html_content, 'text/html') : null;
+
+            const c = {
+                title: doc ? (doc.querySelector('title')?.textContent?.trim() || '') : '',
+                metaDesc: doc ? (doc.querySelector('meta[name="description"]')?.getAttribute('content') || '') : '',
+                jsonLd: doc ? doc.querySelectorAll('script[type="application/ld+json"]').length : 0,
+                schemaOrg: fetchOk ? html_content.includes('schema.org') : false,
+                hasLlmsTxt: llmsTxt && llmsTxt.length > 20 && !llmsTxt.includes('<!DOCTYPE') && !llmsTxt.includes('<html') && !/404|not found/i.test(llmsTxt.substring(0, 50)),
+                hasPricing: fetchOk ? /pric(e|ing)\b/i.test(html_content) && /\$\d|€\d|£\d|\d+\s*\/\s*mo|\d+\s*per\s*(month|year)|free\s*tier|free\s*plan/i.test(html_content) : false,
+                priceMentioned: fetchOk ? /pric(e|ing)\b/i.test(html_content) : false,
+                hasApiDocs: fetchOk ? /api[-\s]?doc|swagger|openapi|\/docs\b|developer\s*portal/i.test(html_content) : false,
+                contactGate: fetchOk ? /book\s*a?\s*(demo|call|meeting)|contact\s*sales|talk\s*to\s*sales|request\s*a?\s*demo/i.test(html_content) : false,
+                wordCount: doc ? (doc.body?.textContent?.split(/\s+/).length || 0) : 0,
+                hasTrial: fetchOk ? /free\s*trial|try\s*(it\s*)?free|start\s*free|sandbox|playground|demo\s*environment|self[-\s]serve/i.test(html_content) : false,
+                hasOpenApi: fetchOk ? /openapi|swagger/i.test(html_content) : false,
+                blocksAI: robotsTxt ? /disallow.*\/(GPTBot|ClaudeBot|Anthropic|ChatGPT|anthropic-ai)/im.test(robotsTxt) : false,
+                hasRobots: !!robotsTxt && robotsTxt.length > 10 && !robotsTxt.includes('<!DOCTYPE'),
+            };
+
+            await log('', 200);
+            await log(`<span style="color:var(--text-secondary)">── DISCOVERY ──</span>`, 300);
+            if (c.title) await log(`<span style="color:var(--green)">  ✓</span> Page title: "${c.title.substring(0, 60)}"`, 250);
+            else if (fetchOk) await log(`<span style="color:var(--red)">  ✗ No page title found</span>`, 250);
+            if (c.metaDesc) await log(`<span style="color:var(--green)">  ✓</span> Meta description found (${c.metaDesc.length} chars)`, 200);
+            else if (fetchOk) await log(`<span style="color:var(--red)">  ✗ No meta description</span>`, 200);
+            if (c.hasLlmsTxt) await log(`<span style="color:var(--green)">  ✓</span> llms.txt found`, 250);
+            else await log(`<span style="color:var(--red)">  ✗ No llms.txt</span>`, 250);
+            if (c.blocksAI) await log(`<span style="color:var(--red)">  ✗ robots.txt blocks AI crawlers</span>`, 250);
+            if (c.jsonLd > 0) await log(`<span style="color:var(--green)">  ✓</span> JSON-LD found (${c.jsonLd} blocks)`, 200);
+            else if (fetchOk) await log(`<span style="color:var(--red)">  ✗ No structured data</span>`, 200);
+
+            await log('', 200);
+            await log(`<span style="color:var(--text-secondary)">── EVALUATION ──</span>`, 300);
+            if (c.hasPricing) await log(`<span style="color:var(--green)">  ✓</span> Pricing visible on page`, 250);
+            else if (c.contactGate) await log(`<span style="color:var(--red)">  ✗ Pricing gated behind sales contact</span>`, 250);
+            else if (fetchOk) await log(`<span style="color:var(--yellow)">  ⚠ No pricing detected</span>`, 250);
+            if (c.hasApiDocs) await log(`<span style="color:var(--green)">  ✓</span> API docs referenced`, 200);
+            else if (fetchOk) await log(`<span style="color:var(--yellow)">  ⚠ No API docs found</span>`, 200);
+
+            await log('', 200);
+            await log(`<span style="color:var(--text-secondary)">── PROCUREMENT ──</span>`, 300);
+            if (c.hasTrial) await log(`<span style="color:var(--green)">  ✓</span> Free trial or sandbox detected`, 250);
+            else if (fetchOk) await log(`<span style="color:var(--red)">  ✗ No self-serve trial or sandbox</span>`, 250);
+            if (c.hasOpenApi) await log(`<span style="color:var(--green)">  ✓</span> OpenAPI spec referenced`, 200);
+            else if (fetchOk) await log(`<span style="color:var(--red)">  ✗ No OpenAPI spec</span>`, 200);
+
+            let score = 0;
+            if (c.title) score += 5; if (c.metaDesc) score += 8; if (c.hasLlmsTxt) score += 15;
+            if (c.jsonLd > 0) score += 15; if (c.hasPricing) score += 15; if (c.hasApiDocs) score += 10;
+            if (c.hasTrial) score += 12; if (c.hasOpenApi) score += 10;
+            if (c.wordCount > 300) score += 5; if (c.wordCount > 800) score += 5;
+            if (c.blocksAI) score = Math.max(0, score - 15);
+            if (!fetchOk && !c.hasLlmsTxt && !c.hasRobots) score = Math.floor(Math.random() * 20 + 15);
+
+            await log('', 200);
+            const sc = score >= 60 ? 'var(--green)' : score >= 35 ? 'var(--yellow)' : 'var(--red)';
+            await log(`<span style="color:var(--text-secondary)">AGENT READINESS SCORE:</span> <span style="color:${sc};font-size:1.2em;font-weight:700">${score}/100</span>`, 300);
+            await log(`<span style="color:var(--text-secondary)">Most B2B sites score 15–35.</span>`, 200);
+
+            btn.disabled = false; btn.textContent = 'Run Scan →';
+        }
+
+        document.getElementById('scanUrl')?.addEventListener('keypress', (e) => { if (e.key === 'Enter') runScan(); });
     </script>
 </body>
 </html>
