@@ -419,7 +419,6 @@
             <div class="nav-links">
                 <a href="#shift">The Shift</a>
                 <a href="#evidence">Evidence</a>
-                <a href="#scanner">Agent Audit</a>
                 <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn btn-primary">Get Free Audit →</a>
             </div>
         </div>
@@ -436,7 +435,6 @@
             <p class="reveal">AI agents are already researching vendors, comparing APIs, and recommending tools — before any human gets involved. They don't care about your marketing. They care about your product. If they can't find you, evaluate you, and compare you — you lose before you ever had a shot.</p>
             <div class="hero-ctas reveal">
                 <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn btn-primary btn-large">Book a Free Audit →</a>
-                <a href="#scanner" class="btn btn-ghost btn-large">Get Your Website Score</a>
             </div>
         </div>
     </section>
@@ -637,40 +635,6 @@
         </div>
     </section>
 
-    <!-- SCANNER -->
-    <section class="scanner" id="scanner">
-        <div class="container">
-            <div class="section-label reveal">Your Website Score</div>
-            <h2 class="section-heading reveal">See how an AI agent scores your website — right now.</h2>
-            <p class="section-sub reveal">Paste in your website, and we'll show you how a buyer agent ranks you against your competition.</p>
-
-            <div class="scanner-box reveal">
-                <div class="scanner-header">
-                    <span class="scanner-dot"></span>
-                    <span class="scanner-dot"></span>
-                    <span class="scanner-dot"></span>
-                    <span class="scanner-title">strainer-agent-scanner v0.3 (live)</span>
-                </div>
-                <div class="scanner-body">
-                    <div class="scanner-input-row">
-                        <input type="url" class="scanner-input" id="scanUrl" placeholder="https://your-product.com" />
-                        <button class="scan-btn" id="scanBtn" onclick="runScan()">Run Scan →</button>
-                    </div>
-                    <div class="scanner-output" id="scannerOutput">
-                        <div style="color: var(--text-tertiary); opacity: 0.5">Paste a URL and hit scan. We'll fetch the real page and evaluate it from an agent's perspective.</div>
-                    </div>
-                    <div class="scanner-cta" id="scannerCta">
-                        <p>
-                            This is a surface-level scan.
-                            <span>The full AI Agent Audit tests 40+ signals and tells you exactly how to fix each one.</span>
-                        </p>
-                        <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn btn-primary" style="white-space: nowrap;">Get Full Audit →</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- FINAL CTA -->
     <section class="final-cta">
         <div class="container">
@@ -692,7 +656,7 @@
     <!-- FOOTER -->
     <footer>
         <div class="container">
-            <div class="footer-left">&copy; 2025 Strainer</div>
+            <div class="footer-left">&copy; 2026 Strainer</div>
             <div class="footer-links">
                 <a href="mailto:hello@getstrainer.com">hello@getstrainer.com</a>
             </div>
@@ -711,260 +675,6 @@
         document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
         setTimeout(() => document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible')), 80);
 
-        // ========== SCANNER ==========
-        // Your Cloudflare Worker (primary), public proxies as fallback
-        // Replace WORKER_URL with your deployed worker URL, e.g.:
-        // const WORKER_URL = 'https://strainer-proxy.YOUR-SUBDOMAIN.workers.dev';
-        const WORKER_URL = null; // ← set this after deploying the worker
-
-        const PROXIES = [
-            ...(WORKER_URL ? [url => `${WORKER_URL}?url=${encodeURIComponent(url)}`] : []),
-            url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-            url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-            url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
-        ];
-
-        async function fetchViaProxy(url) {
-            for (let i = 0; i < PROXIES.length; i++) {
-                try {
-                    const controller = new AbortController();
-                    const timeout = setTimeout(() => controller.abort(), 8000);
-                    const resp = await fetch(PROXIES[i](url), { signal: controller.signal });
-                    clearTimeout(timeout);
-                    if (!resp.ok) continue;
-                    const text = await resp.text();
-                    if (text && text.length > 100) return text;
-                } catch (e) { /* try next proxy */ }
-            }
-            return null;
-        }
-
-        async function runScan() {
-            const rawUrl = document.getElementById('scanUrl').value.trim();
-            if (!rawUrl) return;
-
-            const btn = document.getElementById('scanBtn');
-            const output = document.getElementById('scannerOutput');
-            const cta = document.getElementById('scannerCta');
-            btn.disabled = true;
-            btn.textContent = 'Scanning...';
-            output.innerHTML = '';
-            cta.classList.remove('visible');
-
-            let url = rawUrl;
-            if (!url.startsWith('http')) url = 'https://' + url;
-            let hostname, origin;
-            try { const u = new URL(url); hostname = u.hostname; origin = u.origin; } catch { hostname = rawUrl; origin = ''; }
-
-            const log = (text, delay) => new Promise(resolve => {
-                setTimeout(() => {
-                    const div = document.createElement('div');
-                    div.className = 'line';
-                    div.innerHTML = text;
-                    output.appendChild(div);
-                    output.scrollTop = output.scrollHeight;
-                    resolve();
-                }, delay);
-            });
-
-            await log(`<span class="cmd">$</span> strainer scan --target ${hostname} --live`, 0);
-            await log(`<span class="info">Fetching ${hostname}...</span>`, 400);
-
-            // Fetch main page
-            let html = await fetchViaProxy(url);
-            let fetchOk = !!html;
-
-            if (!fetchOk) {
-                await log(`<span class="warn">⚠ Could not fetch main page (site may block proxy requests).</span>`, 300);
-                await log(`<span class="info">Checking auxiliary files (robots.txt, llms.txt)...</span>`, 300);
-            } else {
-                await log(`<span class="ok">✓</span> Fetched ${(html.length / 1024).toFixed(0)}KB of HTML`, 300);
-            }
-
-            // Fetch robots.txt and llms.txt in parallel
-            const [robotsTxt, llmsTxt] = await Promise.all([
-                origin ? fetchViaProxy(origin + '/robots.txt') : Promise.resolve(null),
-                origin ? fetchViaProxy(origin + '/llms.txt') : Promise.resolve(null),
-            ]);
-
-            const parser = new DOMParser();
-            const doc = fetchOk ? parser.parseFromString(html, 'text/html') : null;
-
-            // Checks
-            const c = {
-                title: doc ? (doc.querySelector('title')?.textContent?.trim() || '') : '',
-                metaDesc: doc ? (doc.querySelector('meta[name="description"]')?.getAttribute('content') || '') : '',
-                jsonLd: doc ? doc.querySelectorAll('script[type="application/ld+json"]').length : 0,
-                schemaOrg: fetchOk ? html.includes('schema.org') : false,
-                hasLlmsTxt: llmsTxt && llmsTxt.length > 20 && !llmsTxt.includes('<!DOCTYPE') && !llmsTxt.includes('<html') && !/404|not found/i.test(llmsTxt.substring(0, 50)),
-                hasPricing: fetchOk ? /pric(e|ing)\b/i.test(html) && /\$\d|€\d|£\d|\d+\s*\/\s*mo|\d+\s*per\s*(month|year)|free\s*tier|free\s*plan/i.test(html) : false,
-                priceMentioned: fetchOk ? /pric(e|ing)\b/i.test(html) : false,
-                hasApiDocs: fetchOk ? /api[-\s]?doc|swagger|openapi|\/docs\b|developer\s*portal/i.test(html) : false,
-                contactGate: fetchOk ? /book\s*a?\s*(demo|call|meeting)|contact\s*sales|talk\s*to\s*sales|request\s*a?\s*demo/i.test(html) : false,
-                wordCount: doc ? (doc.body?.textContent?.split(/\s+/).length || 0) : 0,
-                hasTrial: fetchOk ? /free\s*trial|try\s*(it\s*)?free|start\s*free|sandbox|playground|demo\s*environment|self[- ]serve/i.test(html) : false,
-                hasOpenApi: fetchOk ? /openapi|swagger/i.test(html) : false,
-                blocksAI: robotsTxt ? /disallow.*\/(GPTBot|ClaudeBot|Anthropic|ChatGPT|anthropic-ai)/im.test(robotsTxt) : false,
-                mentionsAI: robotsTxt ? /GPTBot|ClaudeBot|Anthropic|ChatGPT|PerplexityBot|Google-Extended/i.test(robotsTxt) : false,
-                hasRobots: !!robotsTxt && robotsTxt.length > 10 && !robotsTxt.includes('<!DOCTYPE'),
-            };
-
-            // ── DISCOVERY ──
-            await log('', 200);
-            await log(`<span class="info">── DISCOVERY: Can agents find you? ──</span>`, 300);
-
-            if (c.title) {
-                await log(`<span class="ok">  ✓</span> Page title: "${c.title.substring(0, 60)}${c.title.length > 60 ? '...' : ''}"`, 250);
-            } else if (fetchOk) {
-                await log(`<span class="err">  ✗ No page title found</span>`, 250);
-            }
-
-            if (c.metaDesc) {
-                await log(`<span class="ok">  ✓</span> Meta description found (${c.metaDesc.length} chars)`, 200);
-            } else if (fetchOk) {
-                await log(`<span class="err">  ✗ No meta description — agents can't summarize you</span>`, 200);
-            }
-
-            if (c.hasLlmsTxt) {
-                await log(`<span class="ok">  ✓</span> llms.txt found — agents have a structured summary of your product`, 250);
-            } else {
-                await log(`<span class="err">  ✗ No llms.txt — agents have no structured description of your product</span>`, 250);
-            }
-
-            if (c.blocksAI) {
-                await log(`<span class="err">  ✗ robots.txt blocks AI crawlers — agents cannot index your site</span>`, 250);
-            } else if (c.mentionsAI) {
-                await log(`<span class="ok">  ✓</span> robots.txt mentions AI crawlers — shows awareness`, 200);
-            } else if (c.hasRobots) {
-                await log(`<span class="warn">  ⚠ robots.txt exists but doesn't mention AI crawlers</span>`, 200);
-            }
-
-            if (c.jsonLd > 0) {
-                await log(`<span class="ok">  ✓</span> JSON-LD structured data found (${c.jsonLd} block${c.jsonLd > 1 ? 's' : ''})`, 200);
-            } else if (c.schemaOrg) {
-                await log(`<span class="warn">  ⚠ Schema.org referenced but no JSON-LD blocks</span>`, 200);
-            } else if (fetchOk) {
-                await log(`<span class="err">  ✗ No structured data — agents see unstructured text only</span>`, 200);
-            }
-
-            // ── EVALUATION ──
-            await log('', 200);
-            await log(`<span class="info">── EVALUATION: Can agents compare you? ──</span>`, 300);
-
-            if (c.hasPricing) {
-                await log(`<span class="ok">  ✓</span> Pricing appears visible on page`, 250);
-            } else if (c.priceMentioned && c.contactGate) {
-                await log(`<span class="err">  ✗ Pricing mentioned but gated behind "book a demo"</span>`, 250);
-            } else if (c.contactGate) {
-                await log(`<span class="err">  ✗ No visible pricing — gated behind sales contact</span>`, 250);
-            } else if (fetchOk) {
-                await log(`<span class="warn">  ⚠ No pricing information detected</span>`, 250);
-            }
-
-            if (c.hasApiDocs) {
-                await log(`<span class="ok">  ✓</span> API docs or developer portal referenced`, 200);
-            } else if (fetchOk) {
-                await log(`<span class="warn">  ⚠ No API docs or developer portal found</span>`, 200);
-            }
-
-            if (fetchOk && c.wordCount > 0) {
-                const d = c.wordCount < 300 ? 'thin' : c.wordCount < 800 ? 'moderate' : 'substantial';
-                await log(`<span class="${d === 'thin' ? 'warn' : 'ok'}">  ${d === 'thin' ? '⚠' : '✓'}</span> Page content: ~${c.wordCount} words (${d})`, 200);
-            }
-
-            // ── PROCUREMENT ──
-            await log('', 200);
-            await log(`<span class="info">── PROCUREMENT: Can agents trial you? ──</span>`, 300);
-
-            if (c.hasTrial) {
-                await log(`<span class="ok">  ✓</span> Free trial or sandbox detected`, 250);
-            } else if (fetchOk) {
-                await log(`<span class="err">  ✗ No self-serve trial, sandbox, or playground</span>`, 250);
-            }
-
-            if (c.hasOpenApi) {
-                await log(`<span class="ok">  ✓</span> OpenAPI/Swagger spec referenced`, 200);
-            } else if (fetchOk) {
-                await log(`<span class="err">  ✗ No OpenAPI spec — agents can't programmatically test your API</span>`, 200);
-            }
-
-            // Score
-            let score = 0;
-            if (c.title) score += 5;
-            if (c.metaDesc) score += 8;
-            if (c.hasLlmsTxt) score += 15;
-            if (c.jsonLd > 0) score += 15;
-            if (c.hasPricing) score += 15;
-            if (c.hasApiDocs) score += 10;
-            if (c.hasTrial) score += 12;
-            if (c.hasOpenApi) score += 10;
-            if (c.wordCount > 300) score += 5;
-            if (c.wordCount > 800) score += 5;
-            if (c.blocksAI) score = Math.max(0, score - 15);
-
-            // If we couldn't fetch main page but got some auxiliary data
-            if (!fetchOk && !c.hasLlmsTxt && !c.hasRobots) {
-                score = Math.floor(Math.random() * 20 + 15);
-                await log(`<span class="warn">  ⚠ Limited analysis — could not reach main page or auxiliary files</span>`, 200);
-            } else if (!fetchOk) {
-                // We got some data from robots/llms.txt
-                await log(`<span class="warn">  ⚠ Partial analysis — main page not fetchable, scored on auxiliary files only</span>`, 200);
-            }
-
-            await log('', 200);
-            await log(`<span class="info">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>`, 200);
-            const sc = score >= 60 ? 'ok' : score >= 35 ? 'warn' : 'err';
-            await log(`<span class="info">AGENT READINESS SCORE:</span> <span class="${sc}" style="font-size: 1.1em; font-weight: 700;">${score}/100</span>`, 300);
-            await log(`<span class="info">Most B2B sites score 15–35. Top performers score 70+.</span>`, 200);
-            await log(`<span class="info">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>`, 200);
-
-            // Agent evaluation
-            await log('', 300);
-            await log(`<span class="info">── BUYER AGENT'S INTERNAL EVALUATION ──</span>`, 400);
-
-            let agent = '';
-            const name = hostname.replace(/^www\./, '').split('.')[0];
-            const Name = name.charAt(0).toUpperCase() + name.slice(1);
-
-            if (c.blocksAI) {
-                agent += `<em>Access: BLOCKED.</em> ${Name}'s robots.txt prevents AI crawlers from indexing. I cannot gather current information. This vendor is invisible to AI-assisted evaluation.\n\n`;
-            }
-            if (!c.hasPricing && c.contactGate) {
-                agent += `<em>Pricing: UNKNOWN.</em> ${Name} requires human contact for pricing. I cannot compare cost-effectiveness. Deprioritizing in favor of vendors with transparent pricing.\n\n`;
-            } else if (!c.hasPricing && fetchOk) {
-                agent += `<em>Pricing: NOT FOUND.</em> Cannot determine if ${Name} fits budget. Flagging as "requires manual review."\n\n`;
-            }
-            if (!c.hasLlmsTxt && c.jsonLd === 0) {
-                agent += `<em>Structured data: NONE.</em> No llms.txt or JSON-LD. Working from unstructured marketing copy only. My summary of ${Name} will be less accurate than competitors with structured data.\n\n`;
-            }
-            if (!c.hasTrial && fetchOk) {
-                agent += `<em>Testability: ZERO.</em> No sandbox, trial, or demo environment. Cannot verify claims. Recommending alternatives where I can test directly.\n\n`;
-            }
-            if (c.contactGate && fetchOk) {
-                agent += `<em>Evaluation friction: HIGH.</em> Multiple "book a demo" gates detected. Vendor optimized for human conversations, not automated evaluation. Deprioritizing.\n\n`;
-            }
-            if (score >= 60) {
-                agent = `${Name} provides good machine-readable information. Pricing is parseable, documentation is accessible, evaluation can proceed without human contact. <em style="color: var(--green)">Including in shortlist.</em>`;
-            }
-            if (!agent && !fetchOk) {
-                agent = `<em>Evaluation: INCOMPLETE.</em> Could not fully access ${Name}'s website. Many sites deploy protections that also block AI agents. If an agent can't read your site, it can't recommend you. Skipping in favor of accessible competitors.`;
-            }
-
-            if (agent) {
-                const div = document.createElement('div');
-                div.className = 'line';
-                div.innerHTML = `<div class="agent-says">🤖 <strong>Buyer Agent (simulated):</strong>\n\n${agent.trim()}</div>`;
-                setTimeout(() => { output.appendChild(div); output.scrollTop = output.scrollHeight; }, 400);
-            }
-
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.textContent = 'Run Scan →';
-                cta.classList.add('visible');
-            }, 800);
-        }
-
-        document.getElementById('scanUrl').addEventListener('keypress', (e) => { if (e.key === 'Enter') runScan(); });
     </script>
 </body>
 </html>
