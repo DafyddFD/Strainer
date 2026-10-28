@@ -33,10 +33,6 @@ Most B2B websites were built for human visitors. AI agents need machine-readable
 - Ensure robots.txt does not block AI crawlers (GPTBot, ClaudeBot, etc.)
 - Add OpenAPI/Swagger specs for programmatic testing
 
-## Free Tools
-
-- [AI Agent Scanner](https://getstrainer.com/#scanner): A browser-based tool that scans any URL and scores it on agent readiness across discovery, evaluation, and procurement signals. Returns an Agent Readiness Score out of 100.
-
 ## Contact
 
 - Website: [https://getstrainer.com](https://getstrainer.com)
