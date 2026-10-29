@@ -1,680 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Privacy-friendly analytics by Plausible -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- Privacy-friendly analytics by Plausible -->
 <script async src="https://plausible.io/js/pa-DnuSqwWzhwF2BRM_CK2Dx.js"></script>
 <script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
-    <script>
-    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-    posthog.init('phc_pkNp2dKYGXVrR8oMJzH35f4et3xNSL5hraXMkuQHuBr5', {
-        api_host: 'https://eu.i.posthog.com',
-        defaults: '2026-05-30',
-    })
+<script>
+!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+posthog.init('phc_pkNp2dKYGXVrR8oMJzH35f4et3xNSL5hraXMkuQHuBr5', { api_host: 'https://eu.i.posthog.com', defaults: '2026-05-30' })
 </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strainer — Help B2B Companies Sell to AI Agents</title>
-    <meta name="description" content="Your next buyer isn't human. AI agents are researching, evaluating, and choosing B2B vendors. Most companies are invisible to them. Strainer helps you fix that.">
-    <meta property="og:title" content="Strainer — Your Next Buyer Isn't Human">
-    <meta property="og:description" content="AI agents are choosing B2B vendors. Is yours invisible?">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://getstrainer.com">
-    <link rel="canonical" href="https://getstrainer.com">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --bg: #0a0a0b;
-            --bg-elevated: #111113;
-            --bg-card: #161618;
-            --border: #222225;
-            --border-hover: #333338;
-            --text-primary: #ededef;
-            --text-secondary: #8a8a8e;
-            --text-tertiary: #5a5a5e;
-            --accent: #00e5a0;
-            --accent-dim: #00e5a020;
-            --accent-mid: #00e5a040;
-            --accent-glow: #00e5a015;
-            --red: #ff5f57;
-            --yellow: #febc2e;
-            --green: #28c840;
-            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-        }
-
-        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-
-        body {
-            font-family: var(--font-body);
-            background: var(--bg);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-            font-size: 15px;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        a { color: inherit; text-decoration: none; }
-        .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
-
-        /* NAV */
-        nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            padding: 14px 0;
-            background: rgba(10, 10, 11, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.3s;
-        }
-        nav.scrolled { border-bottom-color: var(--border); }
-        nav .container { display: flex; align-items: center; justify-content: space-between; }
-
-        .logo {
-            font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .logo-mark {
-            width: 30px; height: 30px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .logo-mark svg { width: 28px; height: 28px; }
-
-        .nav-links { display: flex; align-items: center; gap: 28px; }
-        .nav-links a { font-size: 0.85rem; color: var(--text-secondary); transition: color 0.2s; font-weight: 400; }
-        .nav-links a:hover { color: var(--text-primary); }
-
-        .btn {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 10px 20px; border-radius: 8px;
-            font-family: var(--font-body); font-size: 0.85rem; font-weight: 500;
-            cursor: pointer; transition: all 0.2s; border: none;
-        }
-        .btn-primary { background: var(--accent); color: #0a0a0b; }
-        .btn-primary:hover { background: #00ffb3; transform: translateY(-1px); box-shadow: 0 4px 24px var(--accent-dim); }
-        .btn-ghost { background: transparent; color: var(--text-primary); border: 1px solid var(--border); }
-        .btn-ghost:hover { border-color: var(--border-hover); background: var(--bg-elevated); }
-        .btn-large { font-size: 0.95rem; padding: 14px 28px; }
-
-        /* HERO */
-        .hero { padding: 170px 0 100px; position: relative; }
-        .hero::before {
-            content: '';
-            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-            width: 800px; height: 600px;
-            background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .hero-badge {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 6px 14px; border: 1px solid var(--border); border-radius: 100px;
-            font-size: 0.8rem; color: var(--text-secondary);
-            margin-bottom: 28px; background: var(--bg-elevated);
-        }
-        .hero-badge .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-        .hero h1 {
-            font-size: clamp(2.8rem, 6.5vw, 4.8rem);
-            font-weight: 800; line-height: 1.05; letter-spacing: -0.035em;
-            max-width: 820px; margin-bottom: 24px;
-        }
-        .hero h1 .accent { color: var(--accent); }
-        .hero p {
-            font-size: 1.1rem; color: var(--text-secondary); max-width: 560px;
-            line-height: 1.7; margin-bottom: 36px; font-weight: 400;
-        }
-        .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
-
-        /* SECTIONS */
-        section { padding: 96px 0; }
-        .section-label {
-            font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);
-            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; font-weight: 500;
-        }
-        .section-heading {
-            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-            font-weight: 700; line-height: 1.15; letter-spacing: -0.025em;
-            margin-bottom: 16px; max-width: 700px;
-        }
-        .section-sub {
-            font-size: 1rem; color: var(--text-secondary); max-width: 580px;
-            line-height: 1.7; font-weight: 400;
-        }
-
-        /* HORIZONS */
-        .shift { border-top: 1px solid var(--border); }
-        .horizons { margin-top: 52px; display: flex; flex-direction: column; }
-        .horizon {
-            display: grid; grid-template-columns: 180px 1fr;
-            border: 1px solid var(--border); border-bottom: none;
-            background: var(--bg); transition: background 0.3s;
-        }
-        .horizon:last-child { border-bottom: 1px solid var(--border); }
-        .horizon:first-child { border-radius: 10px 10px 0 0; }
-        .horizon:last-child { border-radius: 0 0 10px 10px; }
-        .horizon:hover { background: var(--bg-elevated); }
-        .horizon-left {
-            padding: 32px 24px; border-right: 1px solid var(--border);
-            display: flex; flex-direction: column; justify-content: center;
-        }
-        .horizon-phase {
-            font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase;
-            letter-spacing: 0.08em; color: var(--accent); margin-bottom: 6px;
-        }
-        .horizon-stage { font-size: 1.3rem; font-weight: 700; line-height: 1.2; }
-        .horizon-right { padding: 32px 28px; }
-        .horizon-right h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; }
-        .horizon-right p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 14px; }
-        .horizon-stat {
-            display: inline-flex; align-items: baseline; gap: 10px;
-            padding: 8px 14px; background: var(--accent-glow); border: 1px solid var(--accent-dim); border-radius: 6px;
-        }
-        .horizon-stat .stat-number { font-size: 1.3rem; font-weight: 800; color: var(--accent); line-height: 1; }
-        .horizon-stat .stat-label { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; }
-        .stat-source { font-size: 0.7rem; color: var(--text-tertiary); margin-top: 5px; font-family: var(--font-mono); }
-
-        /* EVIDENCE */
-        .evidence { border-top: 1px solid var(--border); }
-        .evidence-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
-            margin-top: 52px; align-items: start;
-        }
-        .evidence-text p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 18px; }
-        .evidence-text p strong { color: var(--text-primary); font-weight: 500; }
-        .evidence-visual {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
-            padding: 24px; font-family: var(--font-mono); font-size: 0.75rem;
-        }
-        .traffic-bar-label { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.75rem; font-family: var(--font-mono); }
-        .traffic-bar-label span:first-child { color: var(--text-secondary); }
-        .traffic-bar-label span:last-child { color: var(--text-primary); font-weight: 500; }
-        .traffic-bar { height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 14px; }
-        .traffic-bar-fill { height: 100%; border-radius: 4px; }
-        .traffic-bar-fill.grey { background: var(--text-tertiary); }
-        .traffic-bar-fill.green { background: var(--accent); }
-        .traffic-bar-fill.yellow { background: var(--yellow); }
-
-        /* REVENUE IMPACT */
-        .revenue-impact {
-            margin-top: 56px;
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
-        }
-        .revenue-card {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
-            padding: 24px; transition: border-color 0.3s;
-        }
-        .revenue-card:hover { border-color: var(--border-hover); }
-        .revenue-card .big-stat {
-            font-size: 2.2rem; font-weight: 800; color: var(--accent);
-            line-height: 1; margin-bottom: 10px; letter-spacing: -0.03em;
-        }
-        .revenue-card .stat-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
-        .revenue-card .stat-desc strong { color: var(--text-primary); font-weight: 500; }
-        .revenue-card .stat-src { font-size: 0.68rem; color: var(--text-tertiary); margin-top: 10px; font-family: var(--font-mono); }
-
-        /* WHAT'S CHANGING */
-        .what-changing { border-top: 1px solid var(--border); }
-        .wc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 52px; }
-        .wc-card {
-            padding: 28px; border: 1px solid var(--border); border-radius: 10px;
-            background: var(--bg); transition: all 0.3s;
-        }
-        .wc-card:hover { border-color: var(--border-hover); background: var(--bg-elevated); }
-        .wc-icon { margin-bottom: 16px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(0,229,160,0.08); border-radius: 10px; }
-        .wc-icon svg { width: 20px; height: 20px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-        .wc-row { display: flex; align-items: flex-start; gap: 12px; }
-        .wc-state {
-            min-width: 50px; font-family: var(--font-mono); font-size: 0.68rem;
-            text-transform: uppercase; letter-spacing: 0.06em; padding-top: 3px;
-        }
-        .wc-state.before { color: var(--text-tertiary); }
-        .wc-state.after { color: var(--accent); }
-        .wc-content h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 3px; }
-        .wc-content p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
-        .wc-arrow { text-align: center; color: var(--text-tertiary); font-size: 0.9rem; margin: 10px 0; padding-left: 62px; }
-
-        /* SOME THINGS NEVER CHANGE */
-        .never-change { border-top: 1px solid var(--border); }
-        .nc-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
-            margin-top: 52px; align-items: start;
-        }
-        .nc-points { display: flex; flex-direction: column; gap: 20px; }
-        .nc-point { display: flex; gap: 14px; align-items: flex-start; }
-        .nc-icon {
-            width: 36px; height: 36px; min-width: 36px;
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--accent); font-size: 1rem;
-        }
-        .nc-point h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
-        .nc-point p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
-        .nc-thesis {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 28px;
-        }
-        .nc-thesis h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; }
-        .nc-thesis p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 14px; }
-        .nc-thesis p:last-child { margin-bottom: 0; }
-        .nc-thesis .hl { color: var(--accent); font-weight: 500; }
-
-        /* SCANNER */
-        .scanner { border-top: 1px solid var(--border); }
-        .scanner-box {
-            margin-top: 48px; background: var(--bg-card);
-            border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
-        }
-        .scanner-header {
-            display: flex; align-items: center; gap: 8px;
-            padding: 12px 18px; border-bottom: 1px solid var(--border); background: var(--bg-elevated);
-        }
-        .scanner-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .scanner-dot:nth-child(1) { background: var(--red); }
-        .scanner-dot:nth-child(2) { background: var(--yellow); }
-        .scanner-dot:nth-child(3) { background: var(--green); }
-        .scanner-title { margin-left: 8px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
-        .scanner-body { padding: 32px; }
-        .scanner-input-row { display: flex; gap: 10px; margin-bottom: 28px; }
-        .scanner-input {
-            flex: 1; padding: 12px 16px;
-            background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-            color: var(--text-primary); font-family: var(--font-mono); font-size: 0.85rem;
-            outline: none; transition: border-color 0.2s;
-        }
-        .scanner-input:focus { border-color: var(--accent); }
-        .scanner-input::placeholder { color: var(--text-tertiary); }
-        .scan-btn {
-            padding: 12px 24px; background: var(--accent); color: #0a0a0b; border: none;
-            border-radius: 8px; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;
-            cursor: pointer; transition: all 0.2s; white-space: nowrap;
-        }
-        .scan-btn:hover { background: #00ffb3; }
-        .scan-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .scanner-output {
-            font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.9;
-            min-height: 260px; color: var(--text-tertiary);
-        }
-        .scanner-output .line { opacity: 0; transform: translateY(3px); animation: lineIn 0.25s forwards; }
-        .scanner-output .cmd { color: var(--accent); }
-        .scanner-output .warn { color: var(--yellow); }
-        .scanner-output .err { color: var(--red); }
-        .scanner-output .ok { color: var(--green); }
-        .scanner-output .info { color: var(--text-secondary); }
-        .scanner-output .agent-says {
-            display: block; margin-top: 8px; padding: 14px 16px;
-            background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
-            color: var(--text-secondary); font-size: 0.78rem; line-height: 1.7; white-space: pre-wrap;
-        }
-        .scanner-output .agent-says em { color: var(--red); font-style: normal; font-weight: 500; }
-        @keyframes lineIn { to { opacity: 1; transform: translateY(0); } }
-
-        .scanner-cta {
-            margin-top: 20px; padding: 18px 20px;
-            background: var(--accent-glow); border: 1px solid var(--accent-dim); border-radius: 8px;
-            display: none; align-items: center; justify-content: space-between; gap: 16px;
-        }
-        .scanner-cta.visible { display: flex; }
-        .scanner-cta p { font-size: 0.9rem; color: var(--text-primary); }
-        .scanner-cta p span { color: var(--text-secondary); font-size: 0.82rem; display: block; margin-top: 3px; }
-
-        /* FINAL CTA */
-        .final-cta { border-top: 1px solid var(--border); text-align: center; padding: 100px 0; }
-        .final-cta .section-heading { max-width: 600px; margin: 0 auto 16px; }
-        .final-cta .section-sub { max-width: 480px; margin: 0 auto 32px; }
-        .audit-features { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 36px; max-width: 720px; margin-left: auto; margin-right: auto; text-align: left; }
-        .audit-feature { display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
-        .audit-feature .check { color: var(--accent); font-weight: 700; }
-
-        /* FOOTER */
-        footer { border-top: 1px solid var(--border); padding: 36px 0; }
-        footer .container { display: flex; justify-content: space-between; align-items: center; }
-        .footer-left { font-size: 0.82rem; color: var(--text-tertiary); }
-        .footer-links { display: flex; gap: 20px; }
-        .footer-links a { font-size: 0.82rem; color: var(--text-tertiary); transition: color 0.2s; }
-        .footer-links a:hover { color: var(--text-secondary); }
-
-        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-
-        .mobile-menu-btn {
-            display: none; background: none; border: none;
-            color: var(--text-primary); font-size: 1.3rem; cursor: pointer; padding: 4px;
-        }
-
-        @media (max-width: 900px) {
-            .horizon { grid-template-columns: 1fr; }
-            .horizon-left { border-right: none; border-bottom: 1px solid var(--border); padding: 20px 24px; }
-            .horizon-right { padding: 24px; }
-            .evidence-grid, .nc-grid { grid-template-columns: 1fr; gap: 28px; }
-            .wc-grid { grid-template-columns: 1fr; }
-            .revenue-impact { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 640px) {
-            .hero { padding: 130px 0 72px; }
-            .hero h1 { font-size: 2.3rem; }
-            .nav-links { display: none; }
-            .nav-links.open {
-                display: flex; flex-direction: column;
-                position: absolute; top: 100%; left: 0; right: 0;
-                background: var(--bg); border-bottom: 1px solid var(--border);
-                padding: 20px; gap: 16px;
-            }
-            .mobile-menu-btn { display: block; }
-            .scanner-input-row { flex-direction: column; }
-            .scanner-cta { flex-direction: column; text-align: center; }
-            .hero-ctas { flex-direction: column; }
-            .hero-ctas .btn { text-align: center; justify-content: center; }
-            footer .container { flex-direction: column; gap: 14px; text-align: center; }
-            section { padding: 64px 0; }
-            .scanner-body { padding: 20px; }
-            .audit-features { grid-template-columns: 1fr; gap: 12px; }
-        }
-    </style>
-    <!-- RB2B visitor identification -->
-    <script>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("1N5W0HJ1PKO5");</script>
+<!-- RB2B visitor identification -->
+<script>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("1N5W0HJ1PKO5");</script>
+<title>Strainer | Your next buyer probably isn't a human</title>
+<meta name="description" content="Buyers now ask AI which product to choose before they talk to you. Strainer gets B2B software companies into that answer. Free benchmark: see who AI recommends instead of you.">
+<meta property="og:title" content="Strainer | Your next buyer probably isn't a human">
+<meta property="og:description" content="Buyers now ask AI which product to choose before they talk to you. Strainer gets B2B software companies into that answer. Free benchmark: see who AI recommends instead of you.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://getstrainer.com/">
+<link rel="canonical" href="https://getstrainer.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://getstrainer.com/#org",
+      "name": "Strainer",
+      "legalName": "Strainer LLC",
+      "url": "https://getstrainer.com",
+      "email": "dafydd@getstrainer.com",
+      "slogan": "Your next buyer probably isn't a human.",
+      "description": "Strainer helps B2B software companies win deals when AI does the buyer's research: getting recommended by ChatGPT, Claude, Copilot, Perplexity and Google AI, and described accurately when buyers compare options.",
+      "founder": { "@type": "Person", "name": "Dafydd Foster Davies", "jobTitle": "Founder" }
+    },
+    {
+      "@type": "Service",
+      "name": "AI buyer visibility for B2B software",
+      "serviceType": "AI search optimisation (AEO / GEO)",
+      "provider": { "@id": "https://getstrainer.com/#org" },
+      "areaServed": "Worldwide",
+      "offers": {
+        "@type": "Offer",
+        "name": "Free AI benchmark",
+        "url": "https://getstrainer.com/benchmark",
+        "description": "Your company against 3 competitors on 20 buyer questions across ChatGPT, Claude, Perplexity and Google AI. One-page result within 48 hours.",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
-
-    <!-- NAV -->
-    <nav id="nav">
-        <div class="container">
-            <a href="/" class="logo">
-                <div class="logo-mark">
-                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Handle -->
-                        <path d="M22 4 L27 2" stroke="#00e5a0" stroke-width="2.2" stroke-linecap="round"/>
-                        <!-- Bowl outline -->
-                        <path d="M6 8 L26 8 L20 26 Q16 30 12 26 Z" stroke="#00e5a0" stroke-width="2" fill="none" stroke-linejoin="round"/>
-                        <!-- Holes -->
-                        <circle cx="13" cy="14" r="1.2" fill="#00e5a0"/>
-                        <circle cx="18" cy="14" r="1.2" fill="#00e5a0"/>
-                        <circle cx="15.5" cy="18" r="1.2" fill="#00e5a0"/>
-                        <circle cx="11" cy="18" r="1.2" fill="#00e5a0"/>
-                        <circle cx="20" cy="18" r="1.2" fill="#00e5a0"/>
-                        <circle cx="13.5" cy="22" r="1.2" fill="#00e5a0"/>
-                        <circle cx="17.5" cy="22" r="1.2" fill="#00e5a0"/>
-                    </svg>
-                </div>
-                Strainer
-            </a>
-            <button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
-            <div class="nav-links">
-                <a href="#shift">The Shift</a>
-                <a href="#evidence">Evidence</a>
-                <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn btn-primary">Get Free Audit →</a>
-            </div>
-        </div>
+<header class="top">
+  <div class="wrap">
+    <a href="/" class="logo" aria-label="Strainer home">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M22 4 L27 2" stroke="#00e5a0" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M6 8 L26 8 L20 26 Q16 30 12 26 Z" stroke="#00e5a0" stroke-width="2" fill="none" stroke-linejoin="round"/>
+        <circle cx="13" cy="14" r="1.2" fill="#00e5a0"/><circle cx="18" cy="14" r="1.2" fill="#00e5a0"/>
+        <circle cx="15.5" cy="18" r="1.2" fill="#00e5a0"/><circle cx="11" cy="18" r="1.2" fill="#00e5a0"/>
+        <circle cx="20" cy="18" r="1.2" fill="#00e5a0"/><circle cx="13.5" cy="22" r="1.2" fill="#00e5a0"/>
+        <circle cx="17.5" cy="22" r="1.2" fill="#00e5a0"/>
+      </svg>
+      Strainer
+    </a>
+    <nav class="navlinks" aria-label="Main">
+      <a class="plain" href="/#problem">The problem</a>
+      <a class="plain" href="/#what-we-do">What we do</a>
+      <a class="btn btn-main btn-sm" href="/benchmark">Free benchmark</a>
     </nav>
+  </div>
+</header>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-badge">
-                <span class="dot"></span>
-                For B2B SaaS teams losing deals they should be winning
-            </div>
-            <h1 class="reveal">Your next buyer<br><span class="accent">probably isn't a human.</span></h1>
-            <p class="reveal">AI agents are already researching vendors, comparing APIs, and recommending tools — before any human gets involved. They don't care about your marketing. They care about your product. If they can't find you, evaluate you, and compare you — you lose before you ever had a shot.</p>
-            <div class="hero-ctas reveal">
-                <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn btn-primary btn-large">Book a Free Audit →</a>
-            </div>
+<main>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1>Your next buyer probably isn't a human.</h1>
+      <p class="lede">Your buyers ask ChatGPT, Copilot and the AI in their own Slack which product to pick. Most of the time you never hear about it. Strainer gets you into that answer.</p>
+      <div class="ctas">
+        <a class="btn btn-main" href="/benchmark">See who AI recommends instead of you</a>
+        <a class="btn btn-quiet" href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" rel="noopener">Book a call</a>
+      </div>
+      <p class="small">Free benchmark. Two fields. Results in 48 hours.</p>
+    </div>
+
+    <figure class="answer play" aria-label="Example: an AI answer that recommends three competitors and leaves your product out">
+      <span class="answer-tag">Example. Names are illustrative.</span>
+      <div class="q">We're 60 people and onboarding is a mess. What tool should we buy?</div>
+      <div class="a">
+        <p>For a team your size, these three come up most:</p>
+        <ol>
+          <li>Competitor A <span>for fast setup and clear pricing</span></li>
+          <li>Competitor B <span>for its integrations</span></li>
+          <li>Competitor C <span>if you need advanced reporting</span></li>
+        </ol>
+      </div>
+      <div class="missing"><i aria-hidden="true"></i>Your product: not mentioned</div>
+    </figure>
+  </div>
+</section>
+
+<section id="problem">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>AI is already in the deal. You just can't see it.</h2>
+      <p class="lede">Before a buyer books a demo, AI has built their shortlist, compared you with your rivals and answered the awkward questions. None of it shows up in your analytics. No click, no visit, no form fill. You lose deals you never knew existed.</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>63%</b><p>of software buyers used AI during their purchase.</p><a href="https://hginsights.com/news/trustradius-2026-b2b-buying-disconnect-report-reveals-ai-has-changed-how-buyers-research-but-not-what-they-trust/" target="_blank" rel="noopener">TrustRadius, 2026</a></div>
+      <div class="stat"><b>51%</b><p>of B2B software buyers now start their research in an AI chatbot, not Google.</p><a href="https://company.g2.com/news/g2-research-the-answer-economy" target="_blank" rel="noopener">G2, 2026</a></div>
+      <div class="stat"><b>69%</b><p>picked a different vendor from the one they planned, after asking AI.</p><a href="https://www.demandgenreport.com/industry-news/news-brief/half-of-b2b-software-buyers-now-start-their-research-with-ai-chatbots-g2/52737/" target="_blank" rel="noopener">G2, 2026</a></div>
+      <div class="stat"><b>83%</b><p>shortlisted three products or fewer. Miss the list and you miss the deal.</p><a href="https://hginsights.com/news/trustradius-2026-b2b-buying-disconnect-report-reveals-ai-has-changed-how-buyers-research-but-not-what-they-trust/" target="_blank" rel="noopener">TrustRadius, 2026</a></div>
+    </div>
+  </div>
+</section>
+
+<section id="questions">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Four questions decide whether AI sends you the deal</h2>
+      <p class="lede">A buyer's AI works through the same steps a good buyer always did. It just does them faster, before you're in the room.</p>
+    </div>
+    <ol class="questions">
+      <li><h3>Can it find you?</h3><p>When a buyer describes their problem, are you in the answer at all?</p></li>
+      <li><h3>What does it say about you?</h3><p>Your strengths, your weaknesses, and whether any of it is still true.</p></li>
+      <li><h3>How do you stack up?</h3><p>Against your rivals, and against building it in-house or doing nothing.</p></li>
+      <li><h3>Do you hold up when they dig in?</h3><p>Pricing, integrations, security, and the fit questions buyers used to save for the demo.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="shift">
+  <div class="wrap split">
+    <h2>Selling to AI is now half the job.</h2>
+    <div class="prose">
+      <p>Most teams still put almost everything into persuading people. But the first reader of your site, your docs and your reviews is more and more often a machine, and it reads differently. It checks claims, weighs what others say about you, and doesn't sit through a pitch.</p>
+      <p><strong>And it isn't one machine.</strong> Your buyer might ask any of these, each with different sources and different habits:</p>
+      <div class="chips" aria-label="AI systems buyers use">
+        <span>ChatGPT</span><span>Claude</span><span>Copilot</span><span>Gemini</span><span>Perplexity</span><span>Open models</span><span class="odd">The helper bot in your buyer's Slack</span>
+      </div>
+      <p>That last one knows their stack, their budget and their last three vendor disasters. Winning it over can matter more than winning over a junior champion.</p>
+    </div>
+  </div>
+</section>
+
+<section id="what-we-do">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What Strainer does</h2>
+      <p class="lede">We do the work. You see the first change go live in week one.</p>
+    </div>
+    <div class="buckets">
+      <div class="bucket"><h3>Measure</h3><p>We track how every major AI answers your buyers' real questions, against your competitors, every week. You finally see the deals that happen before the demo.</p></div>
+      <div class="bucket"><h3>Fix your own story</h3><p>Pages AI can quote and trust: comparisons, alternatives, straight answers to fit questions, plus your G2 and Capterra profiles.</p></div>
+      <div class="bucket"><h3>Get talked about</h3><p>We get you into the lists, reviews and articles AI already trusts for your category, so the answer includes you even when your site isn't the source.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <div class="section-head"><h2>Early results</h2></div>
+    <div class="proof">
+      <div class="result"><b>20</b><p>Copilot citations in 18 days from a single comparison page.</p><span>B2B software client</span></div>
+      <!-- CHECK BEFORE MERGE: Dafydd to confirm the doubling figure against Bing Webmaster AI performance data -->
+      <div class="result"><b>2x</b><p>Copilot citations within two months.</p><span>B2B software client</span><span class="flag">Figure to confirm before launch</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="founder">
+  <div class="wrap">
+    <div class="founder">
+      <!-- PHOTO: replace with Dafydd's headshot -->
+      <div class="avatar" aria-hidden="true">DF</div>
+      <div class="prose">
+        <h2>Who's behind Strainer</h2>
+        <p><strong>Dafydd Foster Davies, founder.</strong> I've spent my career selling: closing enterprise deals at Depict, and building my own company before this one. I've watched great products lose to louder ones more times than I can count.</p>
+        <p>AI as the buyer changes that. The best case for a product can finally win on merit, if someone makes it. That's what Strainer does.</p>
+        <p class="small">Questions? Email me directly: dafydd@getstrainer.com</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="benchmark">
+  <div class="wrap form-grid">
+    <div class="form-side">
+      <h2>See who AI recommends instead of you.</h2>
+      <p class="lede">Give us your website and email. We run the benchmark and send you a one-page result within 48 hours.</p>
+      <ul>
+        <li>20 questions your buyers actually ask AI</li>
+        <li>ChatGPT, Claude, Perplexity and Google AI</li>
+        <li>Where you show up, where your competitors do, and what AI says about each of you</li>
+      </ul>
+      <p class="small">Rather talk first? <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" rel="noopener">Book a 30-minute call</a>.</p>
+    </div>
+    <form class="bench" id="bench" action="https://formsubmit.co/dafydd@getstrainer.com" method="POST">
+      <div class="thanks" id="thanks" hidden>
+        <strong>Got it.</strong> Your benchmark lands in your inbox within 48 hours. Reply to that email with any questions.
+      </div>
+      <input type="hidden" name="_subject" value="New benchmark request (getstrainer.com)">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="https://getstrainer.com/?sent=1">
+      <div class="honey" aria-hidden="true"><label for="_honey">Leave empty</label><input type="text" id="_honey" name="_honey" tabindex="-1" autocomplete="off"></div>
+      <div class="field">
+        <label for="website">Your website</label>
+        <input type="text" inputmode="url" id="website" name="website" placeholder="yourcompany.com" required>
+      </div>
+      <div class="field">
+        <label for="email">Work email</label>
+        <input type="email" id="email" name="email" placeholder="you@yourcompany.com" required autocomplete="email">
+      </div>
+      <details>
+        <summary>Add competitors (optional)</summary>
+        <div class="comp-row">
+          <input type="text" id="comp1" name="competitor_1" placeholder="Competitor 1" aria-label="Competitor 1">
+          <input type="text" id="comp2" name="competitor_2" placeholder="Competitor 2" aria-label="Competitor 2">
+          <input type="text" id="comp3" name="competitor_3" placeholder="Competitor 3" aria-label="Competitor 3">
         </div>
-    </section>
+        <p class="hint">Leave blank and we pick the three AI mentions most.</p>
+      </details>
+      <div class="field">
+        <label for="heard">How did you hear about us? <span class="hint">Optional</span></label>
+        <select id="heard" name="heard_about_us">
+          <option value="">Choose one</option>
+          <option>ChatGPT</option><option>Claude</option><option>Perplexity</option><option>Google AI</option>
+          <option>Copilot</option><option>X</option><option>A friend</option><option>Other</option>
+        </select>
+      </div>
+      <button class="btn btn-main" type="submit">Get my free benchmark</button>
+      <p class="small">We only use your details to send the benchmark and follow up on it. <a href="/privacy">Privacy</a></p>
+    </form>
+  </div>
+</section>
 
-    <!-- THE SHIFT -->
-    <section class="shift" id="shift">
-        <div class="container">
-            <div class="section-label reveal">The Shift</div>
-            <h2 class="section-heading reveal">Agents are taking over B2B buying — stage by stage.</h2>
-            <p class="section-sub reveal">Discovery, Comparison, Purchase. Each stage of the B2B buying journey is being taken over by AI. Are you ready?</p>
-
-            <div class="horizons">
-                <div class="horizon reveal">
-                    <div class="horizon-left">
-                        <div class="horizon-phase">Now</div>
-                        <div class="horizon-stage">Discovery</div>
-                    </div>
-                    <div class="horizon-right">
-                        <h3>AI search is the new top of funnel.</h3>
-                        <p>Buyers ask ChatGPT and Perplexity "what's the best tool for X?" instead of Googling. The shortlist forms before a human sales rep is ever contacted — and 6sense data shows the pre-contact favorite wins about 80% of the time. If LLMs don't mention you, you never had a shot.</p>
-                        <div class="horizon-stat">
-                            <span class="stat-number">66%</span>
-                            <span class="stat-label">of B2B decision-makers now use AI<br>to research and evaluate suppliers</span>
-                        </div>
-                        <div class="stat-source">Responsive, 2025</div>
-                    </div>
-                </div>
-
-                <div class="horizon reveal">
-                    <div class="horizon-left">
-                        <div class="horizon-phase">Emerging</div>
-                        <div class="horizon-stage">Evaluation</div>
-                    </div>
-                    <div class="horizon-right">
-                        <h3>Personal agents are scoring and comparing you — invisibly.</h3>
-                        <p>Founders and ops leads are pointing AI agents at your docs, your pricing page, your competitor's API. These agents compare, score, and shortlist — without ever visiting your website through a browser. This "dark consideration" is invisible to your analytics. If your information isn't machine-readable, agents skip you.</p>
-                        <div class="horizon-stat">
-                            <span class="stat-number">51%</span>
-                            <span class="stat-label">of internet traffic is now bots — surpassing<br>humans for the first time ever</span>
-                        </div>
-                        <div class="stat-source">Imperva / Cloudflare, 2025</div>
-                    </div>
-                </div>
-
-                <div class="horizon reveal">
-                    <div class="horizon-left">
-                        <div class="horizon-phase">Coming</div>
-                        <div class="horizon-stage">Procurement</div>
-                    </div>
-                    <div class="horizon-right">
-                        <h3>Autonomous buyer agents will handle the full purchase.</h3>
-                        <p>Coinbase (x402), Visa, Google (A2A), and OpenAI (Agent Commerce Protocol) are building the rails for agents that hold budgets and execute transactions. These agents will demand sandbox environments, testable APIs, and machine-readable contracts — not pitch decks and sales calls.</p>
-                        <div class="horizon-stat">
-                            <span class="stat-number">$15T</span>
-                            <span class="stat-label">in B2B purchases handled by<br>AI agents by 2028</span>
-                        </div>
-                        <div class="stat-source">Gartner IT Symposium, 2025</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- EVIDENCE -->
-    <section class="evidence" id="evidence">
-        <div class="container">
-            <div class="section-label reveal">The Evidence</div>
-            <h2 class="section-heading reveal">This is already hurting your pipeline. You just can't see it.</h2>
-
-            <div class="evidence-grid">
-                <div class="evidence-text reveal">
-                    <p>Open your analytics. <strong>More than half of your traffic is bots</strong> — AI crawlers from OpenAI, Anthropic, Google, and Perplexity, scanning your site to answer questions about your category.</p>
-                    <p>But the real problem is the traffic you <em>don't</em> see. A founder asks ChatGPT "what's the best API monitoring tool?" — it reads your docs, your competitor's docs, and returns an answer. <strong>No visit. No click. No form fill.</strong> A completely dark consideration journey.</p>
-                    <p>And here's the revenue impact: 6sense found that <strong>95% of winning vendors were already on the buyer's shortlist from Day One</strong> — before any sales contact happened. If AI is shaping that shortlist — and it increasingly is — then every deal where you're invisible to AI is a deal you've already lost.</p>
-                </div>
-                <div class="evidence-visual reveal">
-                    <div style="color: var(--text-secondary); margin-bottom: 18px; font-size: 0.78rem;">Typical B2B website traffic breakdown:</div>
-                    <div class="traffic-bar-container">
-                        <div class="traffic-bar-label"><span>Non-AI bots (crawlers, scrapers)</span><span>47.9%</span></div>
-                        <div class="traffic-bar"><div class="traffic-bar-fill grey" style="width: 47.9%"></div></div>
-                        <div class="traffic-bar-label"><span>Humans</span><span>43.5%</span></div>
-                        <div class="traffic-bar"><div class="traffic-bar-fill green" style="width: 43.5%"></div></div>
-                        <div class="traffic-bar-label"><span>AI visitors (GPTBot, ClaudeBot, Googlebot AI)</span><span>8.7%</span></div>
-                        <div class="traffic-bar"><div class="traffic-bar-fill yellow" style="width: 8.7%"></div></div>
-                    </div>
-                    <div style="color: var(--text-tertiary); font-size: 0.68rem; margin-top: 14px; line-height: 1.6;">
-                        Source: Cloudflare 2025 Year in Review.<br>
-                        GPTBot crawl volume grew 305% YoY.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Revenue Impact Cards -->
-            <div class="revenue-impact">
-                <div class="revenue-card reveal">
-                    <div class="big-stat">89%</div>
-                    <div class="stat-desc">of B2B buyers now use <strong>generative AI</strong> at some point in their purchasing journey — from initial research through to final vendor selection.</div>
-                    <div class="stat-src">Forrester Buyers' Journey Survey, 2025</div>
-                </div>
-                <div class="revenue-card reveal">
-                    <div class="big-stat">436%</div>
-                    <div class="stat-desc">increase in <strong>sales conversions</strong> driven by ChatGPT recommendations. Visitors referred by AI convert at 4.4x the rate of organic search.</div>
-                    <div class="stat-src">Digiday / Forrester, 2025</div>
-                </div>
-                <div class="revenue-card reveal">
-                    <div class="big-stat">95%</div>
-                    <div class="stat-desc">of the time, the winning vendor was already on the buyer's <strong>Day One shortlist</strong> — before any vendor was ever contacted. If you're not on that list, you never had a chance.</div>
-                    <div class="stat-src">6sense Buyer Experience Report, 2025</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- WHAT NEEDS TO CHANGE -->
-    <section class="what-changing" id="changing">
-        <div class="container">
-            <div class="section-label reveal">What We Need to Change</div>
-            <h2 class="section-heading reveal">If AI agents are buying, you're selling to AI — not humans.</h2>
-            <p class="section-sub reveal">Your website, docs, and sales process were built for human visitors. AI agents need something completely different. Here's what that means in practice.</p>
-
-            <div class="wc-grid">
-                <div class="wc-card reveal">
-                    <div class="wc-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-                    <div class="wc-row">
-                        <div class="wc-state before">Before</div>
-                        <div class="wc-content">
-                            <h4>Pricing behind "Book a Demo"</h4>
-                            <p>Works for human enterprise sales.</p>
-                        </div>
-                    </div>
-                    <div class="wc-arrow">↓</div>
-                    <div class="wc-row">
-                        <div class="wc-state after">After</div>
-                        <div class="wc-content">
-                            <h4>Machine-readable structured pricing</h4>
-                            <p>Agents compare you instantly. No pricing = eliminated from consideration.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="wc-card reveal">
-                    <div class="wc-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-                    <div class="wc-row">
-                        <div class="wc-state before">Before</div>
-                        <div class="wc-content">
-                            <h4>Brand copy and marketing narrative</h4>
-                            <p>Emotionally persuades human visitors.</p>
-                        </div>
-                    </div>
-                    <div class="wc-arrow">↓</div>
-                    <div class="wc-row">
-                        <div class="wc-state after">After</div>
-                        <div class="wc-content">
-                            <h4>Structured claims with verifiable evidence</h4>
-                            <p>Agents want facts, benchmarks, and testable endpoints — not vibes.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="wc-card reveal">
-                    <div class="wc-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
-                    <div class="wc-row">
-                        <div class="wc-state before">Before</div>
-                        <div class="wc-content">
-                            <h4>PDF case studies and slide decks</h4>
-                            <p>Not parseable by AI models.</p>
-                        </div>
-                    </div>
-                    <div class="wc-arrow">↓</div>
-                    <div class="wc-row">
-                        <div class="wc-state after">After</div>
-                        <div class="wc-content">
-                            <h4>llms.txt, schema.org, machine-readable docs</h4>
-                            <p>Content in formats agents can actually index and compare.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="wc-card reveal">
-                    <div class="wc-icon"><svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
-                    <div class="wc-row">
-                        <div class="wc-state before">Before</div>
-                        <div class="wc-content">
-                            <h4>Human sales demo over screen share</h4>
-                            <p>Requires scheduling, availability, human time.</p>
-                        </div>
-                    </div>
-                    <div class="wc-arrow">↓</div>
-                    <div class="wc-row">
-                        <div class="wc-state after">After</div>
-                        <div class="wc-content">
-                            <h4>Sandbox API and self-serve evaluation</h4>
-                            <p>Buyer agents demand "show, not tell" — testable proof, not a pitch.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FINAL CTA -->
-    <section class="final-cta">
-        <div class="container">
-            <div class="section-label reveal">Free AI Agent Audit</div>
-            <h2 class="section-heading reveal">Put yourself on the map with AI buyers.</h2>
-            <p class="section-sub reveal">This isn't an automated report. A GTM engineer will personally audit your product's AI presence, run real queries against you and your competitors, and deliver a concrete action plan you can start executing the same week.</p>
-
-            <div class="audit-features reveal">
-                <div class="audit-feature"><span class="check">✓</span> AI search visibility report — how you show up (or don't) across ChatGPT, Perplexity, Gemini</div>
-                <div class="audit-feature"><span class="check">✓</span> Head-to-head agent comparison vs 3 competitors you choose</div>
-                <div class="audit-feature"><span class="check">✓</span> Agent-readiness score across 40+ technical signals</div>
-                <div class="audit-feature"><span class="check">✓</span> Prioritized fix list with estimated effort and expected impact</div>
-            </div>
-
-            <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn btn-primary btn-large reveal">Book Your Free Audit →</a>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="container">
-            <div class="footer-left">&copy; 2026 Strainer</div>
-            <div class="footer-links">
-                <a href="mailto:hello@getstrainer.com">hello@getstrainer.com</a>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Nav
-        const nav = document.getElementById('nav');
-        window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
-
-        // Reveal
-        const obs = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-        setTimeout(() => document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible')), 80);
-
-    </script>
+</main>
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 Strainer LLC</span>
+    <div class="foot-links">
+      <a href="mailto:dafydd@getstrainer.com">dafydd@getstrainer.com</a>
+      <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" rel="noopener">Book a call</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/llms.txt">llms.txt</a>
+    </div>
+  </div>
+</footer>
+<script>
+(function () {
+  try {
+    if (new URLSearchParams(location.search).get('sent') === '1') {
+      var t = document.getElementById('thanks'); if (t) { t.hidden = false; t.scrollIntoView({ block: 'center' }); }
+    }
+  } catch (e) {}
+  var f = document.getElementById('bench');
+  if (f) f.addEventListener('submit', function () {
+    var w = document.getElementById('website');
+    if (w && w.value && !/^https?:\/\//i.test(w.value)) w.value = 'https://' + w.value.trim();
+    try { if (window.plausible) plausible('Benchmark request'); } catch (e) {}
+    try { if (window.posthog) posthog.capture('benchmark_request'); } catch (e) {}
+  });
+})();
+</script>
 </body>
 </html>

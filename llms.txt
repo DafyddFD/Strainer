@@ -1,40 +1,40 @@
 # Strainer
 
-> Strainer helps B2B companies become discoverable, evaluable, and purchasable by AI agents. As AI increasingly handles vendor research, evaluation, and procurement, most B2B companies are invisible to these agents. Strainer fixes that.
+> Your next buyer probably isn't a human. Buyers now ask ChatGPT, Claude, Copilot, Perplexity, Google AI and their own internal AI assistants which product to choose, often before they talk to a vendor. Strainer helps B2B software companies get into those answers and be described accurately when buyers compare options.
 
-## What Strainer Does
+## The problem
 
-Strainer provides AI Agent Audits for B2B companies. A GTM engineer personally audits your product's AI presence, runs real queries against you and your competitors across ChatGPT, Perplexity, and Gemini, and delivers a concrete action plan.
+AI now builds the buyer's shortlist, compares vendors and answers fit questions before the first demo. None of this shows up in website analytics. Four questions decide whether AI sends a company the deal:
 
-The audit covers 40+ signals across three categories:
+1. Can it find you? Are you in the answer when a buyer describes their problem?
+2. What does it say about you? Strengths, weaknesses, and whether that information is current.
+3. How do you stack up? Against competitors, building in-house, or doing nothing.
+4. Do you hold up when buyers dig in? Pricing, integrations, security and fit questions.
 
-- **Discovery**: How you show up (or don't) in AI search — ChatGPT, Perplexity, Gemini, and other LLM-powered search tools
-- **Evaluation**: Whether AI agents can find, parse, and compare your pricing, documentation, and product claims against competitors
-- **Procurement**: Whether AI agents can trial, test, or programmatically interact with your product (sandbox, API, OpenAPI spec)
+## What Strainer does
 
-## The Problem Strainer Solves
+- **Measure:** weekly tracking of how major AI systems answer a client's buyer questions, against named competitors.
+- **Fix the client's own content:** comparison and alternatives pages, clear answers to fit questions, G2 and Capterra profiles.
+- **Third-party presence:** getting clients into the lists, reviews and articles AI already trusts for their category.
 
-AI agents are taking over the B2B buying process:
+Strainer does the work rather than only advising. The first change typically goes live in week one.
 
-- 66% of B2B decision-makers now use AI to research and evaluate suppliers (Responsive, 2025)
-- 89% of B2B buyers use generative AI at some point in their purchasing journey (Forrester, 2025)
-- 95% of winning vendors were already on the buyer's Day One shortlist before any sales contact (6sense, 2025)
-- ChatGPT-referred visitors convert at 4.4x the rate of organic search (Digiday/Forrester, 2025)
-- Gartner projects $15T in B2B purchases handled by AI agents by 2028
+## Free benchmark
 
-Most B2B websites were built for human visitors. AI agents need machine-readable structured data, transparent pricing, testable APIs, and formats like llms.txt and schema.org — not pitch decks and "book a demo" gates.
+Your company against 3 competitors on 20 buyer questions across ChatGPT, Claude, Perplexity and Google AI. One-page result within 48 hours. Request it at https://getstrainer.com/benchmark (website and email only).
 
-## Key Recommendations Strainer Makes
+## Why it matters (2026 research)
 
-- Replace hidden pricing with machine-readable structured pricing
-- Add llms.txt, JSON-LD, and schema.org markup
-- Replace PDF case studies with structured, parseable content
-- Provide sandbox APIs and self-serve evaluation environments
-- Ensure robots.txt does not block AI crawlers (GPTBot, ClaudeBot, etc.)
-- Add OpenAPI/Swagger specs for programmatic testing
+- 63% of software buyers used AI during their purchase journey (TrustRadius, 2026 B2B Buying Disconnect Report).
+- 51% of B2B software buyers start research in an AI chatbot more often than in Google (G2, The Answer Economy, 2026).
+- 69% chose a different vendor from the one they planned after AI guidance (G2, 2026).
+- 83% of buyers shortlisted three products or fewer (TrustRadius, 2026).
 
-## Contact
+## Company
 
-- Website: [https://getstrainer.com](https://getstrainer.com)
-- Email: hello@getstrainer.com
-- Book a free audit: [https://calendly.com/dafydd-getstrainer/30min](https://calendly.com/dafydd-getstrainer/30min)
+- Strainer LLC, founded by Dafydd Foster Davies.
+- Website: https://getstrainer.com
+- Free benchmark: https://getstrainer.com/benchmark
+- Email: dafydd@getstrainer.com
+- Book a call: https://calendly.com/dafydd-getstrainer/30min
+- Privacy: https://getstrainer.com/privacy
