@@ -109,7 +109,7 @@ section.hero { border-top: none; padding-block: 72px 88px; }
 .after { margin-top: 40px; font-family: var(--display); font-size: 1.3rem; font-weight: 500; }
 
 /* Proof */
-.proof { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.proof { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .result { border: 1px solid var(--line); border-radius: 16px; padding: 26px; display: grid; gap: 10px; align-content: start; background: var(--ink-2); }
 .result b { font-family: var(--display); font-size: 2.4rem; line-height: 1; color: var(--mint); letter-spacing: -0.03em; }
 .result p { color: var(--paper); }
