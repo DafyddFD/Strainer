@@ -1,12 +1,13 @@
-// Static files are served before this code runs. Only paths with no matching file reach it.
-
 import { handleCheck } from "../checker/respond.ts";
 import type { FetchLike } from "../checker/http.ts";
+import { classifyAgent } from "./agents.ts";
 import { handleMcp } from "./mcp.ts";
+import { type Visit, type VisitRoute, visitorId } from "./visit.ts";
 
 interface Env {
   CHECK_LIMIT: RateLimit;
   ASSETS: Fetcher;
+  VISITOR_SALT?: string;
 }
 
 type Route = "/check" | "/api/check" | "/mcp";
@@ -15,6 +16,7 @@ interface Handled {
   response: Response;
   rpc: string | null;
   input: string | null;
+  client?: string | null;
 }
 
 const MAX_LOGGED_RESPONSE = 16_000;
@@ -81,27 +83,49 @@ async function unmatched(url: URL, env: Env): Promise<Handled> {
   return { response, rpc: null, input: url.pathname };
 }
 
+async function handleAny(route: Route | null, request: Request, env: Env): Promise<Handled & { route: VisitRoute }> {
+  if (route) return { ...(await handle(route, request, env)), route };
+  const asset = await env.ASSETS.fetch(request);
+  if (asset.status !== 404) return { response: asset, rpc: null, input: null, route: "asset" };
+  return { ...(await unmatched(new URL(request.url), env)), route: "unmatched" };
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const started = Date.now();
     const url = new URL(request.url);
-    const route = routeOf(url.pathname);
-    const { response, rpc, input } = route ? await handle(route, request, env) : await unmatched(url, env);
+    const handled = await handleAny(routeOf(url.pathname), request, env);
+    const { response } = handled;
 
-    const body = await response.clone().text();
-    console.log({
-      event: "request",
-      route: route ?? "unmatched",
+    const header = (name: string) => request.headers.get(name) ?? "";
+    const userAgent = header("user-agent");
+    const cf = (request as { cf?: { asn?: number; asOrganization?: string; country?: string } }).cf;
+    const logsBody = handled.route !== "asset" && handled.route !== "unmatched";
+    const visit: Visit = {
+      event: "visit",
+      visitor: await visitorId(env.VISITOR_SALT ?? "", header("cf-connecting-ip"), userAgent),
+      ...classifyAgent(userAgent),
+      mcp_client: handled.client ?? null,
+      mcp_protocol: request.headers.get("mcp-protocol-version"),
+      asn: cf?.asn ?? null,
+      as_org: cf?.asOrganization ?? null,
+      country: cf?.country ?? null,
       method: request.method,
-      rpc,
-      input,
-      user_agent: request.headers.get("user-agent") ?? "",
-      referer: request.headers.get("referer") ?? "",
-      country: (request as { cf?: { country?: string } }).cf?.country ?? null,
+      host: url.host,
+      path: url.pathname,
+      query: url.search.slice(1, 301),
+      run: url.searchParams.get("run")?.slice(0, 60) ?? null,
+      route: handled.route,
+      rpc: handled.rpc,
+      input: handled.input,
       status: response.status,
       ms: Date.now() - started,
-      response: body.slice(0, MAX_LOGGED_RESPONSE),
-    });
+      response: logsBody ? (await response.clone().text()).slice(0, MAX_LOGGED_RESPONSE) : null,
+      user_agent: userAgent,
+      referer: header("referer"),
+      accept: header("accept").slice(0, 200),
+    };
+    console.log(visit);
     return response;
   },
 } satisfies ExportedHandler<Env>;

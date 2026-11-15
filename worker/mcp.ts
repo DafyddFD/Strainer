@@ -142,7 +142,13 @@ async function handleMessage(message: JsonRpcRequest, fetcher: FetchLike): Promi
   }
 }
 
-export async function handleMcp(request: Request, fetcher: FetchLike = fetch): Promise<{ response: Response; rpc: string | null; input: string | null }> {
+function clientOf(info: unknown): string | null {
+  const { name, version } = (info ?? {}) as { name?: unknown; version?: unknown };
+  if (typeof name !== "string") return null;
+  return (typeof version === "string" ? `${name}/${version}` : name).slice(0, 100);
+}
+
+export async function handleMcp(request: Request, fetcher: FetchLike = fetch): Promise<{ response: Response; rpc: string | null; input: string | null; client: string | null }> {
   if (request.method === "GET") {
     const wantsStream = (request.headers.get("accept") ?? "").includes("text/event-stream");
     const response = wantsStream
@@ -150,17 +156,17 @@ export async function handleMcp(request: Request, fetcher: FetchLike = fetch): P
       : new Response(instructions(new URL(request.url).origin), {
           headers: { ...HEADERS, "Content-Type": "text/plain; charset=utf-8" },
         });
-    return { response, rpc: null, input: null };
+    return { response, rpc: null, input: null, client: null };
   }
   if (request.method === "OPTIONS") {
     const response = new Response(null, {
       status: 204,
       headers: { ...HEADERS, "Access-Control-Allow-Methods": "GET, POST", "Access-Control-Allow-Headers": "*" },
     });
-    return { response, rpc: null, input: null };
+    return { response, rpc: null, input: null, client: null };
   }
   if (request.method !== "POST") {
-    return { response: new Response(null, { status: 405, headers: { ...HEADERS, Allow: "GET, POST" } }), rpc: null, input: null };
+    return { response: new Response(null, { status: 405, headers: { ...HEADERS, Allow: "GET, POST" } }), rpc: null, input: null, client: null };
   }
 
   const raw = await request.text();
@@ -168,13 +174,14 @@ export async function handleMcp(request: Request, fetcher: FetchLike = fetch): P
   try {
     message = JSON.parse(raw);
   } catch {
-    return { response: rpcError(null, -32700, "Parse error: the body must be one JSON-RPC message.", 400), rpc: null, input: raw.slice(0, 300) };
+    return { response: rpcError(null, -32700, "Parse error: the body must be one JSON-RPC message.", 400), rpc: null, input: raw.slice(0, 300), client: null };
   }
   if (!message || typeof message !== "object" || Array.isArray(message) || typeof message.method !== "string") {
-    return { response: rpcError(null, -32600, "Invalid request: send one JSON-RPC message.", 400), rpc: null, input: raw.slice(0, 300) };
+    return { response: rpcError(null, -32600, "Invalid request: send one JSON-RPC message.", 400), rpc: null, input: raw.slice(0, 300), client: null };
   }
 
   const input = message.method === "tools/call" ? JSON.stringify(message.params?.arguments ?? null).slice(0, 300) : null;
-  if (message.id === undefined) return { response: new Response(null, { status: 202, headers: HEADERS }), rpc: message.method, input };
-  return { response: await handleMessage(message, fetcher), rpc: message.method, input };
+  const client = message.method === "initialize" ? clientOf(message.params?.clientInfo) : null;
+  if (message.id === undefined) return { response: new Response(null, { status: 202, headers: HEADERS }), rpc: message.method, input, client };
+  return { response: await handleMessage(message, fetcher), rpc: message.method, input, client };
 }
