@@ -10,6 +10,9 @@ curl -s --retry 40 --retry-delay 1 --retry-connrefused -o /dev/null "$B/" || { e
 [ "$(code $B/)" = 200 ] && curl -s $B/ | grep -q '<html' && ok "homepage served" || bad "homepage" "$(code $B/)"
 [ "$(code -L $B/deck.html)" = 200 ] && ok "deck served (after redirect to /deck, as on Pages)" || bad "deck" "$(code -L $B/deck.html)"
 [ "$(code $B/llms.txt)" = 200 ] && ok "llms.txt served" || bad "llms.txt" "$(code $B/llms.txt)"
+# The Worker runs first for every path, so static files must still come back with a query string.
+for p in "/?run=smoke" "/llms.txt?run=smoke" /robots.txt; do
+  c=$(code "$B$p"); [ "$c" = 200 ] && ok "static $p served through the Worker" || bad "static $p" "$c"; done
 for p in /checker/index.ts /worker/index.ts /wrangler.jsonc /README.md /.gitignore /.assetsignore; do
   c=$(code "$B$p"); [ "$c" = 404 ] && ok "source hidden $p (404)" || bad "source exposed $p" "$c"; done
 c=$(code $B/.well-known/oauth-protected-resource); [ "$c" = 404 ] && ok "oauth discovery returns 404" || bad "oauth discovery" "$c"
