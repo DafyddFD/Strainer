@@ -1,0 +1,5 @@
+# getstrainer.com is open to search engines, AI assistants and AI training crawlers.
+# Nothing on this site is off limits.
+
+User-agent: *
+Allow: /
