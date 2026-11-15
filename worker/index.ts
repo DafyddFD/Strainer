@@ -2,7 +2,7 @@ import { handleCheck } from "../checker/respond.ts";
 import type { FetchLike } from "../checker/http.ts";
 import { classifyAgent } from "./agents.ts";
 import { handleMcp } from "./mcp.ts";
-import { type Visit, type VisitRoute, visitorId } from "./visit.ts";
+import { type Visit, type VisitRoute, verdictOf, visitorId } from "./visit.ts";
 
 interface Env {
   CHECK_LIMIT: RateLimit;
@@ -101,6 +101,7 @@ export default {
     const userAgent = header("user-agent");
     const cf = (request as { cf?: { asn?: number; asOrganization?: string; country?: string } }).cf;
     const logsBody = handled.route !== "asset" && handled.route !== "unmatched";
+    const body = logsBody ? await response.clone().text() : null;
     const visit: Visit = {
       event: "visit",
       visitor: await visitorId(env.VISITOR_SALT ?? "", header("cf-connecting-ip"), userAgent),
@@ -120,7 +121,8 @@ export default {
       input: handled.input,
       status: response.status,
       ms: Date.now() - started,
-      response: logsBody ? (await response.clone().text()).slice(0, MAX_LOGGED_RESPONSE) : null,
+      response: body?.slice(0, MAX_LOGGED_RESPONSE) ?? null,
+      verdict: verdictOf(body),
       user_agent: userAgent,
       referer: header("referer"),
       accept: header("accept").slice(0, 200),

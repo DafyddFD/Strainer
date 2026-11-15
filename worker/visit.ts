@@ -32,6 +32,7 @@ export interface Visit {
   status: number;
   ms: number;
   response: string | null;
+  verdict: string | null;
   user_agent: string;
   referer: string;
   accept: string;
