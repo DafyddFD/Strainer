@@ -3,6 +3,7 @@
 // tool can call it with one POST.
 
 import { isInputError, renderText, runCheck, VERSION } from "../checker/index.ts";
+import type { FetchLike } from "../checker/http.ts";
 
 const PROTOCOL_VERSIONS = ["2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05"];
 const TOOL_NAME = "check_agent_readiness";
@@ -71,12 +72,12 @@ function instructions(origin: string): string {
   ].join("\n");
 }
 
-async function callTool(id: JsonRpcId, params: Record<string, unknown> | undefined): Promise<Response> {
+async function callTool(id: JsonRpcId, params: Record<string, unknown> | undefined, fetcher: FetchLike): Promise<Response> {
   if (params?.name !== TOOL_NAME) return rpcError(id, -32602, `Unknown tool. The only tool is ${TOOL_NAME}.`);
   const url = (params.arguments as { url?: unknown } | undefined)?.url;
   if (typeof url !== "string") return rpcError(id, -32602, "Missing argument: url (a website address, for example stripe.com).");
   try {
-    const report = await runCheck(url);
+    const report = await runCheck(url, fetcher);
     return rpcResult(id, { content: [{ type: "text", text: `${renderText(report)}\n${RESULT_GUIDANCE}\n` }], structuredContent: report, isError: false });
   } catch (error) {
     const message = isInputError(error) ? error.message : "The check failed unexpectedly. Try again.";
@@ -84,7 +85,7 @@ async function callTool(id: JsonRpcId, params: Record<string, unknown> | undefin
   }
 }
 
-async function handleMessage(message: JsonRpcRequest): Promise<Response> {
+async function handleMessage(message: JsonRpcRequest, fetcher: FetchLike): Promise<Response> {
   const id = message.id ?? null;
   switch (message.method) {
     case "initialize": {
@@ -102,13 +103,13 @@ async function handleMessage(message: JsonRpcRequest): Promise<Response> {
     case "tools/list":
       return rpcResult(id, { tools: [TOOL] });
     case "tools/call":
-      return callTool(id, message.params);
+      return callTool(id, message.params, fetcher);
     default:
       return rpcError(id, -32601, `Method not found: ${message.method}`);
   }
 }
 
-export async function handleMcp(request: Request): Promise<{ response: Response; rpc: string | null; input: string | null }> {
+export async function handleMcp(request: Request, fetcher: FetchLike = fetch): Promise<{ response: Response; rpc: string | null; input: string | null }> {
   if (request.method === "GET") {
     const wantsStream = (request.headers.get("accept") ?? "").includes("text/event-stream");
     const response = wantsStream
@@ -142,5 +143,5 @@ export async function handleMcp(request: Request): Promise<{ response: Response;
 
   const input = message.method === "tools/call" ? JSON.stringify(message.params?.arguments ?? null).slice(0, 300) : null;
   if (message.id === undefined) return { response: new Response(null, { status: 202, headers: HEADERS }), rpc: message.method, input };
-  return { response: await handleMessage(message), rpc: message.method, input };
+  return { response: await handleMessage(message, fetcher), rpc: message.method, input };
 }

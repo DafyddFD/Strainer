@@ -11,10 +11,12 @@ curl -s --retry 40 --retry-delay 1 --retry-connrefused -o /dev/null "$B/" || { e
 [ "$(code -L $B/deck.html)" = 200 ] && ok "deck served (after redirect to /deck, as on Pages)" || bad "deck" "$(code -L $B/deck.html)"
 [ "$(code $B/llms.txt)" = 200 ] && ok "llms.txt served" || bad "llms.txt" "$(code $B/llms.txt)"
 for p in /checker/index.ts /worker/index.ts /wrangler.jsonc /README.md /.gitignore /.assetsignore; do
-  c=$(code "$B$p"); [ "$c" = 302 ] && ok "source hidden $p (redirects home)" || bad "source exposed $p" "$c"; done
+  c=$(code "$B$p"); [ "$c" = 404 ] && ok "source hidden $p (404)" || bad "source exposed $p" "$c"; done
 c=$(code $B/.well-known/oauth-protected-resource); [ "$c" = 404 ] && ok "oauth discovery returns 404" || bad "oauth discovery" "$c"
 for p in /pricing /some/old/link /index.php; do
-  r=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' "$B$p"); [ "$r" = "302 $B/" ] && ok "unmatched $p redirects home" || bad "unmatched $p" "$r"; done
+  [ "$(code "$B$p")" = 404 ] && curl -s "$B$p" | grep -q 'Page not found' && ok "unmatched $p returns the 404 page" || bad "unmatched $p" "$(code "$B$p")"; done
+h=$(echo "$B" | sed -E 's#^https?://##'); t=$(curl -s "$B/check/$h")
+case "$B" in https://*) echo "$t" | grep -q '^PASS: llms.txt' && ok "the site can check itself" || bad "self-check" "$t";; esac
 c=$(code $B/.well-known/mcp.json); [ "$c" = 404 ] && ok "other .well-known path returns 404" || bad ".well-known" "$c"
 
 curl -s $B/check | grep -q 'agent-readiness check' && ok "/check usage text" || bad "/check usage" ""
