@@ -2,9 +2,10 @@ import { handleCheck } from "../checker/respond.ts";
 import type { FetchLike } from "../checker/http.ts";
 import { classifyAgent } from "./agents.ts";
 import { handleMcp } from "./mcp.ts";
+import { capture, type PostHogEnv } from "./posthog.ts";
 import { type Visit, type VisitRoute, verdictOf, visitorId } from "./visit.ts";
 
-interface Env {
+interface Env extends PostHogEnv {
   CHECK_LIMIT: RateLimit;
   ASSETS: Fetcher;
   VISITOR_SALT?: string;
@@ -91,7 +92,7 @@ async function handleAny(route: Route | null, request: Request, env: Env): Promi
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const started = Date.now();
     const url = new URL(request.url);
     const handled = await handleAny(routeOf(url.pathname), request, env);
@@ -128,6 +129,7 @@ export default {
       accept: header("accept").slice(0, 200),
     };
     console.log(visit);
+    capture(env, ctx, visit);
     return response;
   },
 } satisfies ExportedHandler<Env>;
