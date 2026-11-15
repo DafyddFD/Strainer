@@ -1,0 +1,292 @@
+// The individual checks. Each one answers a single yes/no question about a site.
+// To add a check, write a function with the same shape and add it to CHECKS.
+
+import { extractLinks, fetchText, visibleText } from "./http.ts";
+import type { Fetched, FetchLike, Link } from "./http.ts";
+
+export type Status = "pass" | "fail" | "unknown";
+
+export interface CheckResult {
+  id: string;
+  title: string;
+  status: Status;
+  finding: string;
+  fix: string | null;
+}
+
+export interface CheckContext {
+  origin: string;
+  fetcher: FetchLike;
+  homepage: Fetched;
+  links: Link[];
+}
+
+export interface Check {
+  id: string;
+  title: string;
+  run: (context: CheckContext) => Promise<Omit<CheckResult, "id" | "title">>;
+}
+
+export const AI_CRAWLERS = [
+  "GPTBot",
+  "OAI-SearchBot",
+  "ChatGPT-User",
+  "ClaudeBot",
+  "Claude-User",
+  "PerplexityBot",
+  "Google-Extended",
+];
+
+function count(n: number): string {
+  return n.toLocaleString("en-US");
+}
+
+function homepageUnavailable(context: CheckContext): Omit<CheckResult, "id" | "title"> | null {
+  if (context.homepage.ok) return null;
+  const reason = context.homepage.status
+    ? `the site answered with status ${context.homepage.status}`
+    : `the request ${context.homepage.error || "failed"}`;
+  return {
+    status: "unknown",
+    finding: `Could not load the homepage (${reason}), so this could not be checked.`,
+    fix: null,
+  };
+}
+
+/** Which of the named crawlers a robots.txt shuts out of the whole site. */
+export function blockedCrawlers(robotsTxt: string, crawlers: string[] = AI_CRAWLERS): string[] {
+  type Group = { agents: string[]; disallowAll: boolean; allowAll: boolean };
+  const groups: Group[] = [];
+  let current: Group | null = null;
+  let lastWasAgent = false;
+  for (const rawLine of robotsTxt.split(/\r?\n/)) {
+    const line = rawLine.replace(/#.*$/, "").trim();
+    const separator = line.indexOf(":");
+    if (separator === -1) continue;
+    const field = line.slice(0, separator).trim().toLowerCase();
+    const value = line.slice(separator + 1).trim();
+    if (field === "user-agent") {
+      if (!current || !lastWasAgent) {
+        current = { agents: [], disallowAll: false, allowAll: false };
+        groups.push(current);
+      }
+      current.agents.push(value.toLowerCase());
+      lastWasAgent = true;
+      continue;
+    }
+    lastWasAgent = false;
+    if (!current) continue;
+    if (field === "disallow" && (value === "/" || value === "/*")) current.disallowAll = true;
+    if (field === "allow" && (value === "/" || value === "/*")) current.allowAll = true;
+  }
+  const wildcard = groups.filter((group) => group.agents.includes("*"));
+  return crawlers.filter((crawler) => {
+    const own = groups.filter((group) => group.agents.includes(crawler.toLowerCase()));
+    const applicable = own.length ? own : wildcard;
+    return applicable.some((group) => group.disallowAll && !group.allowAll);
+  });
+}
+
+const llmsTxt: Check = {
+  id: "llms_txt",
+  title: "llms.txt file",
+  async run({ origin, fetcher }) {
+    const address = `${origin}/llms.txt`;
+    const page = await fetchText(fetcher, address);
+    const looksLikeHtml = page.contentType.includes("html") || /^\s*<(!doctype|html)/i.test(page.text);
+    if (page.ok && page.text.trim().length > 0 && !looksLikeHtml) {
+      return { status: "pass", finding: `Found at ${address} (${count(page.text.trim().length)} characters).`, fix: null };
+    }
+    if (!page.ok && page.status === 0) {
+      return { status: "unknown", finding: `The request for ${address} ${page.error || "failed"}.`, fix: null };
+    }
+    return {
+      status: "fail",
+      finding: page.ok ? `${address} returns a web page, not a text file.` : `No file at ${address} (status ${page.status}).`,
+      fix: "Publish a plain-text llms.txt at the site root that says what the product is, who it is for, and links to pricing and docs.",
+    };
+  },
+};
+
+const aiCrawlers: Check = {
+  id: "ai_crawlers",
+  title: "AI crawlers allowed in robots.txt",
+  async run({ origin, fetcher }) {
+    const address = `${origin}/robots.txt`;
+    const page = await fetchText(fetcher, address);
+    if (!page.ok && page.status === 0) {
+      return { status: "unknown", finding: `The request for ${address} ${page.error || "failed"}.`, fix: null };
+    }
+    const isText = page.ok && !/^\s*<(!doctype|html)/i.test(page.text);
+    if (!isText) {
+      return { status: "pass", finding: "There is no robots.txt, so no AI crawler is blocked by it.", fix: null };
+    }
+    const blocked = blockedCrawlers(page.text);
+    if (blocked.length === 0) {
+      return {
+        status: "pass",
+        finding: `robots.txt does not shut out any of the ${AI_CRAWLERS.length} main AI crawlers. Blocks set outside robots.txt are not visible to this check.`,
+        fix: null,
+      };
+    }
+    return {
+      status: "fail",
+      finding: `robots.txt blocks ${blocked.join(", ")} from the whole site.`,
+      fix: "Remove the site-wide Disallow for these crawlers, or allow them on the pages buyers need (home, pricing, docs).",
+    };
+  },
+};
+
+const readableWithoutJs: Check = {
+  id: "readable_without_js",
+  title: "Homepage readable without JavaScript",
+  async run(context) {
+    const unavailable = homepageUnavailable(context);
+    if (unavailable) return unavailable;
+    const length = visibleText(context.homepage.text).length;
+    if (length >= 500) {
+      return { status: "pass", finding: `The raw homepage carries about ${count(length)} characters of readable text.`, fix: null };
+    }
+    return {
+      status: "fail",
+      finding: `The raw homepage carries only about ${count(length)} characters of readable text, so most content probably needs JavaScript to appear.`,
+      fix: "Render the main homepage content on the server so it is present in the HTML that agents fetch.",
+    };
+  },
+};
+
+const structuredData: Check = {
+  id: "structured_data",
+  title: "Structured data on the homepage",
+  async run(context) {
+    const unavailable = homepageUnavailable(context);
+    if (unavailable) return unavailable;
+    const pattern = /<script\b[^>]*type\s*=\s*["']?application\/ld\+json["']?[^>]*>([\s\S]*?)<\/script\s*>/gi;
+    const types = new Set<string>();
+    let blocks = 0;
+    let match: RegExpExecArray | null;
+    while ((match = pattern.exec(context.homepage.text)) !== null) {
+      blocks += 1;
+      try {
+        const collect = (node: unknown): void => {
+          if (Array.isArray(node)) return node.forEach(collect);
+          if (node && typeof node === "object") {
+            const record = node as Record<string, unknown>;
+            const type = record["@type"];
+            if (typeof type === "string") types.add(type);
+            if (Array.isArray(type)) type.forEach((entry) => typeof entry === "string" && types.add(entry));
+            if (record["@graph"]) collect(record["@graph"]);
+          }
+        };
+        collect(JSON.parse(match[1]));
+      } catch {
+        // a block that does not parse still counts as an attempt, but adds no types
+      }
+    }
+    if (blocks > 0 && types.size > 0) {
+      return { status: "pass", finding: `Found JSON-LD structured data describing: ${[...types].slice(0, 6).join(", ")}.`, fix: null };
+    }
+    return {
+      status: "fail",
+      finding: blocks > 0 ? "Found a JSON-LD block, but it could not be read." : "No JSON-LD structured data on the homepage.",
+      fix: "Add JSON-LD (schema.org Organization plus Product or SoftwareApplication) to the homepage.",
+    };
+  },
+};
+
+const pricingPage: Check = {
+  id: "pricing_page",
+  title: "Pricing page linked and readable",
+  async run(context) {
+    const unavailable = homepageUnavailable(context);
+    if (unavailable) return unavailable;
+    const linked = context.links.find(
+      (link) => /\/(pricing|plans|prices?)(\/|$|\?|#|\.)/i.test(new URL(link.href).pathname + "/") || /\b(pricing|plans)\b/i.test(link.text),
+    );
+    const address = linked ? linked.href : `${context.origin}/pricing`;
+    const page = await fetchText(context.fetcher, address);
+    const pageText = page.ok ? visibleText(page.text) : "";
+    // Some sites answer every unknown address with the homepage. That is not a pricing page.
+    const isHomepageAgain = !linked && pageText.slice(0, 2000) === visibleText(context.homepage.text).slice(0, 2000);
+    const length = isHomepageAgain ? 0 : pageText.length;
+    if (page.ok && !isHomepageAgain && length >= 200) {
+      const hasPrices = /[$€£]\s?\d|\d\s?(usd|eur|gbp)\b|per month|\/\s?mo\b|\/\s?month/i.test(pageText);
+      const where = linked ? `Linked from the homepage at ${address}` : `Not linked in the raw homepage, but found at ${address}`;
+      return {
+        status: "pass",
+        finding: `${where}. ${hasPrices ? "Price figures are visible in the page text." : "No price figures are visible in the page text."}`,
+        fix: hasPrices ? null : "Put actual prices in the page text so an agent can compare you without a sales call.",
+      };
+    }
+    return {
+      status: "fail",
+      finding: linked
+        ? `The homepage links to ${address}, but it could not be read (status ${page.status}, about ${count(length)} characters of text).`
+        : "No pricing page is linked from the raw homepage, and none was found at /pricing.",
+      fix: "Publish a pricing page with prices in plain text and link it from the homepage.",
+    };
+  },
+};
+
+// A link only counts as docs when the address itself says so (docs.example.com, example.com/docs/...)
+// or when a short link label does ("Docs", "API reference"), and the page behind it actually loads.
+const DOC_HOSTS = new Set(["docs", "doc", "developers", "developer", "api", "apidocs", "reference"]);
+const DOC_PATHS = new Set([
+  "docs", "doc", "documentation", "developers", "developer", "api", "api-reference", "api-docs", "apidocs", "reference",
+]);
+const SPEC_FILE = /(^|\/)(openapi|swagger)\.(json|ya?ml)$/i;
+const DOC_LABEL = /^(view |read |see |our |the )*(developer |api )?(docs|documentation|api|api reference|developers)( home| portal)?$/i;
+
+function looksLikeDocs(link: Link): boolean {
+  const url = new URL(link.href);
+  const subdomains = url.hostname.toLowerCase().split(".").slice(0, -2);
+  const firstSegment = url.pathname.toLowerCase().split("/").filter(Boolean)[0] || "";
+  if (subdomains.some((part) => DOC_HOSTS.has(part))) return true;
+  if (DOC_PATHS.has(firstSegment.replace(/\.html?$/, ""))) return true;
+  if (SPEC_FILE.test(url.pathname)) return true;
+  return DOC_LABEL.test(link.text.trim());
+}
+
+const docsLink: Check = {
+  id: "docs_or_api",
+  title: "Docs or API description linked",
+  async run(context) {
+    const unavailable = homepageUnavailable(context);
+    if (unavailable) return unavailable;
+    const homepageText = visibleText(context.homepage.text).slice(0, 2000);
+    const loads = async (address: string): Promise<boolean> => {
+      const page = await fetchText(context.fetcher, address);
+      if (!page.ok) return false;
+      // Judge by what came back, not by the address: a ".json" address that returns a web page is a web page.
+      const isHtml = page.contentType.includes("html") || /^\s*</.test(page.text);
+      const text = isHtml ? visibleText(page.text) : page.text.trim();
+      // A site that answers every address with its homepage has not given us docs.
+      return text.length >= 200 && text.slice(0, 2000) !== homepageText;
+    };
+
+    const candidates = context.links.filter(looksLikeDocs).slice(0, 3);
+    for (const link of candidates) {
+      if (await loads(link.href)) {
+        return { status: "pass", finding: `The homepage links to ${link.href}${link.text ? ` ("${link.text}")` : ""}, and it loads.`, fix: null };
+      }
+    }
+    for (const guess of [`${context.origin}/docs`, `${context.origin}/openapi.json`]) {
+      if (await loads(guess)) {
+        return {
+          status: "pass",
+          finding: `Not linked in the raw homepage, but found at ${guess}.`,
+          fix: "Link it from the homepage so agents find it without guessing.",
+        };
+      }
+    }
+    return {
+      status: "fail",
+      finding: candidates.length
+        ? `The homepage links to ${candidates[0].href}, but it did not load as a docs page.`
+        : "No link to docs or an API description was found in the raw homepage, and none was found at /docs or /openapi.json.",
+      fix: "Link your docs, and an OpenAPI description if you have an API, from the homepage.",
+    };
+  },
+};
+
+export const CHECKS: Check[] = [llmsTxt, aiCrawlers, readableWithoutJs, structuredData, pricingPage, docsLink];

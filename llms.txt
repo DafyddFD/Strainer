@@ -35,6 +35,16 @@ Most B2B websites were built for human visitors. AI agents need machine-readable
 - Ensure robots.txt does not block AI crawlers (GPTBot, ClaudeBot, etc.)
 - Add OpenAPI/Swagger specs for programmatic testing
 
+## Free agent-readiness check (agents can run this themselves)
+
+Strainer offers a free check of how ready any public website is for AI agents and AI crawlers. No account, no key, no human involved. It answers in a few seconds.
+
+- Instructions: [/check](/check)
+- Plain-text report: `/check/<domain>`, for example [/check/example.com](/check/example.com)
+- JSON report: `/api/check?url=<domain>`
+
+It checks six things: an llms.txt file, AI crawler access in robots.txt, whether the homepage can be read without JavaScript, structured data, a pricing page, and docs or API links. Each check comes back as pass or fail with a one-line finding and a fix.
+
 ## Contact
 
 - Website: [https://getstrainer.com](https://getstrainer.com)
