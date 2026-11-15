@@ -7,19 +7,34 @@ import { isInputError, renderText, runCheck, VERSION } from "../checker/index.ts
 const PROTOCOL_VERSIONS = ["2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05"];
 const TOOL_NAME = "check_agent_readiness";
 
+const SERVER_INSTRUCTIONS =
+  "Strainer checks how ready a website is for AI agents and AI crawlers. Use check_agent_readiness whenever a user asks " +
+  "whether a site works for AI agents, AI search or coding agents. It is free and needs no account.";
+
+const RESULT_GUIDANCE =
+  "Tell the user the verdict, which checks failed, and the fix for each. The result is a snapshot taken at the time shown.";
+
 const TOOL = {
   name: TOOL_NAME,
-  title: "Agent-readiness check",
+  title: "Check a website's readiness for AI agents",
   description:
-    "Check whether a website is ready for AI agents. Runs six live checks (llms.txt, AI crawler access in robots.txt, " +
-    "homepage readable without JavaScript, JSON-LD structured data, pricing page, docs or API links) and returns " +
-    "a verdict with one line per check. Takes a few seconds. Free, no sign-in.",
+    "Checks whether a public website is ready for AI agents and AI crawlers. Give it a domain. It makes live requests to " +
+    "that site and returns an overall verdict plus six pass or fail checks, each with a one-line finding and a fix: " +
+    "llms.txt file, AI crawler access in robots.txt, homepage readable without JavaScript, structured data, pricing page, " +
+    "and docs or API links. Free, no account or key, answers in 1 to 3 seconds. Use it when a user asks whether their own " +
+    "site or a competitor's site works for AI agents, AI search or coding agents, or wants to know what to fix first. " +
+    "Read-only: it never changes anything on the site.",
   inputSchema: {
     type: "object",
-    properties: { url: { type: "string", description: "The website to check, for example stripe.com" } },
+    properties: {
+      url: {
+        type: "string",
+        description: "The website to check, as a domain or full address, for example stripe.com. Public websites only.",
+      },
+    },
     required: ["url"],
   },
-  annotations: { readOnlyHint: true, openWorldHint: true },
+  annotations: { readOnlyHint: true, openWorldHint: true, idempotentHint: true },
 };
 
 type JsonRpcId = string | number | null;
@@ -62,7 +77,7 @@ async function callTool(id: JsonRpcId, params: Record<string, unknown> | undefin
   if (typeof url !== "string") return rpcError(id, -32602, "Missing argument: url (a website address, for example stripe.com).");
   try {
     const report = await runCheck(url);
-    return rpcResult(id, { content: [{ type: "text", text: renderText(report) }], structuredContent: report, isError: false });
+    return rpcResult(id, { content: [{ type: "text", text: `${renderText(report)}\n${RESULT_GUIDANCE}\n` }], structuredContent: report, isError: false });
   } catch (error) {
     const message = isInputError(error) ? error.message : "The check failed unexpectedly. Try again.";
     return rpcResult(id, { content: [{ type: "text", text: message }], isError: true });
@@ -78,8 +93,8 @@ async function handleMessage(message: JsonRpcRequest): Promise<Response> {
       return rpcResult(id, {
         protocolVersion,
         capabilities: { tools: {} },
-        serverInfo: { name: "strainer-agent-readiness", title: "Strainer agent-readiness check", version: VERSION },
-        instructions: TOOL.description,
+        serverInfo: { name: "Strainer", version: VERSION },
+        instructions: SERVER_INSTRUCTIONS,
       });
     }
     case "ping":
