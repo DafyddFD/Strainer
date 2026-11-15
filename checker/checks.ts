@@ -257,8 +257,9 @@ const docsLink: Check = {
     const loads = async (address: string): Promise<boolean> => {
       const page = await fetchText(context.fetcher, address);
       if (!page.ok) return false;
-      const isData = /json|ya?ml/.test(page.contentType) || SPEC_FILE.test(new URL(address).pathname);
-      const text = isData ? page.text.trim() : visibleText(page.text);
+      // Judge by what came back, not by the address: a ".json" address that returns a web page is a web page.
+      const isHtml = page.contentType.includes("html") || /^\s*</.test(page.text);
+      const text = isHtml ? visibleText(page.text) : page.text.trim();
       // A site that answers every address with its homepage has not given us docs.
       return text.length >= 200 && text.slice(0, 2000) !== homepageText;
     };

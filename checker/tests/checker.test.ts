@@ -124,6 +124,7 @@ test("a site that answers every address with its homepage does not get credit fo
   const byId = Object.fromEntries(report.checks.map((check) => [check.id, check]));
   assert.equal(byId.pricing_page.status, "fail");
   assert.equal(byId.llms_txt.status, "fail");
+  assert.equal(byId.docs_or_api.status, "fail", "the homepage served at /docs or /openapi.json is not docs");
 });
 
 test("a blog post about developer tools is not mistaken for docs", async () => {
