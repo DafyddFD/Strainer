@@ -30,6 +30,7 @@ const goodSite = fakeSite({
   "https://good.example.com/llms.txt": { body: "# Good Co\n> Data API for sales teams.\n", type: "text/plain" },
   "https://good.example.com/robots.txt": { body: "User-agent: *\nDisallow: /admin\n", type: "text/plain" },
   "https://good.example.com/pricing": { body: `<html><body><h1>Pricing</h1><p>Starter is $49 per month. ${filler}</p></body></html>` },
+  "https://docs.good.example.com/": { body: `<html><body><h1>Good Co docs</h1><p>Authentication, endpoints and limits. ${filler}</p></body></html>` },
 });
 
 const bareSite = fakeSite({
@@ -136,7 +137,29 @@ test("a blog post about developer tools is not mistaken for docs", async () => {
 
   const withDocs = fakeSite({
     "https://blog.example.com/": { body: `<html><body><a href="/docs/quickstart.html">Start</a><main>${filler}</main></body></html>` },
+    "https://blog.example.com/docs/quickstart.html": { body: `<html><body><h1>Quickstart</h1><p>Install, then call the API. ${filler}</p></body></html>` },
   });
   const second = await runCheck("blog.example.com", withDocs);
   assert.equal(second.checks.find((check) => check.id === "docs_or_api")!.status, "pass");
+});
+
+test("docs links must be real: a deep 'api' path, a dead docs link and a catch-all site all fail", async () => {
+  const deepApi = fakeSite({
+    "https://a.example.com/": { body: `<html><body><a href="https://other.example.org/claudecode/api">Devtool Arena</a><main>${filler}</main></body></html>` },
+    "https://other.example.org/claudecode/api": { body: `<html><body>${filler}</body></html>` },
+  });
+  assert.equal((await runCheck("a.example.com", deepApi)).checks.find((c) => c.id === "docs_or_api")!.status, "fail");
+
+  const deadLink = fakeSite({
+    "https://b.example.com/": { body: `<html><body><a href="/docs">Docs</a><main>${filler}</main></body></html>` },
+  });
+  const dead = (await runCheck("b.example.com", deadLink)).checks.find((c) => c.id === "docs_or_api")!;
+  assert.equal(dead.status, "fail");
+  assert.match(dead.finding, /did not load/);
+
+  const labelled = fakeSite({
+    "https://c.example.com/": { body: `<html><body><a href="/learn">API reference</a><main>${filler}</main></body></html>` },
+    "https://c.example.com/learn": { body: `<html><body><h1>Reference</h1>${filler} endpoints</body></html>` },
+  });
+  assert.equal((await runCheck("c.example.com", labelled)).checks.find((c) => c.id === "docs_or_api")!.status, "pass");
 });

@@ -228,10 +228,24 @@ const pricingPage: Check = {
   },
 };
 
-const DOC_WORDS = new Set([
-  "docs", "doc", "documentation", "api", "apis", "developers", "developer", "dev",
-  "openapi", "swagger", "reference", "api-reference", "api-docs", "apidocs",
+// A link only counts as docs when the address itself says so (docs.example.com, example.com/docs/...)
+// or when a short link label does ("Docs", "API reference"), and the page behind it actually loads.
+const DOC_HOSTS = new Set(["docs", "doc", "developers", "developer", "api", "apidocs", "reference"]);
+const DOC_PATHS = new Set([
+  "docs", "doc", "documentation", "developers", "developer", "api", "api-reference", "api-docs", "apidocs", "reference",
 ]);
+const SPEC_FILE = /(^|\/)(openapi|swagger)\.(json|ya?ml)$/i;
+const DOC_LABEL = /^(view |read |see |our |the )*(developer |api )?(docs|documentation|api|api reference|developers)( home| portal)?$/i;
+
+function looksLikeDocs(link: Link): boolean {
+  const url = new URL(link.href);
+  const subdomains = url.hostname.toLowerCase().split(".").slice(0, -2);
+  const firstSegment = url.pathname.toLowerCase().split("/").filter(Boolean)[0] || "";
+  if (subdomains.some((part) => DOC_HOSTS.has(part))) return true;
+  if (DOC_PATHS.has(firstSegment.replace(/\.html?$/, ""))) return true;
+  if (SPEC_FILE.test(url.pathname)) return true;
+  return DOC_LABEL.test(link.text.trim());
+}
 
 const docsLink: Check = {
   id: "docs_or_api",
@@ -239,24 +253,36 @@ const docsLink: Check = {
   async run(context) {
     const unavailable = homepageUnavailable(context);
     if (unavailable) return unavailable;
-    const found = context.links.find((link) => {
-      const url = new URL(link.href);
-      const subdomains = url.hostname.toLowerCase().split(".").slice(0, -2);
-      const segments = url.pathname
-        .toLowerCase()
-        .split("/")
-        .filter(Boolean)
-        .map((segment) => segment.replace(/\.(html?|json|ya?ml|txt)$/, ""));
-      const inAddress = [...subdomains, ...segments].some((part) => DOC_WORDS.has(part));
-      const inText = link.text.length <= 40 && /\b(docs|documentation|api|developers?)\b/i.test(link.text);
-      return inAddress || inText;
-    });
-    if (found) {
-      return { status: "pass", finding: `The homepage links to ${found.href}${found.text ? ` ("${found.text}")` : ""}.`, fix: null };
+    const homepageText = visibleText(context.homepage.text).slice(0, 2000);
+    const loads = async (address: string): Promise<boolean> => {
+      const page = await fetchText(context.fetcher, address);
+      if (!page.ok) return false;
+      const isData = /json|ya?ml/.test(page.contentType) || SPEC_FILE.test(new URL(address).pathname);
+      const text = isData ? page.text.trim() : visibleText(page.text);
+      // A site that answers every address with its homepage has not given us docs.
+      return text.length >= 200 && text.slice(0, 2000) !== homepageText;
+    };
+
+    const candidates = context.links.filter(looksLikeDocs).slice(0, 3);
+    for (const link of candidates) {
+      if (await loads(link.href)) {
+        return { status: "pass", finding: `The homepage links to ${link.href}${link.text ? ` ("${link.text}")` : ""}, and it loads.`, fix: null };
+      }
+    }
+    for (const guess of [`${context.origin}/docs`, `${context.origin}/openapi.json`]) {
+      if (await loads(guess)) {
+        return {
+          status: "pass",
+          finding: `Not linked in the raw homepage, but found at ${guess}.`,
+          fix: "Link it from the homepage so agents find it without guessing.",
+        };
+      }
     }
     return {
       status: "fail",
-      finding: "No link to docs or an API description was found in the raw homepage.",
+      finding: candidates.length
+        ? `The homepage links to ${candidates[0].href}, but it did not load as a docs page.`
+        : "No link to docs or an API description was found in the raw homepage, and none was found at /docs or /openapi.json.",
       fix: "Link your docs, and an OpenAPI description if you have an API, from the homepage.",
     };
   },
