@@ -8,6 +8,7 @@ rpc(){ curl -s "$B/mcp" -H 'Content-Type: application/json' -H 'Accept: applicat
 curl -s --retry 40 --retry-delay 1 --retry-connrefused -o /dev/null "$B/" || { echo "server not up"; exit 1; }
 
 [ "$(code $B/)" = 200 ] && curl -s $B/ | grep -q '<html' && ok "homepage served" || bad "homepage" "$(code $B/)"
+curl -s $B/ | grep -q 'id="check-form"' && ok "homepage has the readiness check form" || bad "homepage check form" "missing"
 [ "$(code -L $B/deck.html)" = 200 ] && ok "deck served (after redirect to /deck, as on Pages)" || bad "deck" "$(code -L $B/deck.html)"
 [ "$(code $B/llms.txt)" = 200 ] && ok "llms.txt served" || bad "llms.txt" "$(code $B/llms.txt)"
 for p in /checker/index.ts /worker/index.ts /wrangler.jsonc /README.md /.gitignore /.assetsignore; do
