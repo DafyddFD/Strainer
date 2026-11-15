@@ -42,3 +42,13 @@ export async function visitorId(salt: string, ip: string, userAgent: string): Pr
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`${salt}|${ip}|${userAgent}`));
   return Array.from(new Uint8Array(digest).slice(0, 6), (b) => b.toString(16).padStart(2, "0")).join("");
 }
+
+export function verdictOf(response: string | null): string | null {
+  if (!response) return null;
+  try {
+    const body = JSON.parse(response);
+    return body?.verdict ?? body?.result?.structuredContent?.verdict ?? (body?.result?.isError ? "tool error" : null);
+  } catch {
+    return /^Verdict: (.+?)(?: \(|$)/m.exec(response)?.[1] ?? null;
+  }
+}
