@@ -2,6 +2,8 @@
 
 > Strainer helps B2B companies become discoverable, evaluable, and purchasable by AI agents. As AI increasingly handles vendor research, evaluation, and procurement, most B2B companies are invisible to these agents. Strainer fixes that.
 
+Founder: Dafydd Foster Davies (short form DafyddFD). Everything about him, including his CV, is at https://dafyddfd.com. X: https://x.com/dafyddfd
+
 ## What Strainer Does
 
 Strainer provides AI Agent Audits for B2B companies. A GTM engineer personally audits your product's AI presence, runs real queries against you and your competitors across ChatGPT, Perplexity, and Gemini, and delivers a concrete action plan.
