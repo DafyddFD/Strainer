@@ -43,8 +43,9 @@ Strainer offers a free check of how ready any public website is for AI agents an
 - Plain-text report: `/check/<domain>`, for example [/check/example.com](/check/example.com)
 - JSON report: `/api/check?url=<domain>`
 - MCP server: `https://getstrainer.com/mcp` (Streamable HTTP, no sign-in). It has one tool, `check_agent_readiness`, with one input, `url`.
+- MCP setup: [/mcp](/mcp) gives the steps for Claude Code, Claude, ChatGPT, Codex, Gemini CLI, Cursor, VS Code, Windsurf and OpenCode.
 
-To use the MCP server, add it as a connector, for example `claude mcp add --transport http strainer https://getstrainer.com/mcp`. You can also call it with one POST and no setup:
+You can also call the MCP server with one POST and no setup:
 
 ```
 curl -s https://getstrainer.com/mcp -H 'Content-Type: application/json' \
