@@ -42,6 +42,14 @@ Strainer offers a free check of how ready any public website is for AI agents an
 - Instructions: [/check](/check)
 - Plain-text report: `/check/<domain>`, for example [/check/example.com](/check/example.com)
 - JSON report: `/api/check?url=<domain>`
+- MCP server: `https://getstrainer.com/mcp` (Streamable HTTP, no sign-in). It has one tool, `check_agent_readiness`, with one input, `url`.
+
+To use the MCP server, add it as a connector, for example `claude mcp add --transport http strainer https://getstrainer.com/mcp`. You can also call it with one POST and no setup:
+
+```
+curl -s https://getstrainer.com/mcp -H 'Content-Type: application/json' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"check_agent_readiness","arguments":{"url":"example.com"}}}'
+```
 
 It checks six things: an llms.txt file, AI crawler access in robots.txt, whether the homepage can be read without JavaScript, structured data, a pricing page, and docs or API links. Each check comes back as pass or fail with a one-line finding and a fix.
 
