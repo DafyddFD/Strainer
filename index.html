@@ -136,7 +136,7 @@
         .nav-links a:hover { color: var(--text-primary); }
 
         .btn {
-            display: inline-flex; align-items: center; gap: 8px;
+            display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
             padding: 10px 20px; border-radius: 8px;
             font-family: var(--font-body); font-size: 0.85rem; font-weight: 500;
             cursor: pointer; transition: all 0.2s; border: none;
@@ -146,6 +146,9 @@
         .btn-ghost { background: transparent; color: var(--text-primary); border: 1px solid var(--border); }
         .btn-ghost:hover { border-color: var(--border-hover); background: var(--bg-elevated); }
         .btn-large { font-size: 0.95rem; padding: 14px 28px; }
+        /* The nav link colour above would otherwise grey out the text on header buttons */
+        .nav-links a.btn-primary, .nav-links a.btn-primary:hover { color: #0a0a0b; }
+        .nav-links a.btn-ghost { color: var(--text-primary); }
 
         /* HERO */
         .hero { padding: 170px 0 100px; position: relative; }
@@ -365,6 +368,12 @@
             display: none; align-items: center; justify-content: space-between; gap: 16px;
         }
         .scanner-cta.visible { display: flex; }
+        .scanner-cta .btn { flex-shrink: 0; }
+        #check-output { min-height: 120px; }
+        .scanner-output .fix { display: block; padding-left: 1.6em; color: var(--text-secondary); }
+        .scanner-output .gap { margin-top: 10px; }
+        .scanner-note { margin-top: 18px; font-size: 0.85rem; color: var(--text-secondary); }
+        .scanner-note a { color: var(--text-primary); text-decoration: underline; text-underline-offset: 2px; }
         .scanner-cta p { font-size: 0.9rem; color: var(--text-primary); }
         .scanner-cta p span { color: var(--text-secondary); font-size: 0.82rem; display: block; margin-top: 3px; }
 
@@ -400,6 +409,11 @@
             .evidence-grid, .nc-grid { grid-template-columns: 1fr; gap: 28px; }
             .wc-grid { grid-template-columns: 1fr; }
             .revenue-impact { grid-template-columns: 1fr; }
+        }
+
+        /* Between phone and desktop widths the two text links make room for the two header buttons */
+        @media (min-width: 641px) and (max-width: 860px) {
+            .nav-links a:not(.btn) { display: none; }
         }
 
         @media (max-width: 640px) {
@@ -454,6 +468,7 @@
             <div class="nav-links">
                 <a href="#shift">The Shift</a>
                 <a href="#evidence">Evidence</a>
+                <a href="#check" class="btn btn-ghost">Free Agent-Readiness Check</a>
                 <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn btn-primary">Get Free Audit →</a>
             </div>
         </div>
@@ -470,6 +485,7 @@
             <p class="reveal">AI agents are already researching vendors, comparing APIs, and recommending tools — before any human gets involved. They don't care about your marketing. They care about your product. If they can't find you, evaluate you, and compare you — you lose before you ever had a shot.</p>
             <div class="hero-ctas reveal">
                 <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn btn-primary btn-large">Book a Free Audit →</a>
+                <a href="#check" class="btn btn-ghost btn-large">Free Agent-Readiness Check</a>
             </div>
         </div>
     </section>
@@ -670,6 +686,36 @@
         </div>
     </section>
 
+    <!-- FREE AGENT-READINESS CHECK: runs the same free check agents use at /check, /api/check and /mcp -->
+    <section class="scanner" id="check">
+        <div class="container">
+            <div class="section-label reveal">Free Agent-Readiness Check</div>
+            <h2 class="section-heading reveal">Is your site ready for AI agents? Find out in a few seconds.</h2>
+            <p class="section-sub reveal">Enter your domain. We make live requests to your site and run six checks: an llms.txt file, AI crawler access in robots.txt, a homepage readable without JavaScript, structured data, a pricing page, and docs or API links. Each one comes back as pass or fail with a fix. Free, no sign-up.</p>
+
+            <div class="scanner-box reveal">
+                <div class="scanner-header">
+                    <span class="scanner-dot"></span><span class="scanner-dot"></span><span class="scanner-dot"></span>
+                    <span class="scanner-title">strainer agent-readiness check</span>
+                </div>
+                <div class="scanner-body">
+                    <form class="scanner-input-row" id="check-form">
+                        <input class="scanner-input" id="check-input" type="text" inputmode="url" autocomplete="url" autocapitalize="none" spellcheck="false" placeholder="yourcompany.com" aria-label="Website to check" required>
+                        <button class="scan-btn" id="check-btn" type="submit">Run free check</button>
+                    </form>
+                    <div class="scanner-output" id="check-output" aria-live="polite">
+                        <div>Your results will show here: a verdict, then six checks, each with a finding and a fix.</div>
+                    </div>
+                    <div class="scanner-cta" id="check-cta">
+                        <p>This check covers the technical basics only.<span>The free audit looks at how ChatGPT, Perplexity and Gemini answer when buyers ask about you and your competitors.</span></p>
+                        <a href="https://calendly.com/dafydd-getstrainer/30min" target="_blank" class="btn btn-primary">Book a Free Audit →</a>
+                    </div>
+                </div>
+            </div>
+            <p class="scanner-note reveal">Your AI agent can run this check too, with no account or key: see the <a href="/check">plain-text instructions</a> or connect the <a href="/mcp">MCP server</a>.</p>
+        </div>
+    </section>
+
     <!-- FINAL CTA -->
     <section class="final-cta">
         <div class="container">
@@ -702,6 +748,8 @@
         // Nav
         const nav = document.getElementById('nav');
         window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
+        // On phones, close the open menu once a link in it is tapped
+        document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open')));
 
         // Reveal
         const obs = new IntersectionObserver((entries) => {
@@ -709,6 +757,78 @@
         }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
         document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
         setTimeout(() => document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible')), 80);
+
+        // Free agent-readiness check. Calls the same free API that agents use (/api/check).
+        // Results are written with textContent only: findings quote text from other people's sites.
+        const checkForm = document.getElementById('check-form');
+        const checkInput = document.getElementById('check-input');
+        const checkBtn = document.getElementById('check-btn');
+        const checkOut = document.getElementById('check-output');
+        const checkCta = document.getElementById('check-cta');
+        let checkLines = 0;
+
+        function checkLine(text, cls) {
+            const el = document.createElement('div');
+            el.className = 'line' + (cls ? ' ' + cls : '');
+            el.style.animationDelay = (checkLines++ * 60) + 'ms';
+            el.textContent = text;
+            checkOut.appendChild(el);
+        }
+
+        function checkStart(domain) {
+            checkOut.replaceChildren();
+            checkLines = 0;
+            checkLine('$ check ' + domain, 'cmd');
+        }
+
+        function checkRender(report) {
+            const verdictClass = { 'Ready': 'ok', 'Partly ready': 'warn', 'Not ready': 'err', 'Could not check': 'warn' };
+            const status = { pass: ['PASS', 'ok'], fail: ['FAIL', 'err'], unknown: ['UNKNOWN', 'warn'] };
+            checkStart(report.url);
+            checkLine('Verdict: ' + report.verdict + ' (' + report.passed + ' of ' + report.total + ' checks passed)', (verdictClass[report.verdict] || 'info') + ' gap');
+            report.checks.forEach((check) => {
+                const [label, cls] = status[check.status] || status.unknown;
+                checkLine(label + '  ' + check.title, cls + ' gap');
+                checkLine(check.finding, 'fix');
+                if (check.fix) checkLine('Fix: ' + check.fix, 'fix');
+            });
+            checkLine('Based on live requests to the site just now.', 'info gap');
+            checkCta.classList.add('visible');
+        }
+
+        checkForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const domain = checkInput.value.trim();
+            if (!domain) return;
+            checkBtn.disabled = true;
+            checkBtn.textContent = 'Checking...';
+            checkCta.classList.remove('visible');
+            checkStart(domain);
+            checkLine('Making live requests to the site. This takes a few seconds.', 'info');
+            let verdict = 'error';
+            try {
+                const response = await fetch('/api/check?url=' + encodeURIComponent(domain), { headers: { Accept: 'application/json' } });
+                const data = await response.json();
+                if (response.ok && data.kind === 'agent_readiness') {
+                    checkRender(data);
+                    verdict = data.verdict;
+                } else {
+                    checkStart(domain);
+                    checkLine(data.message || 'The check failed. Try again.', 'err gap');
+                }
+            } catch (error) {
+                checkStart(domain);
+                checkLine('The check could not be reached. Try again in a minute.', 'err gap');
+            } finally {
+                checkBtn.disabled = false;
+                checkBtn.textContent = 'Run free check';
+            }
+            // Count runs in the analytics already on this page. The domain itself is not sent to them.
+            try {
+                if (window.plausible) plausible('Readiness check', { props: { verdict } });
+                if (window.posthog) posthog.capture('readiness_check', { verdict });
+            } catch (error) {}
+        });
 
     </script>
 </body>
