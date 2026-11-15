@@ -205,9 +205,12 @@ const pricingPage: Check = {
     );
     const address = linked ? linked.href : `${context.origin}/pricing`;
     const page = await fetchText(context.fetcher, address);
-    const length = page.ok ? visibleText(page.text).length : 0;
-    if (page.ok && length >= 200) {
-      const hasPrices = /[$€£]\s?\d|\d\s?(usd|eur|gbp)\b|per month|\/\s?mo\b|\/\s?month/i.test(visibleText(page.text));
+    const pageText = page.ok ? visibleText(page.text) : "";
+    // Some sites answer every unknown address with the homepage. That is not a pricing page.
+    const isHomepageAgain = !linked && pageText.slice(0, 2000) === visibleText(context.homepage.text).slice(0, 2000);
+    const length = isHomepageAgain ? 0 : pageText.length;
+    if (page.ok && !isHomepageAgain && length >= 200) {
+      const hasPrices = /[$€£]\s?\d|\d\s?(usd|eur|gbp)\b|per month|\/\s?mo\b|\/\s?month/i.test(pageText);
       const where = linked ? `Linked from the homepage at ${address}` : `Not linked in the raw homepage, but found at ${address}`;
       return {
         status: "pass",
@@ -225,6 +228,11 @@ const pricingPage: Check = {
   },
 };
 
+const DOC_WORDS = new Set([
+  "docs", "doc", "documentation", "api", "apis", "developers", "developer", "dev",
+  "openapi", "swagger", "reference", "api-reference", "api-docs", "apidocs",
+]);
+
 const docsLink: Check = {
   id: "docs_or_api",
   title: "Docs or API description linked",
@@ -233,10 +241,15 @@ const docsLink: Check = {
     if (unavailable) return unavailable;
     const found = context.links.find((link) => {
       const url = new URL(link.href);
-      const inAddress = /(^|[./-])(docs?|documentation|api|developers?|openapi|swagger|reference)([./-]|$)/i.test(
-        `${url.hostname}${url.pathname}`,
-      );
-      return inAddress || /\b(docs|documentation|api|developers?|api reference)\b/i.test(link.text);
+      const subdomains = url.hostname.toLowerCase().split(".").slice(0, -2);
+      const segments = url.pathname
+        .toLowerCase()
+        .split("/")
+        .filter(Boolean)
+        .map((segment) => segment.replace(/\.(html?|json|ya?ml|txt)$/, ""));
+      const inAddress = [...subdomains, ...segments].some((part) => DOC_WORDS.has(part));
+      const inText = link.text.length <= 40 && /\b(docs|documentation|api|developers?)\b/i.test(link.text);
+      return inAddress || inText;
     });
     if (found) {
       return { status: "pass", finding: `The homepage links to ${found.href}${found.text ? ` ("${found.text}")` : ""}.`, fix: null };

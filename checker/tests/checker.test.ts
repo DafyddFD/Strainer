@@ -115,3 +115,28 @@ test("the request handler returns usage, bad-input and format variants", async (
   const missing = await handleCheck(new Request("https://site.test/api/check"), null, "/api/check", "json");
   assert.equal(missing.status, 400);
 });
+
+test("a site that answers every address with its homepage does not get credit for a pricing page", async () => {
+  const home = `<html><body><main>We help with $15T of purchases. ${filler}</main></body></html>`;
+  const catchAll = async (): Promise<Response> => new Response(home, { status: 200, headers: { "content-type": "text/html" } });
+  const report = await runCheck("spa.example.com", catchAll);
+  const byId = Object.fromEntries(report.checks.map((check) => [check.id, check]));
+  assert.equal(byId.pricing_page.status, "fail");
+  assert.equal(byId.llms_txt.status, "fail");
+});
+
+test("a blog post about developer tools is not mistaken for docs", async () => {
+  const site = fakeSite({
+    "https://blog.example.com/": {
+      body: `<html><body><a href="/blog/best-geo-tools-for-developer-tools-2026">Best GEO Tools for Dev Tools 2026: A vs B vs C compared in depth</a><main>${filler}</main></body></html>`,
+    },
+  });
+  const report = await runCheck("blog.example.com", site);
+  assert.equal(report.checks.find((check) => check.id === "docs_or_api")!.status, "fail");
+
+  const withDocs = fakeSite({
+    "https://blog.example.com/": { body: `<html><body><a href="/docs/quickstart.html">Start</a><main>${filler}</main></body></html>` },
+  });
+  const second = await runCheck("blog.example.com", withDocs);
+  assert.equal(second.checks.find((check) => check.id === "docs_or_api")!.status, "pass");
+});

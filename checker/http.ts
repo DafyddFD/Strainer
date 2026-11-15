@@ -63,7 +63,11 @@ export async function fetchText(fetcher: FetchLike, url: string, timeoutMs = 600
     const response = await fetcher(url, {
       redirect: "follow",
       signal: controller.signal,
-      headers: { "User-Agent": USER_AGENT, Accept: "text/html,text/plain,application/json;q=0.9,*/*;q=0.5" },
+      headers: {
+        "User-Agent": USER_AGENT,
+        Accept: "text/html,text/plain,application/json;q=0.9,*/*;q=0.5",
+        "Accept-Language": "en",
+      },
     });
     const text = (await response.text()).slice(0, MAX_CHARS);
     return {
