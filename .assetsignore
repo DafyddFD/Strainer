@@ -1,0 +1,7 @@
+.*
+*.md
+!llms.txt
+wrangler.jsonc
+worker/
+checker/
+node_modules/
