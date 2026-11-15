@@ -2,6 +2,7 @@
 // Routes stay thin: they pick the target and the default format, this does the rest.
 
 import { isInputError, renderText, runCheck, VERSION } from "./index.ts";
+import type { FetchLike } from "./http.ts";
 
 type Format = "json" | "text";
 
@@ -46,7 +47,13 @@ export function usage(origin: string): string {
   ].join("\n");
 }
 
-export async function handleCheck(request: Request, rawTarget: string | null, route: string, fallback: Format): Promise<Response> {
+export async function handleCheck(
+  request: Request,
+  rawTarget: string | null,
+  route: string,
+  fallback: Format,
+  fetcher: FetchLike = fetch,
+): Promise<Response> {
   const started = Date.now();
   const here = new URL(request.url);
   const format = pickFormat(request, fallback);
@@ -69,7 +76,7 @@ export async function handleCheck(request: Request, rawTarget: string | null, ro
   }
 
   try {
-    const report = await runCheck(rawTarget);
+    const report = await runCheck(rawTarget, fetcher);
     console.log(
       JSON.stringify({ ...logBase, outcome: "ok", target: report.url, verdict: report.verdict, passed: report.passed, ms: Date.now() - started }),
     );

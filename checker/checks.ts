@@ -87,6 +87,13 @@ export function blockedCrawlers(robotsTxt: string, crawlers: string[] = AI_CRAWL
   });
 }
 
+/** The file could not be read for a reason other than "it is not there" (server error, blocked, timed out). */
+function unreadable(page: Fetched, address: string): Omit<CheckResult, "id" | "title"> | null {
+  if (page.ok || page.status === 404 || page.status === 410) return null;
+  const reason = page.status ? `answered with status ${page.status}` : page.error || "failed";
+  return { status: "unknown", finding: `The request for ${address} ${reason}, so this could not be checked.`, fix: null };
+}
+
 const llmsTxt: Check = {
   id: "llms_txt",
   title: "llms.txt file",
@@ -97,9 +104,8 @@ const llmsTxt: Check = {
     if (page.ok && page.text.trim().length > 0 && !looksLikeHtml) {
       return { status: "pass", finding: `Found at ${address} (${count(page.text.trim().length)} characters).`, fix: null };
     }
-    if (!page.ok && page.status === 0) {
-      return { status: "unknown", finding: `The request for ${address} ${page.error || "failed"}.`, fix: null };
-    }
+    const blocked = unreadable(page, address);
+    if (blocked) return blocked;
     return {
       status: "fail",
       finding: page.ok ? `${address} returns a web page, not a text file.` : `No file at ${address} (status ${page.status}).`,
@@ -114,9 +120,8 @@ const aiCrawlers: Check = {
   async run({ origin, fetcher }) {
     const address = `${origin}/robots.txt`;
     const page = await fetchText(fetcher, address);
-    if (!page.ok && page.status === 0) {
-      return { status: "unknown", finding: `The request for ${address} ${page.error || "failed"}.`, fix: null };
-    }
+    const unread = unreadable(page, address);
+    if (unread) return unread;
     const isText = page.ok && !/^\s*<(!doctype|html)/i.test(page.text);
     if (!isText) {
       return { status: "pass", finding: "There is no robots.txt, so no AI crawler is blocked by it.", fix: null };

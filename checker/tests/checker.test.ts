@@ -164,3 +164,12 @@ test("docs links must be real: a deep 'api' path, a dead docs link and a catch-a
   });
   assert.equal((await runCheck("c.example.com", labelled)).checks.find((c) => c.id === "docs_or_api")!.status, "pass");
 });
+
+test("a server error on llms.txt or robots.txt is unknown, not 'no file'", async () => {
+  const broken = async (): Promise<Response> => new Response("error", { status: 522, headers: { "content-type": "text/plain" } });
+  const report = await runCheck("down.example.com", broken);
+  const byId = Object.fromEntries(report.checks.map((check) => [check.id, check]));
+  assert.equal(byId.llms_txt.status, "unknown");
+  assert.equal(byId.ai_crawlers.status, "unknown", "a 522 must not read as 'no robots.txt, so nothing is blocked'");
+  assert.equal(report.verdict, "Could not check");
+});
